@@ -1,7 +1,7 @@
 # RobotDeliverySystem
 Capstone project
 
-## Running Image detection on raspberry pi
+## Running Object detection on raspberry pi
 
 **Step 1** Clone the current repository to raspberry pi from terminal 
 ```
