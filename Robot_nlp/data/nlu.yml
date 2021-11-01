@@ -1,0 +1,195 @@
+version: "2.0"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - good afternoon
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+    - sure
+    - ok great
+    - yes please
+    - fine
+    - yeah please
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+    - no I'm ok
+    - no I'm fine
+    - no I'm good
+    - no thanks
+
+- intent: mood_great
+  examples: |
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+
+- intent: take_out
+  examples: |
+    - take out
+    - I want to order for take out
+    - I would like to order something for take out
+    - take out please
+- intent: take_in
+  examples: |
+    - I want to order for take in
+    - take in
+    - I would like to order something for take in
+    - we want take in please
+    - take in please
+- intent: want_drink
+  examples: |
+    - can I get [ice tea](drink) please
+    - I want [ice tea](drink) please
+    - can I get [limonade](drink) please
+    - I want [limonade](drink) please
+    - can I get [orange juice](drink) please
+    - I want [orange juice](drink) please
+    - can I get [sevenup](drink) please
+    - I want [sevenup](drink) please
+
+- intent: reaquest_table
+  examples: |
+    - I need a table
+    - I want a table
+    - we need a table
+    - we want to take a table
+    - we need a table
+    - we want to take a table
+    - we need a table
+    - we want to take a table
+    - we need a table
+    - we want to take a table
+    - we need a table
+    - we want to take a table
+
+- intent: table_booked
+  examples: |
+    - I booked a table
+    - I reserved a table
+    - we booked a table
+    - we reserved a table
+
+
+- intent: pick_up
+  examples: |
+    - I'm picking up my order
+    - I come to pick up my order
+    - I ordered online
+    - I ordered by phone
+
+- intent: order_with
+  examples: |
+    - [tablet](order)
+    - [human](order) server
+    - I want to order in [tablet](order)
+    - I want to order with [human](order) server
+
+- intent: signal_ask_drink
+  examples: |
+    - drinks_signal
+
+- intent: hello_world
+  examples: |
+    - world
+    - programming
+    - first program
+
+- intent: request_numbers_of_pople
+  examples: |
+    - [2](person)
+    - [3](person)
+    - [4](person)
+    - [5](person)
+    - for [1](person) person
+    - for [2](person) persons
+    - for [2](person) poeple
+    - for [3](person) persons
+    - for [3](person) poeple
+    - for [4](person) persons
+    - for [4](person) poeple
+    - for [5](person) person
+    - for [5](person) poeple
+
+- intent: search_restaurant
+  examples: |
+    - show me [indian](hotel) restaurant
+    - show me [chineese](hotel) restaurant
+    - show me [thai](hotel) restaurant
+    - show me [italian](hotel) restaurant

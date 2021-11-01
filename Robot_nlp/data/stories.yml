@@ -1,0 +1,48 @@
+version: "2.0"
+
+stories:
+
+
+
+- story: take in
+  steps:
+  - intent: greet
+  - action: utter_greet_customers
+  - intent: take_in
+  - action: utter_ask_how_mony_poeple
+  - intent: request_numbers_of_pople
+  - action: search_for_table
+
+- story: want to drink
+  steps:
+  - intent: signal_ask_drink
+  - action: utter_ask_if_want_drinks
+  - intent: want_drink
+#  - action: search_drinks
+
+- story: doesn't want to drink
+  steps:
+  - intent: signal_ask_drink
+  - action: utter_ask_if_want_drinks
+  - intent: deny
+  - action: utter_agree
+
+- story: take out
+  steps:
+
+  - intent: greet
+  - action: utter_greet_customers
+  - intent: take_out
+  - action: utter_order_on_tablet
+  - intent: order_with
+  - action: how_to_order
+
+- story: hello worl path
+  steps:
+  - intent: hello_world
+  - action: action_hello_world
+
+- story: search restaurant path
+  steps:
+  - intent: search_restaurant
+  - action: action_search_restaurant

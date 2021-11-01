@@ -1,0 +1,95 @@
+version: "2.0"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - take_out
+  - reaquest_table
+  - table_booked
+  - request_numbers_of_pople
+  - pick_up
+  - order_with
+  - take_in
+  - want_drink
+  - hello_world
+  - signal_ask_drink
+  - search_restaurant
+
+
+actions:
+  - search_for_table
+  - how_to_order
+  - action_hello_world
+  - action_search_restaurant
+
+entities:
+  - person
+  - order
+  - drink
+  - hotel
+
+
+#slots:
+ # person:
+  #  type: rasa.shared.core.slots.UnfeaturizedSlot
+   # initial_value: null
+    #auto_fill: true
+    #influence_conversation: false
+#  order:
+ #   type: rasa.shared.core.slots.UnfeaturizedSlot
+  #  initial_value: null
+   # auto_fill: true
+   # influence_conversation: false
+ # drink:
+  #  type: rasa.shared.core.slots.ListSlot
+   # initial_value: null
+    #auto_fill: true
+    #influence_conversation: false
+
+
+
+responses:
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_iamabot:
+  - text: "I am a bot, powered by Rasa."
+  utter_greet_customers:
+  - text: "Hi there, Do you want take in or take out ? "
+  utter_order_on_tablet:
+  - text: " Do you you want to order on the tablet or to a human server ?"
+  utter_proceed_order_on_tablette:
+  - text: " proceed order. When you are done Click on submit "
+  utter_guide_to_table:
+  - text: " follow me. we have a table for you !"
+  utter_ask_how_mony_poeple:
+  - text: " you want take in for how many poeple"
+  utter_ask_if_want_drinks:
+  - text: " Do you want somethings to drink ? we have Ice tea, limonade, orange juice and sevenup"
+  utter_bring_drinks:
+  - text: " Alright, I'll be back with your drinks"
+  utter_agree:
+  - text: " Alright !"
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
