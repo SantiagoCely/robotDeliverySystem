@@ -4,9 +4,6 @@ Capstone project
 ## Running Object detection on raspberry pi
 
 **Step 1** Clone the current repository to raspberry pi from terminal 
-```
- git clone https://github.com/SantiagoCely/RobotDeliverySystem.git 
-```
 
 **Step 2** Install all dependencies from terminal 
 ```
