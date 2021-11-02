@@ -1,91 +1,79 @@
-#!/usr/bin/python  
+#!/usr/bin/python
 
-import time  
+import time
+import RPi.GPIO as GPIO
 
-import RPi.GPIO as GPIO  
+from gpiozero import Servo
+from time import sleep
 
-  
+import time
 
-  
+# Use board based pin numbering
+GPIO.setmode(GPIO.BOARD)
 
-# Use board based pin numbering  
+def ReadDistance(pin):
+   GPIO.setup(pin, GPIO.OUT)
+   GPIO.output(pin, 0)
 
-GPIO.setmode(GPIO.BOARD)  
+   time.sleep(0.000002)
 
-  
+   #send trigger signal
 
-  
+   GPIO.output(pin, 1)
 
-def ReadDistance(pin):  
+   time.sleep(0.000005)
 
-   GPIO.setup(pin, GPIO.OUT)  
+   GPIO.output(pin, 0)
+   GPIO.setup(pin, GPIO.IN)
 
-   GPIO.output(pin, 0)  
+   while GPIO.input(pin)==0:
+      starttime=time.time()
 
-  
+   while GPIO.input(pin)==1:
+      endtime=time.time()
 
-   time.sleep(0.000002)  
+   duration=endtime-starttime
 
-  
+   # Distance is defined as time/2 (there and back) * speed of sound 34000 cm/s
 
-  
+   distance=duration*34000/2
 
-   #send trigger signal  
+   return distance
 
-   GPIO.output(pin, 1)  
+def main():
+   avoidingObstacle = False
+   servoLeft = Servo(23)
+   servoRight = Servo(26)
+   start_time = 0
+   end_time = 0
 
-  
+   while True:
+      # Make the robot go forward
+      servoLeft.value = -1
+      servoRight.value = 1
 
-  
+      distance = ReadDistance(11)
+      print("Distance to object is ",distance," cm or ",distance*.3937, " inches")
+      if distance < 15:
+         servoRight.value = 0
+         time.sleep(1)
+         servoRight.value = 1
+         start_time = time.time()
+         avoidingObstacle = True
 
-   time.sleep(0.000005)  
+      if avoidingObstacle:
+         end_time = time.time()
+         total_time = end_time - start_time
 
-  
+      if total_time > 5:
+         servoLeft.value = 0
+         time.sleep(1)
+         servoLeft.value = -1
 
-  
+         avoidingObstacle = False
 
-   GPIO.output(pin, 0)  
+      time.sleep(.5) # Take readings every 0.5s
 
-  
 
-  
-
-   GPIO.setup(pin, GPIO.IN)  
-
-  
-
-  
-
-   while GPIO.input(pin)==0:  
-
-      starttime=time.time()  
-
-  
-
-  
-
-   while GPIO.input(pin)==1:  
-
-      endtime=time.time()  
-
-        
-
-   duration=endtime-starttime  
-
-   # Distance is defined as time/2 (there and back) * speed of sound 34000 cm/s   
-
-   distance=duration*34000/2  
-
-   return distance  
-
-  
-
-  
-
-while True:  
-
-   distance = ReadDistance(11)  
-
-   print "Distance to object is ",distance," cm or ",distance*.3937, " inches"  
-
-   time.sleep(.5)  
+if __name__ == "__main__":
+   main()
