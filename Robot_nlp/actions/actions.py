@@ -91,28 +91,31 @@ class ActionHowToOrder(Action):
         dispatcher.utter_message(text=message)
 
         return []
+class ActionSearchDrinks(Action):
 
-#Gclass ActionSearchDrinks(Action):
+    def name(self) -> Text:
+        return "search_drinks"
 
- #   def name(self) -> Text:
- #       return "search_drinks"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
- #   def run(self, dispatcher: CollectingDispatcher,
- #           tracker: Tracker,
- #           domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-  #      entities = tracker.latest_message['entities']
-   #     print(entities)
+        drinks = tracker.get_slot("drink")
+        my_drinks = ""
 
-    #    for e in range(len(entities)):
-    #        if entities[e]['entity'] == 'order':
-     #           name = entities[e]
+        j=0
+        for s in drinks:
 
-      #      if name['value'] == "tablet":
-       #         message = " Make your order and press submit when done! "
-        #    if name['value'] == "human":
-         #       message = "One of the humans servers will be with you soon!"
+            my_drinks = my_drinks + s
+            if j != (len(drinks)-1):
+                if j == (len(drinks)-2):
+                    my_drinks += " and "
+                else:
+                    my_drinks += ", "
+            j = j + 1
 
-       # dispatcher.utter_message(text=message)
+        dispatcher.utter_message(text= " I'll be right back with " + my_drinks)
 
-       # return []
+
+        return []

@@ -18,6 +18,7 @@ stories:
   - intent: signal_ask_drink
   - action: utter_ask_if_want_drinks
   - intent: want_drink
+  - action: search_drinks
 #  - action: search_drinks
 
 - story: doesn't want to drink

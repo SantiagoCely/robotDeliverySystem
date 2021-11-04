@@ -26,6 +26,7 @@ actions:
   - how_to_order
   - action_hello_world
   - action_search_restaurant
+  - search_drinks
 
 entities:
   - person
@@ -34,12 +35,12 @@ entities:
   - hotel
 
 
-#slots:
- # person:
-  #  type: rasa.shared.core.slots.UnfeaturizedSlot
-   # initial_value: null
-    #auto_fill: true
-    #influence_conversation: false
+slots:
+  drink:
+    type: list
+    initial_value: null
+    auto_fill: true
+    influence_conversation: false
 #  order:
  #   type: rasa.shared.core.slots.UnfeaturizedSlot
   #  initial_value: null
@@ -85,7 +86,7 @@ responses:
   utter_ask_if_want_drinks:
   - text: " Do you want somethings to drink ? we have Ice tea, limonade, orange juice and sevenup"
   utter_bring_drinks:
-  - text: " Alright, I'll be back with your drinks"
+  - text: " Alright, I'll be back with your drinks you want {drink} "
   utter_agree:
   - text: " Alright !"
 
