@@ -1,15 +1,17 @@
 #!/usr/bin/python
 
+import gpiozero
+from time import sleep
+
 import time
 import RPi.GPIO as GPIO
 
-from gpiozero import Servo
-from time import sleep
+
 
 import time
 
 # Use board based pin numbering
-GPIO.setmode(GPIO.BOARD)
+#GPIO.setmode(GPIO.BOARD)
 
 def ReadDistance(pin):
    GPIO.setup(pin, GPIO.OUT)
@@ -25,9 +27,10 @@ def ReadDistance(pin):
 
    GPIO.output(pin, 0)
    GPIO.setup(pin, GPIO.IN)
-
+    
+   starttime=time.time()
    while GPIO.input(pin)==0:
-      starttime=time.time()
+      continue
 
    while GPIO.input(pin)==1:
       endtime=time.time()
@@ -40,24 +43,45 @@ def ReadDistance(pin):
 
    return distance
 
+def mainQueue(mainQueue, alternateQueue):
+    return 0
+
 def main():
+   queue = []
    avoidingObstacle = False
-   servoLeft = Servo(23)
-   servoRight = Servo(26)
+   servoLeft = gpiozero.Servo(3)
+   servoRight = gpiozero.Servo(2)
    start_time = 0
    end_time = 0
+   total_time = 0
+   
+   # Make the robot go forward
+   servoLeft.value = -1
+   servoRight.value = 1
+   
+   distance = 300
+      
+   print("Robot moving forward")
 
    while True:
-      # Make the robot go forward
-      servoLeft.value = -1
-      servoRight.value = 1
-
-      distance = ReadDistance(11)
-      print("Distance to object is ",distance," cm or ",distance*.3937, " inches")
-      if distance < 15:
-         servoRight.value = 0
+       
+      singleReading = ReadDistance(17)
+      print("single reading is ",singleReading," cm or ",singleReading*.3937, " inches")
+      
+      queue.append(singleReading)
+      
+      
+      if len(queue) >= 2:
+         distance = queue[1]
+         #print("Average distance to object is ",distance," cm or ",distance*.3937, " inches")
+         queue.pop(0)
+          
+          
+      if distance < 20:
+         servoLeft.value = 1
+         
          time.sleep(1)
-         servoRight.value = 1
+         servoLeft.value = -1
          start_time = time.time()
          avoidingObstacle = True
 
@@ -65,14 +89,15 @@ def main():
          end_time = time.time()
          total_time = end_time - start_time
 
-      if total_time > 5:
-         servoLeft.value = 0
+      if total_time > 1.5:
+         servoRight.value = -1
          time.sleep(1)
-         servoLeft.value = -1
+         servoRight.value = 1
+         total_time = 0
 
          avoidingObstacle = False
 
-      time.sleep(.5) # Take readings every 0.5s
+      time.sleep(0.1) # Take readings every 0.5s
 
 
 if __name__ == "__main__":
