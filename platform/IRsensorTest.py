@@ -9,7 +9,7 @@ sensor = 2 # define the GPIO pin our sensor is attached to
 GPIO.setmode(GPIO.BCM) # set GPIO numbering system to BCM
 GPIO.setup(sensor,GPIO.IN) # set our sensor pin to an input
 
-sample = 1000 # how many half revolutions to time
+sample = 100 # how many half revolutions to time
 count = 0
 
 start = 0
@@ -37,7 +37,7 @@ def get_rpm(c):
  	 	delta = end - start # time taken to do a half rotation in seconds
  	 	delta = delta / 60 # converted to minutes
  	 	rpm = (sample / delta) / 32 # converted to time for a full single rotation
- 	 	print rpm
+ 	 	print (rpm)
  	 	count = 0 # reset the count to 0
 
 servoLeft = Servo(14)
@@ -52,5 +52,5 @@ try:
  	while True: # create an infinte loop to keep the script running
  	 	time.sleep(0.1)
 except KeyboardInterrupt:
- 	print "  Quit"
+ 	print ("  Quit")
  	GPIO.cleanup()
