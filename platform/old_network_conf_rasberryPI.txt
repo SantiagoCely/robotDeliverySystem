@@ -1,0 +1,34 @@
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=CA
+
+network={
+
+   key_mgmt=NONE
+   priority=-999
+}
+
+
+network={
+        ssid="iPhoneSsss"
+        psk="shittyinternet97"
+        key_mgmt=WPA-PSK
+        auth_alg=OPEN
+        priority=1   
+}
+
+network={
+        ssid="Que_el_wifi_te_acom"
+        psk="HMS30S8N9"
+        key_mgmt=WPA-PSK
+        auth_alg=OPEN
+        priority=2
+}
+
+network={
+        ssid="BELL200"
+        psk="04151996"
+        key_mgmt=WPA-PSK
+        auth_alg=OPEN
+        priority=3
+}
