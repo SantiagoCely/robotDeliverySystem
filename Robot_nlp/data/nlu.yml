@@ -3,7 +3,6 @@ version: "2.0"
 nlu:
 - intent: greet
   examples: |
-    - hey
     - hello
     - hi
     - hello there
@@ -16,6 +15,46 @@ nlu:
     - goodmorning
     - goodevening
     - good afternoon
+
+
+- intent: request_business_hours
+  examples: |
+    - what is the restaurant business hours ?
+    - I need to know your business hour
+
+- intent: request_waiter
+  examples: |
+    - hey I need help
+    - I want to talk to a waiter
+    - I need some 
+    - I want some
+    - do you mind to call the waiter for me please
+
+- intent: call_robot
+  examples: |
+    - hey
+    - excuse me 
+    - hey robot
+- intent: say_want_to_order
+  examples: |
+    - I want to make my order
+    - I want to order
+    - I would like to order
+    - I would like to pass my order
+    - Can mike order
+
+
+- intent: want_to_order_with_waiter
+  examples: |
+    - No with a waiter please
+    - No to a waiter
+    - No I want to order with a waiter
+    - No I want to order with a server
+    - I want to order through a waiter
+    - I want to order to a waiter
+
+
+
 
 - intent: goodbye
   examples: |

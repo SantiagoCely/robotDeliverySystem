@@ -47,3 +47,30 @@ stories:
   steps:
   - intent: search_restaurant
   - action: action_search_restaurant
+
+- story: need help
+  steps:
+  - intent: call_robot
+  - action: utter_ask_how_can_help
+  - intent: request_waiter
+  - action: utter_going_call_waiter
+
+- story: customer_want_order_tablet
+  steps:
+  - intent: call_robot
+  - action: utter_ask_how_can_help
+  - intent: say_want_to_order
+  - action: utter_sure
+  - action: utter_order_on_tablet
+  - intent: order_with
+  - action: how_to_order
+
+- story: customer_want_order_waiter 
+  steps:
+  - intent: call_robot
+  - action: utter_ask_how_can_help
+  - intent: say_want_to_order
+  - action: utter_sure
+  - action: utter_order_on_tablet
+  - intent: want_to_order_with_waiter # signal to be send to the main module
+  - action: utter_calling_waiter

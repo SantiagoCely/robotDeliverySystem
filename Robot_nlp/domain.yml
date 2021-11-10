@@ -19,6 +19,11 @@ intents:
   - hello_world
   - signal_ask_drink
   - search_restaurant
+  - request_business_hours
+  - request_waiter
+  - call_robot
+  - say_want_to_order
+  - want_to_order_with_waiter
 
 
 actions:
@@ -76,7 +81,7 @@ responses:
   utter_greet_customers:
   - text: "Hi there, Do you want take in or take out ? "
   utter_order_on_tablet:
-  - text: " Do you you want to order on the tablet or to a human server ?"
+  - text: " Do you you want to order on the tablet or with a waiter ?"
   utter_proceed_order_on_tablette:
   - text: " proceed order. When you are done Click on submit "
   utter_guide_to_table:
@@ -89,6 +94,14 @@ responses:
   - text: " Alright, I'll be back with your drinks you want {drink} "
   utter_agree:
   - text: " Alright !"
+  utter_ask_how_can_help:
+  - text: " How can I help you ?"
+  utter_going_call_waiter:
+  - text: " Alright a waiter will be with you soon !"
+  utter_sure :
+  - text: " sure !"
+  utter_calling_waiter:
+  - text: " A waiter will be with you very soon !"
 
 session_config:
   session_expiration_time: 60
