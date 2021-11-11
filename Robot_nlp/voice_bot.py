@@ -8,14 +8,17 @@ import random
 from gtts import gTTS
 import subprocess
 from os import path
+import pyaudio
 
 
-r = sr.Recognizer()
 
 audio_file = 'Audio'+ '.mp3'
 
 def record_audio():
 
+    r = sr.Recognizer()
+    r.energy_threshold = 4000
+    
     with sr.Microphone() as source:
         audio = r.listen(source)
         voice_data = ''

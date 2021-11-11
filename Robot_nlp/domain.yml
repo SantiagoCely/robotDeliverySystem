@@ -102,6 +102,8 @@ responses:
   - text: " sure !"
   utter_calling_waiter:
   - text: " A waiter will be with you very soon !"
+  #  utter_no_problem:
+ # - text: " A waiter will be with you very soon !"
 
 session_config:
   session_expiration_time: 60
