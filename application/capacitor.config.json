@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "capstone",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
