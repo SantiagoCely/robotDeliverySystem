@@ -2,13 +2,13 @@ import time
 import requests
 import speech_recognition as sr
 from time import ctime
-import playsound
-import os
-import random
-from gtts import gTTS
-import subprocess
-from os import path
-import pyaudio
+#import playsound
+#import os
+#import random
+#from gtts import gTTS
+#import subprocess
+#from os import path
+#import pyaudio
 import pyttsx3
 
 
@@ -66,8 +66,8 @@ bot_message = " "
 
 while bot_message != "Bye":
 
-    #message = input(' ')
-    message = record_audio()
+    message = input(' ')
+    #message = record_audio()
 
     r = requests.post('http://localhost:5002/webhooks/rest/webhook', json={"message": message})
 
