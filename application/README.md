@@ -1,3 +1,0 @@
-# CapstoneRobotDelivery
-
-Test
