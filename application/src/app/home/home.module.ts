@@ -1,19 +1,15 @@
-import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
-import { TabsPageRoutingModule } from './home-routing.module';
-
-import { TabsPage } from './home.page';
+import { SharedModule } from '@shared';
+import { HomeRoutingModule } from './home-routing.module';
+import { HomeComponent } from './home.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    TabsPageRoutingModule
-  ],
-  declarations: [TabsPage]
+  imports: [CommonModule, TranslateModule, SharedModule, HomeRoutingModule, NgbModule],
+  declarations: [HomeComponent, DashboardComponent],
 })
-export class TabsPageModule {}
+export class HomeModule {}

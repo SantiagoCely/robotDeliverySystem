@@ -1,37 +1,45 @@
 import { NgModule } from '@angular/core';
-
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { StaffComponent } from './staff';
-import { HomeComponent } from './home';
-import { LoginComponent } from './login';
-import { AuthGuard } from './_helpers';
-import { Role } from './_models';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { Shell } from '@app/shell/shell.service';
+import { ShouldLoginComponent } from './should-login.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./home/home.module').then(m => m.TabsPageModule)
-  },
-  {
-    path: 'staff',
-    component: StaffComponent,
-    canActivate: [AuthGuard],
-    loadChildren: () => import('./home/home.module').then(m => m.TabsPageModule),
-    data: { roles: [Role.Staff] }
-},
-{
-    path: 'login',
-    component: LoginComponent
-},
-    // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+  Shell.childRoutes([
+    {
+      path: 'employee',
+      loadChildren: () => import('./features/employee/employee.module').then((m) => m.EmployeeModule),
+      //data: {role: 'Manager'},
+    },
+    {
+      path: 'position',
+      loadChildren: () => import('./features/position/position.module').then((m) => m.PositionModule),
+      //data: {role: 'Manager'},
+    },
+    {
+      path: 'admin',
+      loadChildren: () => import('./features/admin/admin.module').then((m) => m.AdminModule),
+      //data: {role: 'Manager'},
+    },
+    {
+      path: 'manager',
+      loadChildren: () => import('./features/manager/manager.module').then((m) => m.ManagerModule),
+    },
+    {
+      path: 'about',
+      loadChildren: () => import('./about/about.module').then((m) => m.AboutModule),
+    },
+  ]),
+
+  { path: 'should-login', component: ShouldLoginComponent },
+  // Fallback when no prior route is matched
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
+
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, paramsInheritanceStrategy: 'always' }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [],
 })
 export class AppRoutingModule {}

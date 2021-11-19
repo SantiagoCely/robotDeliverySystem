@@ -1,7 +1,5 @@
 {
-  "name": "capstone",
-  "integrations": {
-    "capacitor": {}
-  },
+  "name": "app",
+  "integrations": {},
   "type": "angular"
 }

@@ -1,15 +1,21 @@
-﻿<div class="card mt-4">
-    <h4 class="card-header">Home</h4>
-    <div class="card-body">
-        <p>You're logged in with Angular 8 & JWT!!</p>
-        <p>Your role is: <strong>{{currentUser.role}}</strong>.</p>
-        <p>This page can be accessed by <u>all authenticated users</u>.</p>
-        <p class="mb-1">Current user from secure api end point:</p>
-        <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-        <ul *ngIf="userFromApi">
-            <li>{{userFromApi.firstName}} {{userFromApi.lastName}}</li>
-        </ul>
-    </div>
-</div>
+<div class="container-fluid">
+  <app-dashboard></app-dashboard>
 
-<ion-tabs></ion-tabs>
+  <ngb-carousel
+    *ngIf="images"
+    [showNavigationArrows]="showNavigationArrows"
+    [showNavigationIndicators]="showNavigationIndicators"
+  >
+    <ng-template ngbSlide *ngFor="let image of images">
+      <div class="picsum-img-wrapper">
+        <img [src]="image" alt="Random slide" class="d-block w-100" />
+      </div>
+      <div class="carousel-caption">
+        <blockquote class="blockquote">
+          <h3>Nothing brings people together like good food.</h3>
+          <footer class="blockquote-footer">Santiago Cely <cite title="Source Title">co-founder of Tesla</cite></footer>
+        </blockquote>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+</div>
