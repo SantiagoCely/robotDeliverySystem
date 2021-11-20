@@ -84,7 +84,7 @@ class ActionHowToOrder(Action):
                 name = entities[e]
 
             if name['value'] == "tablet":
-                message = " Make your order and press submit when done! "
+                message = " Make your order and press submit button when you are done! "
             if name['value'] == "human":
                 message = "One of the humans servers will be with you soon!"
 

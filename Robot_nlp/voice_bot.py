@@ -2,19 +2,23 @@ import time
 import requests
 import speech_recognition as sr
 from time import ctime
-import playsound
-import os
-import random
-from gtts import gTTS
-import subprocess
-from os import path
+#import playsound
+#import os
+#import random
+#from gtts import gTTS
+#import subprocess
+#from os import path
+#import pyaudio
+import pyttsx3
 
 
-r = sr.Recognizer()
 
-audio_file = 'Audio'+ '.mp3'
+#audio_file = 'Audio'+ '.mp3'
 
 def record_audio():
+
+    r = sr.Recognizer()
+    r.energy_threshold = 4000
 
     with sr.Microphone() as source:
         audio = r.listen(source)
@@ -24,29 +28,34 @@ def record_audio():
             print(voice_data)
         except sr.UnknownValueError:
             print('Sorry I didnt get that')
-        
+
         return voice_data
 
 
 def speak(audio_string):
 
-    tts = gTTS(text=audio_string, lang='en')
-    r = random.randint(1,20000000)
-    s = str(r)
- 
-    tts.save(audio_file)
-    
-    print(audio_file)
-    
+    #tts = gTTS(text=audio_string, lang='en')
+    #print(tts)
+    #r = random.randint(1,20000000)
+    #s = str(r)
+
+    #tts.save(audio_file)
+
+    engine = pyttsx3.init()
+    engine.say(audio_string)
+    engine.runAndWait()
+
+    #print(audio_file)
+
 
     #subprocess.call(['mpg321', audio_file, '--play-and-exit'])
     #audio19091855s   Audio8664496.mp3
-    
-    playsound.playsound(audio_file)   
+
+    #playsound.playsound(audio_file)
 
     #time.sleep()
 
-    os.remove(audio_file)
+    #os.remove(audio_file)
 
 
 print('how can I help you ?')
@@ -57,8 +66,8 @@ bot_message = " "
 
 while bot_message != "Bye":
 
-    #message = input(' ')
-    message = record_audio()
+    message = input(' ')
+    #message = record_audio()
 
     r = requests.post('http://localhost:5002/webhooks/rest/webhook', json={"message": message})
 
