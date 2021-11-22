@@ -12,6 +12,9 @@ node_modules
 *.sublime-project
 *.sublime-workspace
 .DS_Store
+*.swp
+*.swo
+*.DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
