@@ -1,3 +1,6 @@
+<<<<<<< Updated upstream
+node_modules
+=======
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
@@ -9,6 +12,9 @@
 *.sublime-project
 *.sublime-workspace
 .DS_Store
+*.swp
+*.swo
+*.DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
@@ -24,8 +30,10 @@ npm-debug.log*
 /.versions
 /.vscode
 /coverage
-/dist
+dist/*
+!dist/README.md
 /node_modules
 /platforms
 /plugins
 /www
+>>>>>>> Stashed changes
