@@ -12,7 +12,9 @@ exports.config = {
     browserName: process.env.PROTRACTOR_BROWSER || 'chrome',
     chromeOptions: {
       binary: process.env.PROTRACTOR_CHROME_BIN || undefined,
-      args: process.env.PROTRACTOR_CHROME_ARGS ? JSON.parse(process.env.PROTRACTOR_CHROME_ARGS) : ['lang=en-US'],
+      args: process.env.PROTRACTOR_CHROME_ARGS
+        ? JSON.parse(process.env.PROTRACTOR_CHROME_ARGS)
+        : ['lang=en-US'],
       prefs: {
         intl: { accept_languages: 'en-US' },
       },
@@ -33,6 +35,8 @@ exports.config = {
     });
 
     // Better console spec reporter
-    jasmine.getEnv().addReporter(new SpecReporter({ spec: { displayStacktrace: 'pretty' } }));
+    jasmine
+      .getEnv()
+      .addReporter(new SpecReporter({ spec: { displayStacktrace: 'pretty' } }));
   },
 };

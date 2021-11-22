@@ -3,7 +3,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthErrorEvent, OAuthService } from 'angular-oauth2-oidc';
-import { BehaviorSubject, combineLatest, Observable, ReplaySubject } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  ReplaySubject,
+} from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Injectable()
@@ -53,8 +58,12 @@ export class AuthService {
         return;
       }
 
-      console.warn('Noticed changes to access_token (most likely from another tab), updating isAuthenticated');
-      this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken());
+      console.warn(
+        'Noticed changes to access_token (most likely from another tab), updating isAuthenticated'
+      );
+      this.isAuthenticatedSubject$.next(
+        this.oauthService.hasValidAccessToken()
+      );
 
       if (!this.oauthService.hasValidAccessToken()) {
         this.navigateToLoginPage();
@@ -62,7 +71,9 @@ export class AuthService {
     });
 
     this.oauthService.events.subscribe((_) => {
-      this.isAuthenticatedSubject$.next(this.oauthService.hasValidAccessToken());
+      this.isAuthenticatedSubject$.next(
+        this.oauthService.hasValidAccessToken()
+      );
     });
 
     this.oauthService.events
@@ -70,7 +81,9 @@ export class AuthService {
       .subscribe((e) => this.oauthService.loadUserProfile());
 
     this.oauthService.events
-      .pipe(filter((e) => ['session_terminated', 'session_error'].includes(e.type)))
+      .pipe(
+        filter((e) => ['session_terminated', 'session_error'].includes(e.type))
+      )
       .subscribe((e) => this.navigateToLoginPage());
 
     this.oauthService.setupAutomaticSilentRefresh();
@@ -95,7 +108,10 @@ export class AuthService {
         .loadDiscoveryDocument()
 
         // For demo purposes, we pretend the previous call was very slow
-        .then(() => new Promise<void>((resolve) => setTimeout(() => resolve(), 1000)))
+        .then(
+          () =>
+            new Promise<void>((resolve) => setTimeout(() => resolve(), 1000))
+        )
 
         // 1. HASH LOGIN:
         // Try to log in via hash fragment after redirect back
@@ -124,7 +140,13 @@ export class AuthService {
                 'consent_required',
               ];
 
-              if (result && result.reason && errorResponsesRequiringUserInteraction.indexOf(result.reason.error) >= 0) {
+              if (
+                result &&
+                result.reason &&
+                errorResponsesRequiringUserInteraction.indexOf(
+                  result.reason.error
+                ) >= 0
+              ) {
                 // 3. ASK FOR LOGIN:
                 // At this point we know for sure that we have to ask the
                 // user to log in, so we redirect them to the IdServer to
@@ -134,7 +156,9 @@ export class AuthService {
                 // this.login();
                 //
                 // Instead, we'll now do this:
-                console.warn('User interaction is needed to log in, we will wait for the user to manually log in.');
+                console.warn(
+                  'User interaction is needed to log in, we will wait for the user to manually log in.'
+                );
                 return Promise.resolve();
               }
 
@@ -159,7 +183,9 @@ export class AuthService {
             if (stateUrl.startsWith('/') === false) {
               stateUrl = decodeURIComponent(stateUrl);
             }
-            console.log(`There was state of ${this.oauthService.state}, so we are sending you to: ${stateUrl}`);
+            console.log(
+              `There was state of ${this.oauthService.state}, so we are sending you to: ${stateUrl}`
+            );
             this.router.navigateByUrl(stateUrl);
           }
         })

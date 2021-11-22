@@ -3,7 +3,12 @@
     <script>
       // Based on: https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/silent-refresh.html
 
-      const checks = [/[\?|&|#]code=/, /[\?|&|#]error=/, /[\?|&|#]token=/, /[\?|&|#]id_token=/];
+      const checks = [
+        /[\?|&|#]code=/,
+        /[\?|&|#]error=/,
+        /[\?|&|#]token=/,
+        /[\?|&|#]id_token=/,
+      ];
 
       function isResponse(str) {
         let count = 0;
@@ -19,9 +24,14 @@
         return false;
       }
 
-      let message = isResponse(location.hash) ? location.hash : '#' + location.search;
+      let message = isResponse(location.hash)
+        ? location.hash
+        : '#' + location.search;
 
-      console.log('Silent refresh iframe is posting to the parent application, message:', message);
+      console.log(
+        'Silent refresh iframe is posting to the parent application, message:',
+        message
+      );
 
       (window.opener || window.parent).postMessage(message, location.origin);
     </script>

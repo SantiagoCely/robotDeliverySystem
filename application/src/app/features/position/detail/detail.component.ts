@@ -80,54 +80,62 @@ export class DetailComponent implements OnInit {
   }
   // CRUD > Read, map to REST/HTTP GET
   read(id: any): void {
-    this.apiHttpService.get(this.apiEndpointsService.getPositionByIdEndpoint(id), id).subscribe(
-      //Assign resp to class-level model object.
-      (resp: DataResponsePosition) => {
-        //Assign data to class-level model object.
-        this.position = resp.data;
-        //Populate reactive form controls with model object properties.
-        this.entryForm.setValue({
-          id: this.position.id,
-          positionNumber: this.position.positionNumber,
-          positionTitle: this.position.positionTitle,
-          positionDescription: this.position.positionDescription,
-          positionSalary: this.position.positionSalary,
-        });
-      },
-      (error) => {
-        log.debug(error);
-      }
-    );
+    this.apiHttpService
+      .get(this.apiEndpointsService.getPositionByIdEndpoint(id), id)
+      .subscribe(
+        //Assign resp to class-level model object.
+        (resp: DataResponsePosition) => {
+          //Assign data to class-level model object.
+          this.position = resp.data;
+          //Populate reactive form controls with model object properties.
+          this.entryForm.setValue({
+            id: this.position.id,
+            positionNumber: this.position.positionNumber,
+            positionTitle: this.position.positionTitle,
+            positionDescription: this.position.positionDescription,
+            positionSalary: this.position.positionSalary,
+          });
+        },
+        (error) => {
+          log.debug(error);
+        }
+      );
   }
   // CRUD > Delete, map to REST/HTTP DELETE
   delete(id: any): void {
-    this.apiHttpService.delete(this.apiEndpointsService.deletePositionByIdEndpoint(id), id).subscribe(
-      (resp: any) => {
-        log.debug(resp);
-        this.showSuccess('Great job!', 'Data is deleted');
-        this.entryForm.reset();
-        this.isAddNew = true;
-      },
-      (error) => {
-        log.debug(error);
-      }
-    );
+    this.apiHttpService
+      .delete(this.apiEndpointsService.deletePositionByIdEndpoint(id), id)
+      .subscribe(
+        (resp: any) => {
+          log.debug(resp);
+          this.showSuccess('Great job!', 'Data is deleted');
+          this.entryForm.reset();
+          this.isAddNew = true;
+        },
+        (error) => {
+          log.debug(error);
+        }
+      );
   }
 
   // CRUD > Create, map to REST/HTTP POST
   create(data: any): void {
-    this.apiHttpService.post(this.apiEndpointsService.postPositionsEndpoint(), data).subscribe((resp: any) => {
-      this.id = resp.data; //guid return in data
-      this.showSuccess('Great job!', 'Data is inserted');
-      this.entryForm.reset();
-    });
+    this.apiHttpService
+      .post(this.apiEndpointsService.postPositionsEndpoint(), data)
+      .subscribe((resp: any) => {
+        this.id = resp.data; //guid return in data
+        this.showSuccess('Great job!', 'Data is inserted');
+        this.entryForm.reset();
+      });
   }
 
   // CRUD > Update, map to REST/HTTP PUT
   put(id: string, data: any): void {
-    this.apiHttpService.put(this.apiEndpointsService.putPositionsPagedEndpoint(id), data).subscribe((resp: any) => {
-      this.id = resp.data; //guid return in data
-    });
+    this.apiHttpService
+      .put(this.apiEndpointsService.putPositionsPagedEndpoint(id), data)
+      .subscribe((resp: any) => {
+        this.id = resp.data; //guid return in data
+      });
   }
 
   // reactive form
@@ -137,7 +145,10 @@ export class DetailComponent implements OnInit {
       positionNumber: ['', Validators.required],
       positionTitle: ['', Validators.required],
       positionDescription: ['', Validators.required],
-      positionSalary: ['', RxwebValidators.numeric({ allowDecimal: true, isFormat: false })],
+      positionSalary: [
+        '',
+        RxwebValidators.numeric({ allowDecimal: true, isFormat: false }),
+      ],
     });
   }
   // ngbmodal service

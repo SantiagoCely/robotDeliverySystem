@@ -1,6 +1,12 @@
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route } from '@angular/router';
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router,
+  Route,
+} from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
 import { ToastService } from '@app/services/toast.service';
@@ -9,8 +15,14 @@ import { ToastService } from '@app/services/toast.service';
 export class RoleGuard implements CanActivate {
   userProfile: any;
 
-  constructor(private authService: AuthService, private toastService: ToastService) {}
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  constructor(
+    private authService: AuthService,
+    private toastService: ToastService
+  ) {}
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
     return this.authService.canActivateProtectedRoutes$.pipe(
       map((canActivateProtectedRoutes: boolean) => {
         if (canActivateProtectedRoutes) {
@@ -28,7 +40,10 @@ export class RoleGuard implements CanActivate {
                 return true;
               } else {
                 // toaster-display role user needs to have to access this route;
-                this.showToaster('Access denied', 'You do not have role ' + routeRoles);
+                this.showToaster(
+                  'Access denied',
+                  'You do not have role ' + routeRoles
+                );
               }
             }
           }

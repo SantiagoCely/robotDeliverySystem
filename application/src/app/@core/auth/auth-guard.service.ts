@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -9,9 +13,15 @@ import { ToastService } from '@app/services/toast.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
   profile: any;
-  constructor(private toastService: ToastService, private authService: AuthService) {}
+  constructor(
+    private toastService: ToastService,
+    private authService: AuthService
+  ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> {
     return this.authService.canActivateProtectedRoutes$.pipe(
       tap((canActivateProtectedRoutes: boolean) => {
         if (canActivateProtectedRoutes) {

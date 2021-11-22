@@ -20,7 +20,9 @@ import { NgHttpLoaderModule } from 'ng-http-loader';
 @NgModule({
   imports: [
     BrowserModule,
-    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('./ngsw-worker.js', {
+      enabled: environment.production,
+    }),
     FormsModule,
     HttpClientModule,
     TranslateModule.forRoot(),

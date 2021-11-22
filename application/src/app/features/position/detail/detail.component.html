@@ -6,7 +6,9 @@
         <div class="float-left"><h3 class="text-secondary">Position</h3></div>
         <div class="float-right">
           <!-- HTML markup for form mode New or Edit -->
-          <a class="btn text-dark" [routerLink]="['/position']"><i class="fa fa-arrow-left"></i> Back</a>
+          <a class="btn text-dark" [routerLink]="['/position']"
+            ><i class="fa fa-arrow-left"></i> Back</a
+          >
         </div>
       </div>
       <div class="card-body">
@@ -26,7 +28,9 @@
             />
             <span hidden translate>Id</span>
             <small
-              [hidden]="entryForm.controls.id.valid || entryForm.controls.id.untouched"
+              [hidden]="
+                entryForm.controls.id.valid || entryForm.controls.id.untouched
+              "
               class="text-danger"
               translate
             >
@@ -46,7 +50,10 @@
             />
             <span hidden translate>PositionNumber</span>
             <small
-              [hidden]="entryForm.controls.positionNumber.valid || entryForm.controls.positionNumber.untouched"
+              [hidden]="
+                entryForm.controls.positionNumber.valid ||
+                entryForm.controls.positionNumber.untouched
+              "
               class="text-danger"
               translate
             >
@@ -66,7 +73,10 @@
             />
             <span hidden translate>PositionTitle</span>
             <small
-              [hidden]="entryForm.controls.positionTitle.valid || entryForm.controls.positionTitle.untouched"
+              [hidden]="
+                entryForm.controls.positionTitle.valid ||
+                entryForm.controls.positionTitle.untouched
+              "
               class="text-danger"
               translate
             >
@@ -87,7 +97,8 @@
             <span hidden translate>PositionDescription</span>
             <small
               [hidden]="
-                entryForm.controls.positionDescription.valid || entryForm.controls.positionDescription.untouched
+                entryForm.controls.positionDescription.valid ||
+                entryForm.controls.positionDescription.untouched
               "
               class="text-danger"
               translate
@@ -108,7 +119,10 @@
             />
             <span hidden translate>PositionDescription</span>
             <small
-              [hidden]="entryForm.controls.positionSalary.valid || entryForm.controls.positionSalary.untouched"
+              [hidden]="
+                entryForm.controls.positionSalary.valid ||
+                entryForm.controls.positionSalary.untouched
+              "
               class="text-danger"
               translate
             >

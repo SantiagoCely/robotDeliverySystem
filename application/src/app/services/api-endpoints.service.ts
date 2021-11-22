@@ -17,28 +17,43 @@ export class ApiEndpointsService {
   ) {}
 
   /* #region EXAMPLES */
-  public getDataByIdEndpoint = (id: string): string => this.createUrlWithPathVariables('data', [id]);
+  public getDataByIdEndpoint = (id: string): string =>
+    this.createUrlWithPathVariables('data', [id]);
 
   public getDataByIdAndCodeEndpoint = (id: string, code: number): string =>
     this.createUrlWithPathVariables('data', [id, code]);
 
-  public getDataByIdCodeAndYearEndpoint(id: string, code: number, year: number): string {
+  public getDataByIdCodeAndYearEndpoint(
+    id: string,
+    code: number,
+    year: number
+  ): string {
     const queryString: QueryStringParameters = new QueryStringParameters();
     queryString.push('year', year);
-    return `${this.createUrlWithPathVariables('data', [id, code])}?${queryString.toString()}`;
+    return `${this.createUrlWithPathVariables('data', [
+      id,
+      code,
+    ])}?${queryString.toString()}`;
   }
 
   public getProductListByCountryCodeEndpoint(countryCode: string): string {
-    return this.createUrlWithQueryParameters('productlist', (qs: QueryStringParameters) =>
-      qs.push('countryCode', countryCode)
+    return this.createUrlWithQueryParameters(
+      'productlist',
+      (qs: QueryStringParameters) => qs.push('countryCode', countryCode)
     );
   }
 
-  public getProductListByCountryAndPostalCodeEndpoint(countryCode: string, postalCode: string): string {
-    return this.createUrlWithQueryParameters('productlist', (qs: QueryStringParameters) => {
-      qs.push('countryCode', countryCode);
-      qs.push('postalCode', postalCode);
-    });
+  public getProductListByCountryAndPostalCodeEndpoint(
+    countryCode: string,
+    postalCode: string
+  ): string {
+    return this.createUrlWithQueryParameters(
+      'productlist',
+      (qs: QueryStringParameters) => {
+        qs.push('countryCode', countryCode);
+        qs.push('postalCode', postalCode);
+      }
+    );
   }
 
   // call Mock endpoint
@@ -53,19 +68,23 @@ export class ApiEndpointsService {
 
   // call Mock endpoint
   // https://angular-datatables-demo-server.herokuapp.com
-  public getPositionByIdEndpoint = (id: string): string => this.createUrlWithPathVariables('Positions', [id]);
+  public getPositionByIdEndpoint = (id: string): string =>
+    this.createUrlWithPathVariables('Positions', [id]);
 
-  public deletePositionByIdEndpoint = (id: string): string => this.createUrlWithPathVariables('Positions', [id]);
+  public deletePositionByIdEndpoint = (id: string): string =>
+    this.createUrlWithPathVariables('Positions', [id]);
 
   public postPersonsEndpoint = (): string => this.createUrl('', true);
 
   // call regular endpoint without boolean true at end
   // https://localhost:44378/api/v1 (ASP.NET CORE REST API.  Repo https://github.com/workcontrolgit/AngularNgxDataTableBackend)
-  public postPositionsPagedEndpoint = (): string => this.createUrl('Positions/Paged');
+  public postPositionsPagedEndpoint = (): string =>
+    this.createUrl('Positions/Paged');
 
   public postPositionsEndpoint = (): string => this.createUrl('Positions');
 
-  public putPositionsPagedEndpoint = (id: string): string => this.createUrlWithPathVariables('Positions', [id]);
+  public putPositionsPagedEndpoint = (id: string): string =>
+    this.createUrlWithPathVariables('Positions', [id]);
 
   /* #endregion */
 
@@ -73,7 +92,9 @@ export class ApiEndpointsService {
   // URL
   private createUrl(action: string, isMockAPI: boolean = false): string {
     const urlBuilder: UrlBuilder = new UrlBuilder(
-      isMockAPI ? this.constants.Api_Mock_Endpoint : this.constants.Api_Endpoint,
+      isMockAPI
+        ? this.constants.Api_Mock_Endpoint
+        : this.constants.Api_Endpoint,
       action
     );
     return urlBuilder.toString();
@@ -84,7 +105,10 @@ export class ApiEndpointsService {
     action: string,
     queryStringHandler?: (queryStringParameters: QueryStringParameters) => void
   ): string {
-    const urlBuilder: UrlBuilder = new UrlBuilder(this.constants.Api_Endpoint, action);
+    const urlBuilder: UrlBuilder = new UrlBuilder(
+      this.constants.Api_Endpoint,
+      action
+    );
     // Push extra query string params
     if (queryStringHandler) {
       queryStringHandler(urlBuilder.queryString);
@@ -93,15 +117,23 @@ export class ApiEndpointsService {
   }
 
   // URL WITH PATH VARIABLES
-  private createUrlWithPathVariables(action: string, pathVariables: any[] = []): string {
+  private createUrlWithPathVariables(
+    action: string,
+    pathVariables: any[] = []
+  ): string {
     let encodedPathVariablesUrl: string = '';
     // Push extra path variables
     for (const pathVariable of pathVariables) {
       if (pathVariable !== null) {
-        encodedPathVariablesUrl += `/${encodeURIComponent(pathVariable.toString())}`;
+        encodedPathVariablesUrl += `/${encodeURIComponent(
+          pathVariable.toString()
+        )}`;
       }
     }
-    const urlBuilder: UrlBuilder = new UrlBuilder(this.constants.Api_Endpoint, `${action}${encodedPathVariablesUrl}`);
+    const urlBuilder: UrlBuilder = new UrlBuilder(
+      this.constants.Api_Endpoint,
+      `${action}${encodedPathVariablesUrl}`
+    );
     return urlBuilder.toString();
   }
   /* #endregion */

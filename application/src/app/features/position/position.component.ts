@@ -17,7 +17,10 @@ export class PositionComponent implements OnInit {
   positions: Position[];
   message = '';
 
-  constructor(private apiHttpService: ApiHttpService, private apiEndpointsService: ApiEndpointsService) {}
+  constructor(
+    private apiHttpService: ApiHttpService,
+    private apiEndpointsService: ApiEndpointsService
+  ) {}
 
   wholeRowClick(position: Position): void {
     log.debug('Whole row clicked.', position);
@@ -34,7 +37,10 @@ export class PositionComponent implements OnInit {
         //dataTablesParameters.start = 20;
         // Call WebAPI to get positions
         this.apiHttpService
-          .post(this.apiEndpointsService.postPositionsPagedEndpoint(), dataTablesParameters)
+          .post(
+            this.apiEndpointsService.postPositionsPagedEndpoint(),
+            dataTablesParameters
+          )
           .subscribe((resp: DataTablesResponse) => {
             this.positions = resp.data;
             callback({
