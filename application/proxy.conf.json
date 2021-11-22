@@ -1,9 +1,0 @@
-{
-    "/openData.do?": {
-       "target": "https://api.chucknorris.io",
-       "context": "'/api'",
-       "changeOrigin": true,
-       "secure": false,
-       "logLevel": "debug"
-     }
-}
