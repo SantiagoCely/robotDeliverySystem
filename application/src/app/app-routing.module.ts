@@ -28,6 +28,25 @@ const routes: Routes = [
       //data: {role: 'Manager'},
     },
     {
+      path: 'appetizers',
+      loadChildren: () =>
+        import('./features/appetizers/appetizers.module').then(
+          (m) => m.AppetizersModule
+        ),
+    },
+    {
+      path: 'main_course',
+      loadChildren: () =>
+        import('./features/main_course/main-course.module').then(
+          (m) => m.Main_CourseModule
+        ),
+    },
+    {
+      path: 'dessert',
+      loadChildren: () =>
+        import('./features/dessert/dessert.module').then((m) => m.DesertModule),
+    },
+    {
       path: 'manager',
       loadChildren: () =>
         import('./features/manager/manager.module').then(

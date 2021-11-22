@@ -23,7 +23,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
+              "src/assets/robot.png",
               "src/apple-touch-icon.png",
               "src/robots.txt",
               "src/manifest.webmanifest",
@@ -104,7 +104,7 @@
             "scripts": [],
             "styles": ["src/main.scss"],
             "assets": [
-              "src/favicon.ico",
+              "src/assets/robot.png",
               "src/apple-touch-icon.png",
               "src/robots.txt",
               "src/manifest.webmanifest",
