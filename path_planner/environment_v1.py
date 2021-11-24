@@ -18,9 +18,9 @@ from tf_agents.environments import wrappers
 from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
 
-PATH_TO_TABLE = "/Users/amenabshir/PycharmProjects/capstone/robotDeliverySystem/path_planner/table/table.urdf"
-PATH_TO_TRAY = "/Users/amenabshir/PycharmProjects/capstone/robotDeliverySystem/path_planner/tray/tray.urdf"
-PATH_TO_ROBOT = "/Users/amenabshir/PycharmProjects/capstone/robotDeliverySystem/path_planner/robotv1.urdf"
+PATH_TO_TABLE = "./table/table.urdf"
+PATH_TO_TRAY = "./tray/tray.urdf"
+PATH_TO_ROBOT = "./robotv1.urdf"
 
 class PyEnvironment(object):
 
