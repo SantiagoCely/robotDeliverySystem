@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<robot name="rds_v1">
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.6" radius="0.1"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.6" radius="0.1"/>
+      </geometry>
+    </collision>
+      <inertial>
+         <mass value="1"/>
+         <inertia ixx="0.0325" ixy="0.0" ixz="0.0" iyy="0.0325" iyz="0.0" izz="0.005"/>
+       </inertial>
+  </link>
+
+  <link name="plateforme_base">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.25"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.3"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.1" radius="0.25"/>
+      </geometry>
+    </collision>
+      <inertial>
+          <mass value="5"/>
+          <inertia ixx="0.0823" ixy="0" ixz="0" iyy="0.0823" iyz="0" izz="0.1562"/>
+      </inertial>
+  </link>
+  <link name="plateforme_tray">
+    <visual>
+      <geometry>
+        <cylinder length="0.05" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.3"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.05" radius="0.2"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0.3"/>
+    </collision>
+      <inertial>
+          <mass value="0.75"/>
+          <inertia ixx="0.0075" ixy="0" ixz="0" iyy="0.0075" iyz="0" izz="0.015"/>
+      </inertial>
+  </link>
+  <joint name="base_to_plateforme_base" type="fixed">
+    <parent link="base_link"/>
+    <child link="plateforme_base"/>
+  </joint>
+  <joint name="base_to_plateforme_tray" type="fixed">
+    <parent link="base_link"/>
+    <child link="plateforme_tray"/>
+  </joint>
+
+   <link name="right_wheel">
+       <visual>
+         <origin rpy="1.57075 0 0" xyz="0 -0.2 -0.4"/>
+         <geometry>
+           <cylinder length="0.05" radius="0.035"/>
+         </geometry>
+         <material name="black"/>
+       </visual>
+      <collision>
+        <origin rpy="1.57075 0 0" xyz="0 -0.2 -0.4"/>
+         <geometry>
+           <cylinder length="0.05" radius="0.035"/>
+         </geometry>
+      </collision>
+       <inertial>
+           <mass value="0.1"/>
+           <inertia ixx="0.000031" ixy="0" ixz="0" iyy="0.000031" iyz="0" izz="0.000061"/>
+       </inertial>
+
+   </link>
+     <joint name="right_wheel_joint" type="fixed">
+       <parent link="plateforme_base"/>
+       <child link="right_wheel"/>
+       <origin xyz="0 0 0"/>
+     </joint>
+  <link name="left_wheel">
+       <visual>
+         <origin rpy="1.57075 0 0" xyz="0 0.2 -0.4"/>
+         <geometry>
+           <cylinder length="0.05" radius="0.035"/>
+         </geometry>
+         <material name="black"/>
+       </visual>
+      <collision>
+        <origin rpy="1.57075 0 0" xyz="0 0.2 -0.4"/>
+         <geometry>
+           <cylinder length="0.05" radius="0.035"/>
+         </geometry>
+      </collision>
+      <inertial>
+           <mass value="0.1"/>
+           <inertia ixx="0.000031" ixy="0" ixz="0" iyy="0.000031" iyz="0" izz="0.000061"/>
+       </inertial>
+   </link>
+     <joint name="left_wheel_joint" type="fixed">
+       <parent link="plateforme_base"/>
+       <child link="left_wheel"/>
+       <origin xyz="0 0 0"/>
+     </joint>
+
+  <link name="front_support">
+       <visual>
+         <origin rpy="0 0 0" xyz="0.2 0 -0.4"/>
+         <geometry>
+           <sphere radius="0.035"/>
+         </geometry>
+         <material name="black"/>
+       </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0.2 0 -0.4"/>
+         <geometry>
+           <sphere radius="0.035"/>
+         </geometry>
+      </collision>
+      <inertial>
+          <mass value="0.1"/>
+          <inertia ixx="0.000049" ixy="0" ixz="0" iyy="0.000049" iyz="0" izz="0.000049"/>
+      </inertial>
+   </link>
+     <joint name="front_support_joint" type="fixed">
+       <parent link="plateforme_base"/>
+       <child link="front_support"/>
+       <origin xyz="0 0 0"/>
+     </joint>
+
+    <link name="back_support">
+       <visual>
+         <origin rpy="0 0 0" xyz="-0.2 0 -0.4"/>
+         <geometry>
+           <sphere radius="0.035"/>
+         </geometry>
+         <material name="black"/>
+       </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="-0.2 0 -0.4"/>
+         <geometry>
+           <sphere radius="0.035"/>
+         </geometry>
+      </collision>
+        <inertial>
+          <mass value="0.1"/>
+          <inertia ixx="0.000049" ixy="0" ixz="0" iyy="0.000049" iyz="0" izz="0.000049"/>
+      </inertial>
+   </link>
+     <joint name="back_support_joint" type="fixed">
+       <parent link="plateforme_base"/>
+       <child link="back_support"/>
+       <origin xyz="0 0 0"/>
+     </joint>
+</robot>
