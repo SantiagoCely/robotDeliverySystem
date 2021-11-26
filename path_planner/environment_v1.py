@@ -4,7 +4,6 @@ from __future__ import print_function
 
 from abc import ABC
 
-import image_space
 import hardware_state
 import HighLevelController
 import abc
@@ -57,6 +56,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             "REWARD_MOVE_DOWN": -1,
             "REWARD_MOVE_LEFT": -1,
             "REWARD_MOVE_RIGHT": -1,
+            "REWARD_COLLISION": -50,
 
         }
 
@@ -129,69 +129,74 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
     def _step(self, action):
         """Apply action and return new time_step."""
+        self.closest_point = self._p.getClosestPoints(self.target_id, self.bot_id, 1000)
+        self._p.performCollisionDetection()
+        self.collision = self._p.getClosestPoints(self.bot_id)
 
-        if self.state == self.all_states['staff_req'] and action == self.all_actions['move_up']:
+        if self.collision[0][8] < 0:
+            self.state = self.all_states["collision"]
+            self.reward = self.all_rewards["REWARD_COLLISION"]
+
+        elif self.state == self.all_states['staff_req'] and action == self.all_actions['move_up']:
             self.state = self.all_states['staff_req']
             self.bot.move_up(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_UP"]
+            self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
         elif self.state == self.all_states['staff_req'] and action == self.all_actions['move_down']:
             self.state = self.all_states['staff_req']
             self.bot.move_down(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_DOWN"]
+            self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point[0][8]
         elif self.state == self.all_states['staff_req'] and action == self.all_actions['move_left']:
             self.state = self.all_states['staff_req']
             self.bot.move_down(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_LEFT"]
+            self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point[0][8]
         elif self.state == self.all_states['staff_req'] and action == self.all_actions['move_right']:
             self.state = self.all_states['staff_req']
             self.bot.move_right(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_RIGHT"]
+            self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point[0][8]
         elif self.state == self.all_states['staff_req'] and action == self.all_actions['wait']:
             self.state = self.all_states['staff_req']
             self.bot.wait(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_WAIT"]
+            self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
 
         if self.state == self.all_states['cust_req'] and action == self.all_actions['move_up']:
             self.state = self.all_states['cust_req']
             self.bot.move_up(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_UP"]
+            self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
         elif self.state == self.all_states['cust_req'] and action == self.all_actions['move_down']:
             self.state = self.all_states['cust_req']
             self.bot.move_down(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_DOWN"]
+            self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point[0][8]
         elif self.state == self.all_states['cust_req'] and action == self.all_actions['move_left']:
             self.state = self.all_states['cust_req']
             self.bot.move_down(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_LEFT"]
+            self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point[0][8]
         elif self.state == self.all_states['cust_req'] and action == self.all_actions['move_right']:
             self.state = self.all_states['cust_req']
             self.bot.move_right(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_RIGHT"]
+            self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point[0][8]
         elif self.state == self.all_states['cust_req'] and action == self.all_actions['wait']:
             self.state = self.all_states['cust_req']
             self.bot.wait(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_WAIT"]
+            self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
 
         if self.state == self.all_states['host_req'] and action == self.all_actions['move_up']:
             self.state = self.all_states['host_req']
             self.bot.move_up(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_UP"]
+            self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
         elif self.state == self.all_states['host_req'] and action == self.all_actions['move_down']:
             self.state = self.all_states['host_req']
             self.bot.move_down(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_DOWN"]
+            self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point[0][8]
         elif self.state == self.all_states['host_req'] and action == self.all_actions['move_left']:
             self.state = self.all_states['host_req']
             self.bot.move_down(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_LEFT"]
+            self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point[0][8]
         elif self.state == self.all_states['host_req'] and action == self.all_actions['move_right']:
             self.state = self.all_states['host_req']
             self.bot.move_right(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_MOVE_RIGHT"]
+            self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point[0][8]
         elif self.state == self.all_states['host_req'] and action == self.all_actions['wait']:
             self.state = self.all_states['host_req']
             self.bot.wait(self._p, self.bot_id)
-            self.reward = self.all_rewards["REWARD_WAIT"]
-
-
+            self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
 
