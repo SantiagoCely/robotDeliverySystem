@@ -10,6 +10,13 @@ class HighLeveLController:
         self.request_stack.append(req)
         self.new_request = True
 
-    def request(self):
+    def pop_request(self):
         self.new_request = False
         return self.request_stack.popleft()
+
+    def is_empty(self):
+        if self.request_stack:
+            return False
+        else :
+            return True
+
