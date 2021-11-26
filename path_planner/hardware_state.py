@@ -51,3 +51,13 @@ class Bot:
         p.sendJointMotorControl2(robot_id, self.RIGHT_JOINT, p.VELOCITY_CONTROL, targetVelocity=self.TARGET_VEL,
                                  force=self.MAX_FORCE)
         time.sleep(0.5)
+        p.sendJointMotorControl2(robot_id, self.LEFT_JOINT, p.VELOCITY_CONTROL, targetVelocity=self.TARGET_VEL,
+                                 force=0)
+        p.sendJointMotorControl2(robot_id, self.RIGHT_JOINT, p.VELOCITY_CONTROL, targetVelocity=self.TARGET_VEL,
+                                 force=0)
+
+    def wait(self, p, robot_id):
+        p.sendJointMotorControl2(robot_id, self.LEFT_JOINT, p.VELOCITY_CONTROL, targetVelocity=self.TARGET_VEL,
+                                 force=0)
+        p.sendJointMotorControl2(robot_id, self.RIGHT_JOINT, p.VELOCITY_CONTROL, targetVelocity=self.TARGET_VEL,
+                                 force=0)
