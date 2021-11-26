@@ -1,2 +1,4 @@
 
 *.DS_Store
+/path_planner/3d_test2.py
+/path_planner/racecar.urdf

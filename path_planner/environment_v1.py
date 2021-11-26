@@ -24,7 +24,8 @@ from tf_agents.trajectories import time_step as ts
 PATH_TO_TABLE = "./table/table.urdf"
 PATH_TO_TRAY = "./tray/tray.urdf"
 PATH_TO_ROBOT = "./robotv1.urdf"
-
+PATH_TO_CHARGER= './cube.urdf'
+PATH_TO_HUMANOID= './nao.urdf'
 
 class CustomEnv(py_environment.PyEnvironment, ABC):
 
@@ -48,6 +49,9 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             "capture": 4,
             "wait": 5,
             "recharge": 6,
+            "accept_req_c" : 7,
+            "accept_req_h": 8,
+            "accept_req_s": 9,
         }
         self.all_rewards = {
             "REWARD_WAIT": -3,
@@ -57,6 +61,9 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             "REWARD_MOVE_LEFT": -1,
             "REWARD_MOVE_RIGHT": -1,
             "REWARD_COLLISION": -50,
+            "REWARD_ACCEPT_H": -1,
+            "REWARD_ACCEPT_C": -1,
+            "REWARD_ACCEPT_S": -1,
 
         }
 
@@ -89,13 +96,13 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
         self.bot = hardware_state.Bot()
         self._p.saveBullet("initial_state.bullet")
-        hlc = HighLevelController.HighLeveLController()
+        self.hlc = HighLevelController.HighLeveLController()
         if self.bot.get_battery_level() > 20:
             self._state = self.all_states["high"]
         else:
             self._state = self.all_states["low"]
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=0, maximum=6, name='action')
+            shape=(), dtype=np.int32, minimum=0, maximum=9, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(224, 224), dtype=np.float, minimum=0, name='observation')
         self.reward = -5
@@ -158,7 +165,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             self.bot.wait(self._p, self.bot_id)
             self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
 
-        if self.state == self.all_states['cust_req'] and action == self.all_actions['move_up']:
+        elif self.state == self.all_states['cust_req'] and action == self.all_actions['move_up']:
             self.state = self.all_states['cust_req']
             self.bot.move_up(self._p, self.bot_id)
             self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
@@ -179,7 +186,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             self.bot.wait(self._p, self.bot_id)
             self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
 
-        if self.state == self.all_states['host_req'] and action == self.all_actions['move_up']:
+        elif self.state == self.all_states['host_req'] and action == self.all_actions['move_up']:
             self.state = self.all_states['host_req']
             self.bot.move_up(self._p, self.bot_id)
             self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
@@ -199,4 +206,35 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             self.state = self.all_states['host_req']
             self.bot.wait(self._p, self.bot_id)
             self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
+
+        if self.hlc.new_request:
+            if self.state == self.all_states['high'] and action == self.all_actions['accept_req_s']:
+                self.state = self.all_states['staff_req']
+                self.reward = self.all_rewards["REWARD_ACCEPT_S"] - 5
+            elif self.state == self.all_states['high'] and action == self.all_actions['accept_req_c']:
+                self.state = self.all_states['cust_req']
+                self.reward = self.all_rewards["REWARD_ACCEPT_C"] - 5
+            elif self.state == self.all_states['high'] and action == self.all_actions['accept_req_h']:
+                self.state = self.all_states['host_req']
+                self.reward = self.all_rewards["REWARD_ACCEPT_H"] - 5
+
+            elif self.state == self.all_states['low'] and action == self.all_actions['accept_req_s']:
+                self.state = self.all_states['staff_req']
+                self.reward = self.all_rewards["REWARD_ACCEPT_S"] - 5
+            elif self.state == self.all_states['low'] and action == self.all_actions['accept_req_c']:
+                self.state = self.all_states['cust_req']
+                self.reward = self.all_rewards["REWARD_ACCEPT_C"] - 5
+            elif self.state == self.all_states['low'] and action == self.all_actions['accept_req_h']:
+                self.state = self.all_states['host_req']
+                self.reward = self.all_rewards["REWARD_ACCEPT_H"] - 5
+
+        if self.state==self.all_states['high'] and action ==self.action['wait']:
+            self.state = self.all_states['high']
+            self.reward = self.all_rewards["WAIT"]
+            self.bot.wait(self._p, self.bot_id)
+        if self.state==self.all_states['low'] and action ==self.action['wait']:
+            self.state = self.all_states['low']
+            self.reward = self.all_rewards["WAIT"]
+            self.bot.wait(self._p, self.bot_id)
+
 
