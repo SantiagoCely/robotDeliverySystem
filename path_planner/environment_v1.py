@@ -142,7 +142,6 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             self._state = self.all_states['low']
         self._episode_ended = False
         self._p.restoreState(fileName="initial_state.bullet")
-        self._p.setTimeStep(self._time)
         return ts.restart(self._observation_spec)
 
     def _step(self, action):
