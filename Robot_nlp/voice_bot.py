@@ -57,21 +57,23 @@ def speak(audio_string):
 
     #os.remove(audio_file)
 
+def main():
+    print('how can I help you ?')
 
-print('how can I help you ?')
 
 
+    bot_message = " "
 
-bot_message = " "
+    while bot_message != "Bye":
 
-while bot_message != "Bye":
+        message = input(' ')
+        #message = record_audio()
 
-    message = input(' ')
-    #message = record_audio()
+        r = requests.post('http://localhost:5002/webhooks/rest/webhook', json={"message": message})
 
-    r = requests.post('http://localhost:5002/webhooks/rest/webhook', json={"message": message})
-
-    for i in r.json():
-        bot_message = i['text']
-    print(f"{bot_message}")
-    speak(bot_message)
+        for i in r.json():
+            bot_message = i['text']
+        print(f"{bot_message}")
+        speak(bot_message)
+if __name__ == "__main__":
+    main()
