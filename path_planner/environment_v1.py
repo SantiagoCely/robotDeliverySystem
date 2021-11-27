@@ -42,7 +42,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             "host_req": 4,
             "done": 5,
             "collision": 6,
-            "charge_req": 7,
+            "recharge_req": 7,
 
         }
         self.all_actions = {
@@ -106,13 +106,9 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             cameraEyePosition=[0, 0, temp[0][2] + 1],
             cameraTargetPosition=temp[0],
             cameraUpVector=[0, 1, 0])
-        _, _, _, self._observation_spec, _ = self._p.getCameraImage(
-            width=224,
-            height=224,
-            viewMatrix=self.viewMatrix,
-            projectionMatrix=self.projectionMatrix)
+
         self.bot = hardware_state.Bot()
-        self._p.saveBullet("initial_state.bullet")
+        self._p.saveBullet(fileName="./initial_state.bullet")
         self.hlc = hlc
         if self.bot.get_battery_level() > 20:
             self._state = self.all_states["high"]
@@ -121,7 +117,12 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=7, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=(224, 224), dtype=np.float, minimum=0, name='observation')
+            shape=(224, 224), dtype=np.float, minimum=0,maximum=1 ,name='observation')
+        _, _, _, self._observation_spec, _ = np.asarray(self._p.getCameraImage(
+            width=224,
+            height=224,
+            viewMatrix=self.viewMatrix,
+            projectionMatrix=self.projectionMatrix))
         self.reward = -5
         self._episode_ended = False
         self._envStepCounter = 0
@@ -132,7 +133,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             height=224,
             viewMatrix=self.viewMatrix,
             projectionMatrix=self.projectionMatrix)
-        self._observation_spec = depthImg
+        self._observation_spec = np.asarray(depthImg)
         """Return observation_spec."""
         return self._observation_spec
 
@@ -157,11 +158,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self.collision = self._p.getContactPoints(self.bot_id)
         only_plane=False
 
-        if self.collision[0][0][2]== self.plane_id or len(self.collision)== 1:
+        if len(self.collision)== 1:
             only_plane=True
 
         if not only_plane :
-            for x in len(self.collision):
+            for x in range(0,len(self.collision)):
                 if self.collision[x][0][8]<0:
                     self._state = self.all_states["collision"]
                     self.reward = self.all_rewards["REWARD_COLLISION"]
@@ -413,8 +414,8 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             cameraEyePosition=[0, 0, temp[0][2] + 1],
             cameraTargetPosition=temp[0],
             cameraUpVector=[0, 1, 0])
-        _, _, _, self._observation_spec, _ = self._p.getCameraImage(
+        _, _, _, self._observation_spec, _ = np.asarray(self._p.getCameraImage(
             width=224,
             height=224,
             viewMatrix=self.viewMatrix,
-            projectionMatrix=self.projectionMatrix)
+            projectionMatrix=self.projectionMatrix))
