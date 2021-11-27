@@ -31,7 +31,7 @@ PATH_TO_HOST = './cube.urdf'
 
 class CustomEnv(py_environment.PyEnvironment, ABC):
 
-    def __init__(self):
+    def __init__(self, hlc):
 
         super().__init__()
         self.all_states = {
@@ -113,7 +113,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             projectionMatrix=self.projectionMatrix)
         self.bot = hardware_state.Bot()
         self._p.saveBullet("initial_state.bullet")
-        self.hlc = HighLevelController.HighLeveLController()  # should be a parameter
+        self.hlc = hlc
         if self.bot.get_battery_level() > 20:
             self._state = self.all_states["high"]
         else:
