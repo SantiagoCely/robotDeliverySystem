@@ -42,6 +42,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             "host_req": 4,
             "done": 5,
             "collision": 6,
+            "charge_req": 7,
 
         }
         self.all_actions = {
@@ -148,6 +149,10 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         """Apply action and return new time_step."""
 
         self._p.performCollisionDetection()
+        temp=[]
+        for x in len(self.table_id):
+            temp.append(self._p.getClosestPoints(self.bot_id, self.table_id[x]))  # INCORRECT HAVE TO CHANGE
+
         self.collision = self._p.getClosestPoints(self.bot_id)
 
         if self.collision[0][8] < 0:
@@ -270,6 +275,44 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
                     return ts.transition(self._observation_spec, self.reward, 0.95)
 
+        elif self.state == self.all_states['recharge_req']:
+            self.closest_point = self._p.getClosestPoints(self.charger_id, self.bot_id, 1000)
+            if action == self.all_actions['move_up']:
+                self.state = self.all_states['recharge_req']
+                self.bot.move_up(self._p, self.bot_id)
+                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
+                return ts.transition(self._observation_spec, self.reward, 0.95)
+            elif action == self.all_actions['move_down']:
+                self.state = self.all_states['recharge_req']
+                self.bot.move_up(self._p, self.bot_id)
+                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point[0][8]
+                return ts.transition(self._observation_spec, self.reward, 0.95)
+            elif action == self.all_actions['move_left']:
+                self.state = self.all_states['recharge_req']
+                self.bot.move_up(self._p, self.bot_id)
+                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point[0][8]
+                return ts.transition(self._observation_spec, self.reward, 0.95)
+            elif action == self.all_actions['move_right']:
+                self.state = self.all_states['recharge_req']
+                self.bot.move_up(self._p, self.bot_id)
+                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point[0][8]
+                return ts.transition(self._observation_spec, self.reward, 0.95)
+            elif action == self.all_actions['wait']:
+                self.state = self.all_states['recharge_req']
+                self.bot.move_up(self._p, self.bot_id)
+                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
+                return ts.transition(self._observation_spec, self.reward, 0.95)
+
+            elif action == self.all_actions['capture']:
+                if 0 < self.closest_point < 0.5:
+                    self.state = self.all_states['high']
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
+                    return ts.transition(self._observation_spec, self.reward, 0.95)
+                else:
+                    self.state = self.all_states['recharge_req']
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
+                    return ts.transition(self._observation_spec, self.reward, 0.95)
+
         if not self.hlc.is_empty:
             if self.state == self.all_states['high']:
                 if action == self.all_actions['accept_req']:
@@ -302,15 +345,22 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                         self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 50
                         return ts.transition(self._observation_spec, self.reward, 0.95)
 
-        if self.state == self.all_states['high'] and action == self.action['wait']:
-            self.state = self.all_states['high']
-            self.reward = self.all_rewards["WAIT"]
-            self.bot.wait(self._p, self.bot_id)
+        if self.state == self.all_states['high'] :
+            if action == self.action['wait']:
+                self.state = self.all_states['high']
+                self.reward = self.all_rewards["REWARD_WAIT"]
+                self.bot.wait(self._p, self.bot_id)
+
             return ts.transition(self._observation_spec, self.reward, 0.95)
-        elif self.state == self.all_states['low'] and action == self.action['wait']:
-            self.state = self.all_states['low']
-            self.reward = self.all_rewards["WAIT"]
-            self.bot.wait(self._p, self.bot_id)
+        elif self.state == self.all_states['low']:
+            if action == self.action['wait']:
+                self.state = self.all_states['low']
+                self.reward = self.all_rewards["REWARD_WAIT"]
+                self.bot.wait(self._p, self.bot_id)
+            elif action == self.all_actions['recharge']:
+                self.state = self.all_states['recharge_req']
+                self.reward = self.all_rewards["REWARD_RECHARGE"]
+                self.bot.wait(self._p, self.bot_id)
             return ts.transition(self._observation_spec, self.reward, 0.95)
         elif self.state == self.all_state['done']:
             if self.bot.get_battery_level() > 20:
