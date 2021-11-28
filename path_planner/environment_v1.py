@@ -21,10 +21,11 @@ from tf_agents.specs import array_spec
 from tf_agents.environments import wrappers
 from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
+from random import choice
 
 
 PATH_TO_TABLE = "./table/table.urdf"
-PATH_TO_CUSTOMER = "./tray/tray.urdf"
+PATH_TO_CUSTOMER = "./tray/box.urdf"
 PATH_TO_ROBOT = "./robotv2.urdf"
 PATH_TO_CHARGER = './cube.urdf'
 PATH_TO_STAFF = './cube.urdf'
@@ -73,30 +74,9 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self._p = p
         self._p.connect(self._p.DIRECT)  # no GUI
         self._p.setAdditionalSearchPath(pybullet_data.getDataPath())
-        self.plane_id= self._p.loadURDF('plane.urdf')
-        self.table_id = []
-        startOrientation = p.getQuaternionFromEuler([0, 0, 0])
-        for x in range(-5, 5, 2):  # generate table
-            for y in range(-5, 5, 2):
-                startPos = [y, x, 0]
-                f = self._p.loadURDF(PATH_TO_TABLE, startPos, startOrientation)
-                self.table_id.append(f)
-        startPos = [0, 1, 1]
-        self.cust_id = self._p.loadURDF(PATH_TO_CUSTOMER, startPos,
-                                          startOrientation)  # generate tray
 
-        self.host_id = self._p.loadURDF(PATH_TO_HOST, startPos,
-                                        startOrientation)  # generate cube
 
-        self.staff_id = self._p.loadURDF(PATH_TO_STAFF, startPos,
-                                        startOrientation)  # generate cube
-
-        self.charger_id = self._p.loadURDF(PATH_TO_CHARGER, startPos,
-                                         startOrientation)  # generate cube
-        self._p.setGravity(0, 0, -9.8)
-        startPos = [0, 0, 3]
-        self.bot_id = self._p.loadURDF(PATH_TO_ROBOT, startPos,
-                                       startOrientation)
+        self.spawn_world()
         self.update_cam()
         self.bot = hardware_state.Bot()
         self._p.saveBullet("initial_state.bullet")
@@ -109,11 +89,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             shape=(), dtype=np.int32, minimum=0, maximum=7, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(224, 224), dtype=np.float, minimum=0,maximum=1 ,name='observation')
-        _, _, _, self.observation, _ = list(self._p.getCameraImage(
-            width=224,
-            height=224,
-            viewMatrix=self.viewMatrix,
-            projectionMatrix=self.projectionMatrix))
+
         self.reward = -5
         self._episode_ended = False
         self._envStepCounter = 0
@@ -434,6 +410,55 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self.projectionMatrix = self._p.computeProjectionMatrixFOV(
             fov=90, aspect=1.5, nearVal=0.02, farVal=3.5)
 
-        _, _, _, self.observation, _ = list(self._p.getCameraImage(img_w, img_h,
+        _, _, _, t, _ = list(self._p.getCameraImage(img_w, img_h,
                                  self.viewMatrix,
                                  self.projectionMatrix))
+
+        self.observation = [item for sublist in t for item in sublist]
+
+    def spawn_world(self):
+        orientation=choice([0, math.pi/2])
+        m = choice([-5, -3, -1, 1, 3, 5])
+        n = choice([-5, -3, -1, 1, 3, 5])
+        self.table_id = []
+        self.plane_id = self._p.loadURDF('plane.urdf')
+        startOrientation = p.getQuaternionFromEuler([0, 0, orientation])
+        for x in range(-5, 6, 2):  # generate table
+            for y in range(-5, 6, 2):
+                if x == m and y == n:
+                    startPos = [y, x, 2]
+                    startOrientation = pb.getQuaternionFromEuler([0, 0, 0])
+                    pb.loadURDF(
+                        PATH_TO_CUSTOMER,
+                        startPos,
+                        startOrientation)
+                startPos = [y, x, 0]
+                f = self._p.loadURDF(PATH_TO_TABLE, startPos, startOrientation)
+                self.table_id.append(f)
+
+        startOrientation = p.getQuaternionFromEuler([0, 0, 0])
+
+        c = [[0, 10, 3], [0, -10, 3], [-10, 0, 3]]
+        shuffle(c)
+
+        startPos = c[0]
+
+        self.host_id = self._p.loadURDF(PATH_TO_HOST, startPos,
+                                        startOrientation)  # generate cube
+
+        startPos = c[1]
+        self.staff_id = self._p.loadURDF(PATH_TO_STAFF, startPos,
+                                         startOrientation)  # generate cube
+
+        startPos = c[2]
+        self.charger_id = self._p.loadURDF(PATH_TO_CHARGER, startPos,
+                                           startOrientation)  # generate cube
+
+        startPos = [0, 0, 3]
+        self.bot_id = self._p.loadURDF(PATH_TO_ROBOT, startPos,
+                                       startOrientation)
+
+        self._p.setGravity(0, 0, -9.8)
+
+
+

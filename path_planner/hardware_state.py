@@ -6,7 +6,7 @@ class Bot:
         self.battery_level = 50
         self.RIGHT_JOINT = 1
         self.LEFT_JOINT = 2
-        self.MAX_FORCE = 30
+        self.MAX_FORCE = 10
         self.TARGET_VEL = 10
         self.start_time=time.time()
 
