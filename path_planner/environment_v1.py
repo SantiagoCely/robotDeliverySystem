@@ -24,7 +24,6 @@ from tf_agents.trajectories import time_step as ts
 from random import choice
 from random import shuffle
 
-
 PATH_TO_TABLE = "./table/table.urdf"
 PATH_TO_CUSTOMER = "./tray/box.urdf"
 PATH_TO_ROBOT = "./robotv2.urdf"
@@ -86,7 +85,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=7, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=(6400, ), dtype=np.float, minimum=0,name='observation')
+            shape=(6400,), dtype=np.float, minimum=0, name='observation')
 
         self.reward = -5
         self._episode_ended = False
@@ -122,65 +121,62 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self._p.performCollisionDetection()
         self.collision = self._p.getContactPoints(self.bot_id)
 
-        only_plane=True
-        for x in range(0,len(self.collision)-1):
-                if self.collision[x][2] != self.plane_id:
-                        only_plane=False
+        only_plane = True
+        for x in range(0, len(self.collision) - 1):
+            if self.collision[x][2] != self.plane_id:
+                only_plane = False
 
-        if not only_plane :
-            for x in range(0,len(self.collision)-1):
-                if self.collision[x][8]<0:
+        if not only_plane:
+            for x in range(0, len(self.collision) - 1):
+                if self.collision[x][8] < 0:
                     self._state = self.all_states["collision"]
                     self.reward = self.all_rewards["REWARD_COLLISION"]
                     self._episode_ended = True
                     self.reset()
                     return ts.termination(self.observation, self.reward)
 
-
-
-
         if self._state == self.all_states['staff_req']:
-            s= self._p.getClosestPoints(self.bot_id, self.staff_id,  1000)
+            s = self._p.getClosestPoints(self.bot_id, self.staff_id, 1000)
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point= min(temp)
+            self.closest_point = min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['staff_req']
                 self.bot.move_up(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_down']:
                 self._state = self.all_states['staff_req']
                 self.bot.move_down(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_left']:
                 self._state = self.all_states['staff_req']
                 self.bot.move_left(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_right']:
                 self._state = self.all_states['staff_req']
                 self.bot.move_right(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['wait']:
                 self._state = self.all_states['staff_req']
                 self.bot.wait(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['capture']:
-                if 0<self.closest_point<0.5:
+                if 0 < self.closest_point < 0.5:
                     self._state = self.all_states['done']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
                     return ts.transition(self.observation, self.reward, 0.95)
-                else :
+                else:
                     self._state = self.all_states['staff_req']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
                     return ts.transition(self.observation, self.reward, 0.95)
@@ -194,44 +190,44 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['cust_req']
                 self.bot.move_up(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_down']:
                 self._state = self.all_states['cust_req']
                 self.bot.move_down(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_left']:
                 self._state = self.all_states['cust_req']
                 self.bot.move_left(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_right']:
                 self._state = self.all_states['cust_req']
                 self.bot.move_right(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['wait']:
                 self._state = self.all_states['cust_req']
                 self.bot.wait(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['capture']:
                 if 0 < self.closest_point < 0.5:
                     self._state = self.all_states['done']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
                     return ts.transition(self.observation, self.reward, 0.95)
-                else :
+                else:
                     self._state = self.all_states['cust_req']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
                     return ts.transition(self.observation, self.reward, 0.95)
 
         elif self._state == self.all_states['host_req']:
-            s = self._p.getClosestPoints( self.bot_id, self.host_id, 1000)
+            s = self._p.getClosestPoints(self.bot_id, self.host_id, 1000)
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
@@ -239,31 +235,31 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['host_req']
                 self.bot.move_up(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_down']:
                 self._state = self.all_states['host_req']
                 self.bot.move_down(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_left']:
                 self._state = self.all_states['host_req']
                 self.bot.move_left(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_right']:
                 self._state = self.all_states['host_req']
                 self.bot.move_right(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['wait']:
                 self._state = self.all_states['host_req']
                 self.bot.wait(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point
                 return ts.transition(self.observation, self.reward, 0.95)
 
             elif action == self.all_actions['capture']:
@@ -271,7 +267,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     self._state = self.all_states['done']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
                     return ts.transition(self.observation, self.reward, 0.95)
-                else :
+                else:
                     self._state = self.all_states['host_req']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
                     return ts.transition(self.observation, self.reward, 0.95)
@@ -285,31 +281,31 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['recharge_req']
                 self.bot.move_up(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_UP"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_down']:
                 self._state = self.all_states['recharge_req']
                 self.bot.move_down(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_DOWN"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_left']:
                 self._state = self.all_states['recharge_req']
                 self.bot.move_left(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_LEFT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['move_right']:
                 self._state = self.all_states['recharge_req']
                 self.bot.move_right(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_MOVE_RIGHT"] - self.closest_point
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['wait']:
                 self._state = self.all_states['recharge_req']
                 self.bot.wait(self._p, self.bot_id)
-                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point[0][8]
+                self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point
                 return ts.transition(self.observation, self.reward, 0.95)
 
             elif action == self.all_actions['capture']:
@@ -355,7 +351,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                         self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 50
                         return ts.transition(self.observation, self.reward, 0.95)
 
-        if self._state == self.all_states['high'] :
+        if self._state == self.all_states['high']:
             if action == self.all_actions['wait']:
                 self._state = self.all_states['high']
                 self.reward = self.all_rewards["REWARD_WAIT"]
@@ -372,7 +368,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 self.reward = self.all_rewards["REWARD_RECHARGE"]
                 self.bot.wait(self._p, self.bot_id)
             return ts.transition(self.observation, self.reward, 0.95)
-        elif self._state == self.all_state['done']:
+        elif self._state == self.all_states['done']:
             if self.bot.get_battery_level() > 20:
                 self._state = self.all_states['high']
                 return ts.transition(self.observation, self.reward, 0.95)
@@ -382,7 +378,6 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
         if self._state == self.all_states['high'] and self.hlc.is_empty():
             return ts.termination(self.observation, 0)
-
 
     def update_cam(self):
         distance = 100000
@@ -409,16 +404,14 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             fov=90, aspect=1.5, nearVal=0.02, farVal=3.5)
 
         _, _, _, t, _ = list(self._p.getCameraImage(img_w, img_h,
-                                 self.viewMatrix,
-                                 self.projectionMatrix))
+                                                    self.viewMatrix,
+                                                    self.projectionMatrix))
 
         self.observation = np.asarray([item for sublist in t for item in sublist], dtype=np.float)
 
-
-
     def spawn_world(self):
         self._p.resetSimulation()
-        orientation=choice([0, math.pi/2])
+        orientation = choice([0, math.pi / 2])
         m = choice([-5, -3, -1, 1, 3, 5])
         n = choice([-5, -3, -1, 1, 3, 5])
         self.table_id = []
@@ -467,5 +460,8 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         startOrientation = self._p.getQuaternionFromEuler([0, 0, 0])
         self.bot_id = self._p.loadURDF(PATH_TO_ROBOT, startPos,
                                        startOrientation)
+
+    def bot_battery_level(self):
+        print(self.bot.get_battery_level())
 
 
