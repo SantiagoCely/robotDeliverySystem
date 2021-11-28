@@ -113,7 +113,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         else:
             self._state = self.all_states['low']
         self._episode_ended = False
-        self.spawn_world()
+        self.respawn_bot()
         return ts.restart(self.observation)
 
     def _step(self, action):
@@ -455,11 +455,17 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self.charger_id = self._p.loadURDF(PATH_TO_CHARGER, startPos,
                                            startOrientation)  # generate cube
 
-        startPos = [0, 0, 3]
+        startPos = [10, 0, 3]
         self.bot_id = self._p.loadURDF(PATH_TO_ROBOT, startPos,
                                        startOrientation)
 
         self._p.setGravity(0, 0, -9.8)
 
+    def respawn_bot(self):
+        self._p.removeBody(self.bot_id)
+        startPos = [10, 0, 3]
+        startOrientation = self._p.getQuaternionFromEuler([0, 0, 0])
+        self.bot_id = self._p.loadURDF(PATH_TO_ROBOT, startPos,
+                                       startOrientation)
 
 
