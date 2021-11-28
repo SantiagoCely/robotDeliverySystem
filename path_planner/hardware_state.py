@@ -8,8 +8,13 @@ class Bot:
         self.LEFT_JOINT = 2
         self.MAX_FORCE = 30
         self.TARGET_VEL = 10
+        self.start_time=time.time()
 
     def get_battery_level(self):
+        temp= time.time()
+        temp2= temp - self.start_time
+        if temp2>600:
+            self.battery_level= 15
         return self.battery_level
 
     def set_battery_level(self, val):

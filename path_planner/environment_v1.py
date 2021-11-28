@@ -145,14 +145,15 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
         self._p.performCollisionDetection()
         self.collision = self._p.getContactPoints(self.bot_id)
-        only_plane=False
 
-        if len(self.collision)== 1:
-            only_plane=True
+        only_plane=True
+        for x in range(0,len(self.collision)-1):
+                if self.collision[x][2] != self.plane_id:
+                        only_plane=False
 
         if not only_plane :
-            for x in range(0,len(self.collision)):
-                if self.collision[x][0][8]<0:
+            for x in range(0,len(self.collision)-1):
+                if self.collision[x][8]<0:
                     self._state = self.all_states["collision"]
                     self.reward = self.all_rewards["REWARD_COLLISION"]
                     self._episode_ended = True
@@ -163,7 +164,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
 
         if self._state == self.all_states['staff_req']:
-            self.closest_point = self._p.getClosestPoints(self.staff_id, self.bot_id, 1000)
+            s= self._p.getClosestPoints(self.bot_id, self.staff_id,  1000)
+            temp = []
+            for x in range(0, len(s) - 1):
+                temp.append(s[x][8])
+            self.closest_point= min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['staff_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -205,7 +210,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     return ts.transition(self.observation, self.reward, 0.95)
 
         elif self._state == self.all_states['cust_req']:
-            self.closest_point = self._p.getClosestPoints(self.cust_id, self.bot_id, 1000)
+            s = self._p.getClosestPoints(self.bot_id, self.cust_id, 1000)
+            temp = []
+            for x in range(0, len(s) - 1):
+                temp.append(s[x][8])
+            self.closest_point = min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['cust_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -246,7 +255,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     return ts.transition(self.observation, self.reward, 0.95)
 
         elif self._state == self.all_states['host_req']:
-            self.closest_point = self._p.getClosestPoints(self.host_id, self.bot_id, 1000)
+            s = self._p.getClosestPoints( self.bot_id, self.host_id, 1000)
+            temp = []
+            for x in range(0, len(s) - 1):
+                temp.append(s[x][8])
+            self.closest_point = min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['host_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -288,7 +301,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     return ts.transition(self.observation, self.reward, 0.95)
 
         elif self._state == self.all_states['recharge_req']:
-            self.closest_point = self._p.getClosestPoints(self.charger_id, self.bot_id, 1000)
+            s = self._p.getClosestPoints(self.bot_id, self.charger_id, 1000)
+            temp = []
+            for x in range(0, len(s) - 1):
+                temp.append(s[x][8])
+            self.closest_point = min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['recharge_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -323,6 +340,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 if 0 < self.closest_point < 0.5:
                     self._state = self.all_states['high']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
+                    self.bot.set_battery_level(100)
                     return ts.transition(self.observation, self.reward, 0.95)
                 else:
                     self._state = self.all_states['recharge_req']
