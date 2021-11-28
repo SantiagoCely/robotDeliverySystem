@@ -12,6 +12,7 @@ import numpy as np
 import pybullet_data
 import pybullet as p
 import time
+import math
 from tf_agents.environments import py_environment
 from tf_agents.environments import tf_environment
 from tf_agents.environments import tf_py_environment
@@ -20,6 +21,7 @@ from tf_agents.specs import array_spec
 from tf_agents.environments import wrappers
 from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
+
 
 PATH_TO_TABLE = "./table/table.urdf"
 PATH_TO_CUSTOMER = "./tray/tray.urdf"
@@ -414,7 +416,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         agent_pos, agent_orn = \
             self._p.getBasePositionAndOrientation(self.bot_id)
 
-        yaw = pb.getEulerFromQuaternion(agent_orn)[-1]
+        yaw = self._p.getEulerFromQuaternion(agent_orn)[-1]
         xA, yA, zA = agent_pos
         zA = zA + 0.45  # make the camera a little higher than the robot
 
@@ -433,5 +435,5 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             fov=90, aspect=1.5, nearVal=0.02, farVal=3.5)
 
         _, _, _, self.observation, _ = list(self._p.getCameraImage(img_w, img_h,
-                                 self.view_matrix,
+                                 self.viewMatrix,
                                  self.projectionMatrix))
