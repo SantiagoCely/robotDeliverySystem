@@ -25,7 +25,7 @@ from tf_agents.trajectories import time_step as ts
 
 PATH_TO_TABLE = "./table/table.urdf"
 PATH_TO_CUSTOMER = "./tray/tray.urdf"
-PATH_TO_ROBOT = "./robotv1.urdf"
+PATH_TO_ROBOT = "./robotv2.urdf"
 PATH_TO_CHARGER = './cube.urdf'
 PATH_TO_STAFF = './cube.urdf'
 PATH_TO_HOST = './cube.urdf'
