@@ -95,18 +95,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         startPos = [0, 0, 3]
         self.bot_id = self._p.loadURDF(PATH_TO_ROBOT, startPos,
                                        startOrientation)
-        temp = self._p.getBasePositionAndOrientation(self.bot_id)
-        self.projectionMatrix = self._p.computeProjectionMatrixFOV(
-            fov=45.0,
-            aspect=1.0,
-            nearVal=0.1,
-            farVal=3.1)
-
-        self.viewMatrix = self._p.computeViewMatrix(
-            cameraEyePosition=[0, 0, temp[0][2] + 1],
-            cameraTargetPosition=temp[0],
-            cameraUpVector=[0, 1, 0])
-
+        self.update_cam()
         self.bot = hardware_state.Bot()
         self._p.saveBullet("initial_state.bullet")
         self.hlc = hlc
@@ -402,20 +391,29 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
 
     def update_cam(self):
+        distance = 100000
+        img_w, img_h = 224, 224
+        agent_pos, agent_orn = \
+            self._p.getBasePositionAndOrientation(self.bot_id)
 
-        temp = self._p.getBasePositionAndOrientation(self.bot_id)
-        self.projectionMatrix = self._p.computeProjectionMatrixFOV(
-            fov=45.0,
-            aspect=1.0,
-            nearVal=0.1,
-            farVal=3.1)
+        yaw = pb.getEulerFromQuaternion(agent_orn)[-1]
+        xA, yA, zA = agent_pos
+        zA = zA + 0.45  # make the camera a little higher than the robot
+
+        # compute focusing point of the camera
+        xB = xA + math.cos(yaw) * distance
+        yB = yA + math.sin(yaw) * distance + 0.3
+        zB = zA
 
         self.viewMatrix = self._p.computeViewMatrix(
-            cameraEyePosition=[0, 0, temp[0][2] + 1],
-            cameraTargetPosition=temp[0],
-            cameraUpVector=[0, 1, 0])
-        _, _, _, self.observation, _ = list(self._p.getCameraImage(
-            width=224,
-            height=224,
-            viewMatrix=self.viewMatrix,
-            projectionMatrix=self.projectionMatrix))
+            cameraEyePosition=[xA, yA, zA],
+            cameraTargetPosition=[xB, yB, zB],
+            cameraUpVector=[0, 0, 1.0]
+        )
+
+        self.projectionMatrix = self._p.computeProjectionMatrixFOV(
+            fov=90, aspect=1.5, nearVal=0.02, farVal=3.5)
+
+        _, _, _, self.observation, _ = list(self._p.getCameraImage(img_w, img_h,
+                                 self.view_matrix,
+                                 self.projectionMatrix))
