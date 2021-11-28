@@ -22,6 +22,7 @@ from tf_agents.environments import wrappers
 from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
 from random import choice
+from random import shuffle
 
 
 PATH_TO_TABLE = "./table/table.urdf"
@@ -88,7 +89,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=7, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=(224, 224), dtype=np.float, minimum=0,maximum=1 ,name='observation')
+            shape=(6400, ), dtype=np.float, minimum=0,name='observation')
 
         self.reward = -5
         self._episode_ended = False
@@ -388,7 +389,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
     def update_cam(self):
         distance = 100000
-        img_w, img_h = 224, 224
+        img_w, img_h = 80, 80
         agent_pos, agent_orn = \
             self._p.getBasePositionAndOrientation(self.bot_id)
 
@@ -427,7 +428,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             for y in range(-5, 6, 2):
                 if x == m and y == n:
                     startPos = [y, x, 2]
-                    startOrientation = pb.getQuaternionFromEuler([0, 0, 0])
+                    startOrientation = self._p.getQuaternionFromEuler([0, 0, 0])
                     pb.loadURDF(
                         PATH_TO_CUSTOMER,
                         startPos,
@@ -436,7 +437,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 f = self._p.loadURDF(PATH_TO_TABLE, startPos, startOrientation)
                 self.table_id.append(f)
 
-        startOrientation = p.getQuaternionFromEuler([0, 0, 0])
+        startOrientation = self._p.getQuaternionFromEuler([0, 0, 0])
 
         c = [[0, 10, 3], [0, -10, 3], [-10, 0, 3]]
         shuffle(c)
