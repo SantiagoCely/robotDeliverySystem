@@ -75,12 +75,9 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self._p = p
         self._p.connect(self._p.DIRECT)  # no GUI
         self._p.setAdditionalSearchPath(pybullet_data.getDataPath())
-
-
         self.spawn_world()
         self.update_cam()
         self.bot = hardware_state.Bot()
-        self._p.saveBullet("initial_state.bullet")
         self.hlc = hlc
         if self.bot.get_battery_level() > 20:
             self._state = self.all_states["high"]
@@ -116,7 +113,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         else:
             self._state = self.all_states['low']
         self._episode_ended = False
-        self._p.restoreState(fileName="/initial_state.bullet")
+        self.spawn_world()
         return ts.restart(self.observation)
 
     def _step(self, action):
@@ -415,9 +412,12 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                                  self.viewMatrix,
                                  self.projectionMatrix))
 
-        self.observation = [item for sublist in t for item in sublist]
+        self.observation = np.asarray([item for sublist in t for item in sublist], dtype=np.float)
+
+
 
     def spawn_world(self):
+        self._p.resetSimulation()
         orientation=choice([0, math.pi/2])
         m = choice([-5, -3, -1, 1, 3, 5])
         n = choice([-5, -3, -1, 1, 3, 5])
@@ -429,7 +429,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 if x == m and y == n:
                     startPos = [y, x, 2]
                     startOrientation = self._p.getQuaternionFromEuler([0, 0, 0])
-                    pb.loadURDF(
+                    self._p.loadURDF(
                         PATH_TO_CUSTOMER,
                         startPos,
                         startOrientation)
