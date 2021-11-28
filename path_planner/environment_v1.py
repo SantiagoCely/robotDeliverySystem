@@ -59,15 +59,15 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             "accept_req": 7,
         }
         self.all_rewards = {
-            "REWARD_WAIT": -3,
+            "REWARD_WAIT": 0,
             "REWARD_CAPTURE": -3,
-            "REWARD_MOVE_UP": -1,
-            "REWARD_MOVE_DOWN": -1,
-            "REWARD_MOVE_LEFT": -1,
-            "REWARD_MOVE_RIGHT": -1,
+            "REWARD_MOVE_UP": 0,
+            "REWARD_MOVE_DOWN": 0,
+            "REWARD_MOVE_LEFT": 0,
+            "REWARD_MOVE_RIGHT": 0,
             "REWARD_COLLISION": -50,
-            "REWARD_ACCEPT_R": -1,
-            "REWARD_RECHARGE": -1,
+            "REWARD_ACCEPT_R": 1,
+            "REWARD_RECHARGE": 1,
 
         }
 
@@ -106,7 +106,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         """Return action_spec."""
 
     def _reset(self):
-
+        self._envStepCounter = 0
         if self.bot.get_battery_level() > 20:
             self._state = self.all_states['high']
         else:
@@ -117,7 +117,10 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
     def _step(self, action):
         """Apply action and return new time_step."""
-
+        self._envStepCounter += 1
+        if self._envStepCounter == 1000:
+            self._envStepCounter = 0
+            return ts.termination(self.observation, self.reward)
         self._p.performCollisionDetection()
         self.collision = self._p.getContactPoints(self.bot_id)
 
@@ -322,33 +325,33 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         if not self.hlc.is_empty:
             if self._state == self.all_states['high']:
                 if action == self.all_actions['accept_req']:
-                    request = self.hlc.pop_request
+                    request = self.hlc.pop_request()
                     if request == 'staff_req':
                         self._state = self.all_states['staff_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 5
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"]
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'cust_req':
                         self._state = self.all_states['cust_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 5
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"]
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'host_req':
                         self._state = self.all_states['host_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 5
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"]
                         return ts.transition(self.observation, self.reward, 0.95)
             elif self._state == self.all_states['low']:
                 if action == self.all_actions['accept_req']:
-                    request = self.hlc.pop_request
+                    request = self.hlc.pop_request()
                     if request == 'staff_req':
                         self._state = self.all_states['staff_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 50
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] -1
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'cust_req':
                         self._state = self.all_states['cust_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 50
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] -1
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'host_req':
                         self._state = self.all_states['host_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 50
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 1
                         return ts.transition(self.observation, self.reward, 0.95)
 
         if self._state == self.all_states['high']:
@@ -356,18 +359,18 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 self._state = self.all_states['high']
                 self.reward = self.all_rewards["REWARD_WAIT"]
                 self.bot.wait(self._p, self.bot_id)
-
-            return ts.transition(self.observation, self.reward, 0.95)
+                return ts.transition(self.observation, self.reward, 0.95)
         elif self._state == self.all_states['low']:
             if action == self.all_actions['wait']:
                 self._state = self.all_states['low']
                 self.reward = self.all_rewards["REWARD_WAIT"]
                 self.bot.wait(self._p, self.bot_id)
+                return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['recharge']:
                 self._state = self.all_states['recharge_req']
                 self.reward = self.all_rewards["REWARD_RECHARGE"]
                 self.bot.wait(self._p, self.bot_id)
-            return ts.transition(self.observation, self.reward, 0.95)
+                return ts.transition(self.observation, self.reward, 0.95)
         elif self._state == self.all_states['done']:
             if self.bot.get_battery_level() > 20:
                 self._state = self.all_states['high']
