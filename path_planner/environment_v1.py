@@ -87,7 +87,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(6400,), dtype=np.float, minimum=0, name='observation')
 
-        self.reward = -5
+        self.reward = 0
         self._episode_ended = False
         self._envStepCounter = 0
 
@@ -135,7 +135,6 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     self._state = self.all_states["collision"]
                     self.reward = self.all_rewards["REWARD_COLLISION"]
                     self._episode_ended = True
-                    self.reset()
                     return ts.termination(self.observation, self.reward)
 
         if self._state == self.all_states['staff_req']:
@@ -381,7 +380,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
         if self._state == self.all_states['high'] and self.hlc.is_empty():
             return ts.termination(self.observation, 0)
-
+        return ts.transition(self.observation, self.reward, 0.95)
     def update_cam(self):
         distance = 100000
         img_w, img_h = 80, 80
