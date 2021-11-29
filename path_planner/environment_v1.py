@@ -59,13 +59,13 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             "accept_req": 7,
         }
         self.all_rewards = {
-            "REWARD_WAIT": 0,
+            "REWARD_WAIT": -1,
             "REWARD_CAPTURE": -3,
-            "REWARD_MOVE_UP": 0,
-            "REWARD_MOVE_DOWN": 0,
-            "REWARD_MOVE_LEFT": 0,
-            "REWARD_MOVE_RIGHT": 0,
-            "REWARD_COLLISION": -50,
+            "REWARD_MOVE_UP": -1,
+            "REWARD_MOVE_DOWN": -1,
+            "REWARD_MOVE_LEFT": -1,
+            "REWARD_MOVE_RIGHT": -1,
+            "REWARD_COLLISION": -500,
             "REWARD_ACCEPT_R": 1,
             "REWARD_RECHARGE": 1,
 
@@ -118,7 +118,8 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
     def _step(self, action):
         """Apply action and return new time_step."""
         self._envStepCounter += 1
-        if self._envStepCounter == 1000:
+        self.reward = 0
+        if self._envStepCounter == 200:
             self._envStepCounter = 0
             return ts.termination(self.observation, self.reward)
         self._p.performCollisionDetection()
@@ -311,20 +312,22 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 return ts.transition(self.observation, self.reward, 0.95)
 
             elif action == self.all_actions['capture']:
-                if 0 < self.closest_point < 0.5:
+                if 0 < self.closest_point < 0.25:
                     self._state = self.all_states['high']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 100
                     self.bot.set_battery_level(100)
                     return ts.transition(self.observation, self.reward, 0.95)
                 else:
                     self._state = self.all_states['recharge_req']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 100
                     return ts.transition(self.observation, self.reward, 0.95)
 
-        if not self.hlc.is_empty:
+        if not self.hlc.is_empty():
+
             if self._state == self.all_states['high']:
                 if action == self.all_actions['accept_req']:
                     request = self.hlc.pop_request()
+
                     if request == 'staff_req':
                         self._state = self.all_states['staff_req']
                         self.reward = self.all_rewards["REWARD_ACCEPT_R"]
@@ -342,11 +345,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     request = self.hlc.pop_request()
                     if request == 'staff_req':
                         self._state = self.all_states['staff_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] -1
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 1
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'cust_req':
                         self._state = self.all_states['cust_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] -1
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 1
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'host_req':
                         self._state = self.all_states['host_req']
@@ -381,6 +384,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         if self._state == self.all_states['high'] and self.hlc.is_empty():
             return ts.termination(self.observation, 0)
         return ts.transition(self.observation, self.reward, 0.95)
+
     def update_cam(self):
         distance = 100000
         img_w, img_h = 80, 80
@@ -424,7 +428,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 if x == m and y == n:
                     startPos = [y, x, 2]
                     startOrientation = self._p.getQuaternionFromEuler([0, 0, 0])
-                    self._p.loadURDF(
+                    self.cust_id = self._p.loadURDF(
                         PATH_TO_CUSTOMER,
                         startPos,
                         startOrientation)
