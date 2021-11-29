@@ -27,9 +27,9 @@ from random import shuffle
 PATH_TO_TABLE = "./table/table.urdf"
 PATH_TO_CUSTOMER = "./tray/box.urdf"
 PATH_TO_ROBOT = "./robotv2.urdf"
-PATH_TO_CHARGER = './cube.urdf'
-PATH_TO_STAFF = './cube.urdf'
-PATH_TO_HOST = './cube.urdf'
+PATH_TO_CHARGER = './charging_station/cube.urdf'
+PATH_TO_STAFF = './staff_station/cube.urdf'
+PATH_TO_HOST = './host_station/cube.urdf'
 
 
 class CustomEnv(py_environment.PyEnvironment, ABC):
@@ -65,7 +65,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             "REWARD_MOVE_DOWN": -1,
             "REWARD_MOVE_LEFT": -1,
             "REWARD_MOVE_RIGHT": -1,
-            "REWARD_COLLISION": -500,
+            "REWARD_COLLISION": -1500,
             "REWARD_ACCEPT_R": 1,
             "REWARD_RECHARGE": 1,
 
@@ -121,6 +121,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self.reward = 0
         if self._envStepCounter == 200:
             self._envStepCounter = 0
+            self.reward=-1500
             return ts.termination(self.observation, self.reward)
         self._p.performCollisionDetection()
         self.collision = self._p.getContactPoints(self.bot_id)
@@ -143,7 +144,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point = min(temp)
+            self.closest_point = min(temp)*100
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['staff_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -177,11 +178,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             elif action == self.all_actions['capture']:
                 if 0 < self.closest_point < 0.5:
                     self._state = self.all_states['done']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     return ts.transition(self.observation, self.reward, 0.95)
                 else:
                     self._state = self.all_states['staff_req']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 500
                     return ts.transition(self.observation, self.reward, 0.95)
 
         elif self._state == self.all_states['cust_req']:
@@ -189,7 +190,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point = min(temp)
+            self.closest_point = min(temp)*100
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['cust_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -222,11 +223,12 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             elif action == self.all_actions['capture']:
                 if 0 < self.closest_point < 0.5:
                     self._state = self.all_states['done']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
+                    self.respawn_cust()
                     return ts.transition(self.observation, self.reward, 0.95)
                 else:
                     self._state = self.all_states['cust_req']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 500
                     return ts.transition(self.observation, self.reward, 0.95)
 
         elif self._state == self.all_states['host_req']:
@@ -234,7 +236,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point = min(temp)
+            self.closest_point = min(temp)*100
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['host_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -268,11 +270,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             elif action == self.all_actions['capture']:
                 if 0 < self.closest_point < 0.5:
                     self._state = self.all_states['done']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 10
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     return ts.transition(self.observation, self.reward, 0.95)
                 else:
                     self._state = self.all_states['host_req']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 10
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 500
                     return ts.transition(self.observation, self.reward, 0.95)
 
         elif self._state == self.all_states['recharge_req']:
@@ -280,7 +282,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point = min(temp)
+            self.closest_point = min(temp)*100
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['recharge_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -314,12 +316,12 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             elif action == self.all_actions['capture']:
                 if 0 < self.closest_point < 0.25:
                     self._state = self.all_states['high']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 100
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     self.bot.set_battery_level(100)
                     return ts.transition(self.observation, self.reward, 0.95)
                 else:
                     self._state = self.all_states['recharge_req']
-                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 100
+                    self.reward = self.all_rewards["REWARD_CAPTURE"] - 500
                     return ts.transition(self.observation, self.reward, 0.95)
 
         if not self.hlc.is_empty():
@@ -345,15 +347,15 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     request = self.hlc.pop_request()
                     if request == 'staff_req':
                         self._state = self.all_states['staff_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 1
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] + 10
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'cust_req':
                         self._state = self.all_states['cust_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 1
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] + 10
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'host_req':
                         self._state = self.all_states['host_req']
-                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] - 1
+                        self.reward = self.all_rewards["REWARD_ACCEPT_R"] + 10
                         return ts.transition(self.observation, self.reward, 0.95)
 
         if self._state == self.all_states['high']:
@@ -470,4 +472,11 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
     def bot_battery_level(self):
         print(self.bot.get_battery_level())
 
-
+    def respawn_cust(self):
+        self._p.removeBody(self.cust_id)
+        m = choice([-5, -3, -1, 1, 3, 5])
+        n = choice([-5, -3, -1, 1, 3, 5])
+        startPos = [m, n, 3]
+        startOrientation = self._p.getQuaternionFromEuler([0, 0, 0])
+        self.cust_id = self._p.loadURDF(PATH_TO_CUSTOMER, startPos,
+                                       startOrientation)
