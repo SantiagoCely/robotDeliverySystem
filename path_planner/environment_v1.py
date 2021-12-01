@@ -3,14 +3,13 @@ from __future__ import division
 from __future__ import print_function
 
 from abc import ABC
-
+import time
 import hardware_state
 import HighLevelController
 import abc
 import tensorflow as tf
 import numpy as np
 import pybullet_data
-import pybullet as p
 import time
 import math
 from tf_agents.environments import py_environment
@@ -34,7 +33,7 @@ PATH_TO_HOST = './host_station/cube.urdf'
 
 class CustomEnv(py_environment.PyEnvironment, ABC):
 
-    def __init__(self, hlc):
+    def __init__(self, hlc, p):
 
         super().__init__()
         self.all_states = {
@@ -72,7 +71,25 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         }
 
         self._p = p
-        self._p.connect(self._p.DIRECT)  # no GUI
+        self._p.connect(self._p.GUI)  # no GUI
+
+        projectionMatrix = p.computeProjectionMatrixFOV(
+            fov=45.0,
+            aspect=1.0,
+            nearVal=0.1,
+            farVal=3.1)
+
+        viewMatrix = p.computeViewMatrix(
+            cameraEyePosition=[0, 0, 5],
+            cameraTargetPosition=[0, 0, 0],
+            cameraUpVector=[0, 1, 0])
+
+        _, _, _, depthImg, _ = p.getCameraImage(
+            width=1024,
+            height=1024,
+            viewMatrix=viewMatrix,
+            projectionMatrix=projectionMatrix)
+
         self._p.setAdditionalSearchPath(pybullet_data.getDataPath())
         self.spawn_world()
         self.update_cam()
@@ -121,7 +138,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self.reward = 0
         if self._envStepCounter == 200:
             self._envStepCounter = 0
-            self.reward=-1500
+            self.reward = -1500
             return ts.termination(self.observation, self.reward)
         self._p.performCollisionDetection()
         self.collision = self._p.getContactPoints(self.bot_id)
@@ -144,7 +161,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point = min(temp)*100
+            self.closest_point = min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['staff_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -176,7 +193,8 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 self.update_cam()
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['capture']:
-                if 0 < self.closest_point < 0.5:
+                if 0 < self.closest_point < 2:
+                    print("done")
                     self._state = self.all_states['done']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     return ts.transition(self.observation, self.reward, 0.95)
@@ -190,7 +208,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point = min(temp)*100
+            self.closest_point = min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['cust_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -221,8 +239,9 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 self.reward = self.all_rewards["REWARD_WAIT"] - self.closest_point
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['capture']:
-                if 0 < self.closest_point < 0.5:
+                if 0 < self.closest_point < 2:
                     self._state = self.all_states['done']
+                    print("done")
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     self.respawn_cust()
                     return ts.transition(self.observation, self.reward, 0.95)
@@ -236,7 +255,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point = min(temp)*100
+            self.closest_point = min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['host_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -268,7 +287,8 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 return ts.transition(self.observation, self.reward, 0.95)
 
             elif action == self.all_actions['capture']:
-                if 0 < self.closest_point < 0.5:
+                if 0 < self.closest_point < 2:
+                    print("done")
                     self._state = self.all_states['done']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     return ts.transition(self.observation, self.reward, 0.95)
@@ -282,7 +302,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             temp = []
             for x in range(0, len(s) - 1):
                 temp.append(s[x][8])
-            self.closest_point = min(temp)*100
+            self.closest_point = min(temp)
             if action == self.all_actions['move_up']:
                 self._state = self.all_states['recharge_req']
                 self.bot.move_up(self._p, self.bot_id)
@@ -314,7 +334,8 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 return ts.transition(self.observation, self.reward, 0.95)
 
             elif action == self.all_actions['capture']:
-                if 0 < self.closest_point < 0.25:
+                if 0 < self.closest_point < 2:
+                    print("done")
                     self._state = self.all_states['high']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     self.bot.set_battery_level(100)
@@ -415,7 +436,13 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                                                     self.viewMatrix,
                                                     self.projectionMatrix))
 
-        self.observation = np.asarray([item for sublist in t for item in sublist], dtype=np.float)
+        # print(t)
+        # try:
+
+        temp = np.asarray(t, dtype=np.float)
+        self.observation = temp.flatten()
+        # except TypeError :
+        #    pass
 
     def spawn_world(self):
         self._p.resetSimulation()
@@ -424,7 +451,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         n = choice([-5, -3, -1, 1, 3, 5])
         self.table_id = []
         self.plane_id = self._p.loadURDF('plane.urdf')
-        startOrientation = p.getQuaternionFromEuler([0, 0, orientation])
+        startOrientation = self._p.getQuaternionFromEuler([0, 0, orientation])
         for x in range(-5, 6, 2):  # generate table
             for y in range(-5, 6, 2):
                 if x == m and y == n:
@@ -479,4 +506,4 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         startPos = [m, n, 3]
         startOrientation = self._p.getQuaternionFromEuler([0, 0, 0])
         self.cust_id = self._p.loadURDF(PATH_TO_CUSTOMER, startPos,
-                                       startOrientation)
+                                        startOrientation)
