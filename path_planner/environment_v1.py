@@ -60,18 +60,18 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self.all_rewards = {
             "REWARD_WAIT": -1,
             "REWARD_CAPTURE": -3,
-            "REWARD_MOVE_UP": -1,
-            "REWARD_MOVE_DOWN": -1,
-            "REWARD_MOVE_LEFT": -1,
-            "REWARD_MOVE_RIGHT": -1,
+            "REWARD_MOVE_UP": 1,
+            "REWARD_MOVE_DOWN": 1,
+            "REWARD_MOVE_LEFT": 1,
+            "REWARD_MOVE_RIGHT": 1,
             "REWARD_COLLISION": -1500,
-            "REWARD_ACCEPT_R": 1,
-            "REWARD_RECHARGE": 1,
+            "REWARD_ACCEPT_R": -1,
+            "REWARD_RECHARGE": -1,
 
         }
 
         self._p = p
-        self._p.connect(self._p.GUI)  # no GUI
+        self._p.connect(self._p.DIRECT)  # no GUI
 
         projectionMatrix = p.computeProjectionMatrixFOV(
             fov=45.0,
@@ -107,6 +107,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
         self.reward = 0
         self._episode_ended = False
         self._envStepCounter = 0
+        self.rq_done = True
 
     def observation_spec(self):
         """_, _, _, depthImg, _ = self._p.getCameraImage(
@@ -195,6 +196,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             elif action == self.all_actions['capture']:
                 if 0 < self.closest_point < 2:
                     print("done")
+                    self.rq_done = True
                     self._state = self.all_states['done']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     return ts.transition(self.observation, self.reward, 0.95)
@@ -242,6 +244,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 if 0 < self.closest_point < 2:
                     self._state = self.all_states['done']
                     print("done")
+                    self.rq_done = True
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     self.respawn_cust()
                     return ts.transition(self.observation, self.reward, 0.95)
@@ -290,6 +293,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 if 0 < self.closest_point < 2:
                     print("done")
                     self._state = self.all_states['done']
+                    self.rq_done = True
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     return ts.transition(self.observation, self.reward, 0.95)
                 else:
@@ -339,21 +343,23 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                     self._state = self.all_states['high']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] + 1000
                     self.bot.set_battery_level(100)
+                    self.rq_done = True
                     return ts.transition(self.observation, self.reward, 0.95)
                 else:
                     self._state = self.all_states['recharge_req']
                     self.reward = self.all_rewards["REWARD_CAPTURE"] - 500
                     return ts.transition(self.observation, self.reward, 0.95)
 
-        if not self.hlc.is_empty():
+        if not self.hlc.is_empty() and self.rq_done:
 
             if self._state == self.all_states['high']:
                 if action == self.all_actions['accept_req']:
                     request = self.hlc.pop_request()
-
+                    self.rq_done = False
                     if request == 'staff_req':
                         self._state = self.all_states['staff_req']
                         self.reward = self.all_rewards["REWARD_ACCEPT_R"]
+
                         return ts.transition(self.observation, self.reward, 0.95)
                     elif request == 'cust_req':
                         self._state = self.all_states['cust_req']
@@ -366,6 +372,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
             elif self._state == self.all_states['low']:
                 if action == self.all_actions['accept_req']:
                     request = self.hlc.pop_request()
+                    self.rq_done = False
                     if request == 'staff_req':
                         self._state = self.all_states['staff_req']
                         self.reward = self.all_rewards["REWARD_ACCEPT_R"] + 10
@@ -392,6 +399,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
                 self.bot.wait(self._p, self.bot_id)
                 return ts.transition(self.observation, self.reward, 0.95)
             elif action == self.all_actions['recharge']:
+                self.rq_done = False
                 self._state = self.all_states['recharge_req']
                 self.reward = self.all_rewards["REWARD_RECHARGE"]
                 self.bot.wait(self._p, self.bot_id)
@@ -406,7 +414,7 @@ class CustomEnv(py_environment.PyEnvironment, ABC):
 
         if self._state == self.all_states['high'] and self.hlc.is_empty():
             return ts.termination(self.observation, 0)
-        return ts.transition(self.observation, self.reward, 0.95)
+        return ts.transition(self.observation, -100, 0.95)
 
     def update_cam(self):
         distance = 100000
