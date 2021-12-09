@@ -29,12 +29,19 @@ export class ViewOrderPage implements OnInit, OnDestroy {
     console.log("View Order module");
     //this.subscription = this.events.currentMessage.subscribe(message => this.message = message);
   }
+<<<<<<< Updated upstream
 /* to be implemented later on to add s
+=======
+
+>>>>>>> Stashed changes
   addToOrder(item){
     this.notSubmitted.push(item);
     console.log("Item with ID ", item, "was added to cart");
   }
+<<<<<<< Updated upstream
   */
+=======
+>>>>>>> Stashed changes
 
   submitOrder(){
     //order cannot be empty
