@@ -24,6 +24,7 @@
     "@angular/common": "^12.0.2",
     "@angular/compiler": "^12.0.2",
     "@angular/core": "^12.0.2",
+    "@angular/fire": "^7.2.0",
     "@angular/forms": "^12.0.2",
     "@angular/localize": "^12.0.2",
     "@angular/platform-browser": "^12.0.2",
@@ -40,11 +41,13 @@
     "bootstrap-icons": "^1.7.1",
     "datatables.net": "^1.10.20",
     "datatables.net-dt": "^1.10.20",
+    "firebase": "^9.6.0",
     "jquery": "^3.4.1",
     "ng-http-loader": "^10.0.0",
     "rxjs": "^6.6.3",
     "tslib": "^2.0.1",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.4",
+    "rxfire": "^6.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^12.0.2",
