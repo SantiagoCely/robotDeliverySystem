@@ -3,10 +3,10 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EventsService {
-/*
+  /*
   constructor() { }
   private messageSource = new BehaviorSubject('default message');
   currentMessage = this.messageSource.asObservable();

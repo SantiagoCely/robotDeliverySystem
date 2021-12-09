@@ -6,10 +6,11 @@
 
 <ion-content>
   <ion-note>
-    Items added to the order will be displayed here along with the statuses of the food items.
+    Items added to the order will be displayed here along with the statuses of
+    the food items.
   </ion-note>
 
   <ion-note> Order number: {{this.order.id}} </ion-note>
-<br><br>
-  <ion-button size="large" (click)=submitOrder()>SEND ORDER</ion-button>
+  <br /><br />
+  <ion-button size="large" (click)="submitOrder()">SEND ORDER</ion-button>
 </ion-content>

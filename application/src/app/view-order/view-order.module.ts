@@ -7,6 +7,6 @@ import { ViewOrderPage } from './view-order.page';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, ViewOrderPageRoutingModule ],
+  imports: [CommonModule, ViewOrderPageRoutingModule],
 })
 export class ViewOrderPageModule {}

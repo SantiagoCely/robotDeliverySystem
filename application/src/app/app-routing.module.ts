@@ -5,23 +5,29 @@ import { ShouldLoginComponent } from './should-login.component';
 
 const routes: Routes = [
   Shell.childRoutes([
-
     {
       path: '',
       redirectTo: 'browse-menu', //redirect to home later??
-      pathMatch: 'full'
+      pathMatch: 'full',
     },
     {
       path: 'browse-menu',
-      loadChildren: () => import('./browse-menu/browse-menu.module').then( m => m.BrowseMenuPageModule)
+      loadChildren: () =>
+        import('./browse-menu/browse-menu.module').then(
+          (m) => m.BrowseMenuPageModule
+        ),
     },
     {
       path: 'view-order',
-      loadChildren: () => import('./view-order/view-order.module').then( m => m.ViewOrderPageModule)
+      loadChildren: () =>
+        import('./view-order/view-order.module').then(
+          (m) => m.ViewOrderPageModule
+        ),
     },
     {
       path: 'account',
-      loadChildren: () => import('./account/account.module').then( m => m.AccountPageModule)
+      loadChildren: () =>
+        import('./account/account.module').then((m) => m.AccountPageModule),
     },
     {
       path: 'employee',

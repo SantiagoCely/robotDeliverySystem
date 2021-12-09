@@ -5,7 +5,6 @@ import { AccountPage } from './account.page';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule,
-  AccountPageRoutingModule],
+  imports: [CommonModule, AccountPageRoutingModule],
 })
 export class AccountPageModule {}

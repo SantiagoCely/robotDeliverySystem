@@ -10,14 +10,13 @@ import { BrowseMenuPage } from './browse-menu.page';
 
 import { Component, OnInit } from '@angular/core';
 
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     //SIonicModule,
-    BrowseMenuPageRoutingModule
+    BrowseMenuPageRoutingModule,
   ],
-  declarations: [BrowseMenuPage]
+  declarations: [BrowseMenuPage],
 })
 export class BrowseMenuPageModule {}

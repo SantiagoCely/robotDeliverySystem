@@ -6,8 +6,8 @@ import { ViewOrderPage } from './view-order.page';
 const routes: Routes = [
   {
     path: '',
-    component: ViewOrderPage
-  }
+    component: ViewOrderPage,
+  },
 ];
 
 @NgModule({

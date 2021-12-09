@@ -1,95 +1,93 @@
 <header>
-    browse-menu
-<header>
+  browse-menu
+  <header>
+    <body>
+      <button size="small" [routerLink]="['/admin-login']">admin login</button>
 
-<body>
-  <button size="small" [routerLink]="['/admin-login']"
-    >admin login
-  </button>
+      <br /><br />
 
-  <br /><br />
-
-  <div class="scrolling-wrapper">
-    <br />
-    <h2>Burgers</h2>
-    <row
-      class="align-items-center"
-      *ngFor="let item of menuItems; let i = index"
-    >
       <div class="scrolling-wrapper">
-        <card class="item-card" *ngIf="item.type == 'Burgers'">
-          <card-header>{{item.name}}</card-header><br />
+        <br />
+        <h2>Burgers</h2>
+        <row
+          class="align-items-center"
+          *ngFor="let item of menuItems; let i = index"
+        >
+          <div class="scrolling-wrapper">
+            <card class="item-card" *ngIf="item.type == 'Burgers'">
+              <card-header>{{item.name}}</card-header><br />
+              <p>{{item.price}}</p>
+              <button
+                size="small"
+                *ngIf="item.type == 'Burgers'"
+                (click)="addToOrder(item.id)"
+              >
+                <icon name="add-circle-outline"></icon>
+              </button>
+            </card>
+          </div>
+        </row>
+      </div>
+      <br />
+      <h2>Chicken & Fish</h2>
+      <row
+        class="align-items-center"
+        *ngFor="let item of menuItems; let i = index"
+      >
+        <col size="3" />
+        <card class="inline-block" *ngIf="item.type == 'Chicken & Fish'">
+          <p>{{item.name}}</p>
+          <br />
           <p>{{item.price}}</p>
           <button
             size="small"
-            *ngIf="item.type == 'Burgers'"
+            *ngIf="item.type == 'Chicken & Fish'"
             (click)="addToOrder(item.id)"
           >
             <icon name="add-circle-outline"></icon>
           </button>
         </card>
-      </div>
-    </row>
-  </div>
-  <br />
-  <h2>Chicken & Fish</h2>
-  <row
-    class="align-items-center"
-    *ngFor="let item of menuItems; let i = index"
-  >
-    <col size="3">
-      <card class="inline-block" *ngIf="item.type == 'Chicken & Fish'">
-        <p>{{item.name}}</p><br />
-        <p>{{item.price}}</p>
-        <button
-          size="small"
-          *ngIf="item.type == 'Chicken & Fish'"
-          (click)="addToOrder(item.id)"
-        >
-          <icon name="add-circle-outline"></icon>
-        </button>
-      </card>
+      </row>
+      <br />
 
-  </row>
-  <br />
-
-  <h2>Sweets & Treats</h2>
-  <row
-    class="align-items-center"
-    *ngFor="let item of menuItems; let i = index"
-  >
-    <col size="3">
-      <card class="inline-block" *ngIf="item.type == 'Sweets & Treats'">
-        <ion-note>{{item.name}}</ion-note><br />
-        <ion-note>{{item.price}}</ion-note>
-        <button
-          size="small"
-          *ngIf="item.type == 'Sweets & Treats'"
-          (click)="addToOrder(item.id)"
-        >
-          <icon name="add-circle-outline"></icon>
-        </button>
-      </card>
-
-  </row>
-  <br />
-  <h2>Cold Drinks</h2>
-  <row
-    class="align-items-center"
-    *ngFor="let item of menuItems; let i = index"
-  >
-    <col size="3">
-      <card class="inline-block" *ngIf="item.type == 'Cold Drinks'">
-        <p>{{item.name}}</p><br />
-        <p>{{item.price}}</p>
-        <button
-          size="small"
-          *ngIf="item.type == 'Cold Drinks'"
-          (click)="addToOrder(item.id)"
-        >
-          <icon name="add-circle-outline"></icon>
-        </button>
-      </card>
-
-  </row>
-</body>
+      <h2>Sweets & Treats</h2>
+      <row
+        class="align-items-center"
+        *ngFor="let item of menuItems; let i = index"
+      >
+        <col size="3" />
+        <card class="inline-block" *ngIf="item.type == 'Sweets & Treats'">
+          <ion-note>{{item.name}}</ion-note><br />
+          <ion-note>{{item.price}}</ion-note>
+          <button
+            size="small"
+            *ngIf="item.type == 'Sweets & Treats'"
+            (click)="addToOrder(item.id)"
+          >
+            <icon name="add-circle-outline"></icon>
+          </button>
+        </card>
+      </row>
+      <br />
+      <h2>Cold Drinks</h2>
+      <row
+        class="align-items-center"
+        *ngFor="let item of menuItems; let i = index"
+      >
+        <col size="3" />
+        <card class="inline-block" *ngIf="item.type == 'Cold Drinks'">
+          <p>{{item.name}}</p>
+          <br />
+          <p>{{item.price}}</p>
+          <button
+            size="small"
+            *ngIf="item.type == 'Cold Drinks'"
+            (click)="addToOrder(item.id)"
+          >
+            <icon name="add-circle-outline"></icon>
+          </button>
+        </card>
+      </row>
+    </body>
+  </header>
+</header>

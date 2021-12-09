@@ -1,12 +1,11 @@
 //import { MenuItem } from 'src/app/interfaces/menu-item';
 //import { Observable } from 'rxjs';
 
-export interface Order{
+export interface Order {
   id?: string;
   items: string[]; //string array of menu item ids
   status: boolean;
   total: number;
-
 }
 /*
 export class Order{
