@@ -1,0 +1,12 @@
+.scrolling-wrapper-flexbox {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  
+  .item-card {
+    flex: 0 0 auto;
+  }
+}
