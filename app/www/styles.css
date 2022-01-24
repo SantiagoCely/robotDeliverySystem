@@ -391,6 +391,9 @@ ion-card-header.ion-color .ion-inherit-color {
 .md .menu-content-push {
   box-shadow: 4px 0px 16px rgba(0, 0, 0, 0.18);
 }
+ion-input input::-webkit-date-and-time-value {
+  text-align: start;
+}
 /* Basic CSS for apps built with Ionic */
 audio,
 canvas,

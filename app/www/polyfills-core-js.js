@@ -1,4 +1,4 @@
-(self["webpackChunkcapstone"] = self["webpackChunkcapstone"] || []).push([["polyfills-core-js"],{
+(self["webpackChunkcapstonev2"] = self["webpackChunkcapstonev2"] || []).push([["polyfills-core-js"],{
 
 /***/ 7656:
 /*!****************************************************************!*\

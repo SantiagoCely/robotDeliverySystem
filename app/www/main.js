@@ -1,4 +1,4 @@
-(self["webpackChunkcapstone"] = self["webpackChunkcapstone"] || []).push([["main"],{
+(self["webpackChunkcapstonev2"] = self["webpackChunkcapstonev2"] || []).push([["main"],{
 
 /***/ 8255:
 /*!*******************************************************!*\
@@ -41,8 +41,45 @@ __webpack_require__.r(__webpack_exports__);
 
 const routes = [
     {
+        path: 'home',
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_home_home_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./home/home.module */ 3467)).then(m => m.HomePageModule)
+    },
+    {
         path: '',
-        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_tabs_tabs_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./tabs/tabs.module */ 5564)).then(m => m.TabsPageModule)
+        redirectTo: 'browse-menu',
+        pathMatch: 'full'
+    },
+    {
+        path: 'browse-menu',
+        loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("common"), __webpack_require__.e("src_app_browse-menu_browse-menu_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./browse-menu/browse-menu.module */ 6680)).then(m => m.BrowseMenuPageModule)
+    },
+    {
+        path: 'view-order',
+        loadChildren: () => Promise.all(/*! import() */[__webpack_require__.e("common"), __webpack_require__.e("src_app_view-order_view-order_module_ts")]).then(__webpack_require__.bind(__webpack_require__, /*! ./view-order/view-order.module */ 5456)).then(m => m.ViewOrderPageModule)
+    },
+    {
+        path: 'account',
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_account_account_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./account/account.module */ 3879)).then(m => m.AccountPageModule)
+    },
+    {
+        path: 'admin-login',
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_admin-login_admin-login_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./admin-login/admin-login.module */ 2806)).then(m => m.AdminLoginPageModule)
+    },
+    {
+        path: 'view-current-orders',
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_view-current-orders_view-current-orders_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./view-current-orders/view-current-orders.module */ 6418)).then(m => m.ViewCurrentOrdersPageModule)
+    },
+    {
+        path: 'view-analytics',
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_view-analytics_view-analytics_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./view-analytics/view-analytics.module */ 1103)).then(m => m.ViewAnalyticsPageModule)
+    },
+    {
+        path: 'edit-menu',
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_edit-menu_edit-menu_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./edit-menu/edit-menu.module */ 9229)).then(m => m.EditMenuPageModule)
+    },
+    {
+        path: 'edit-layout',
+        loadChildren: () => __webpack_require__.e(/*! import() */ "src_app_edit-layout_edit-layout_module_ts").then(__webpack_require__.bind(__webpack_require__, /*! ./edit-layout/edit-layout.module */ 6185)).then(m => m.EditLayoutPageModule)
     }
 ];
 let AppRoutingModule = class AppRoutingModule {
@@ -71,20 +108,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppComponent": () => (/* binding */ AppComponent)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 4762);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4762);
 /* harmony import */ var _raw_loader_app_component_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !raw-loader!./app.component.html */ 1106);
 /* harmony import */ var _app_component_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component.scss */ 3069);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var src_app_services_events_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! src/app/services/events.service */ 106);
+
 
 
 
 
 let AppComponent = class AppComponent {
-    constructor() { }
+    constructor(events) {
+        this.events = events;
+        //this.initializeApp();
+    }
+    ngOnInit() {
+        this.subscription = this.events.currentMessage.subscribe(message => this.message = message);
+    }
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 };
-AppComponent.ctorParameters = () => [];
-AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Component)({
+AppComponent.ctorParameters = () => [
+    { type: src_app_services_events_service__WEBPACK_IMPORTED_MODULE_2__.EventsService }
+];
+AppComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.Component)({
         selector: 'app-root',
         template: _raw_loader_app_component_html__WEBPACK_IMPORTED_MODULE_0__.default,
         styles: [_app_component_scss__WEBPACK_IMPORTED_MODULE_1__.default]
@@ -106,18 +156,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AppModule": () => (/* binding */ AppModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tslib */ 4762);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 7716);
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/platform-browser */ 9075);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4762);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/platform-browser */ 9075);
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/router */ 9895);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ionic/angular */ 476);
-/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app-routing.module */ 158);
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app.component */ 5041);
-/* harmony import */ var angularfire2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! angularfire2 */ 2372);
-/* harmony import */ var angularfire2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(angularfire2__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! angularfire2/firestore */ 4198);
-/* harmony import */ var angularfire2_firestore__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(angularfire2_firestore__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _credentials__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./credentials */ 6164);
+/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ionic/angular */ 476);
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app.component */ 5041);
+/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./app-routing.module */ 158);
+/* harmony import */ var _angular_fire_app__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/fire/app */ 127);
+/* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/fire/firestore */ 630);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../environments/environment */ 2340);
 
 
 
@@ -125,26 +173,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import google firebase modules
-// https://ionicframework.com/blog/building-ionic-apps-with-firestore/
 
 
 
+//const app = initializeApp(environment.firebaseConfig);
+//const analytics = getAnalytics(app);
 let AppModule = class AppModule {
 };
-AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
-        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_1__.AppComponent],
+AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.NgModule)({
+        declarations: [_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent],
         entryComponents: [],
         imports: [
-            _angular_platform_browser__WEBPACK_IMPORTED_MODULE_7__.BrowserModule,
-            _ionic_angular__WEBPACK_IMPORTED_MODULE_8__.IonicModule.forRoot(),
-            _app_routing_module__WEBPACK_IMPORTED_MODULE_0__.AppRoutingModule,
-            angularfire2__WEBPACK_IMPORTED_MODULE_2__.AngularFireModule.initializeApp(_credentials__WEBPACK_IMPORTED_MODULE_4__.firebaseConfig),
-            angularfire2_firestore__WEBPACK_IMPORTED_MODULE_3__.AngularFirestoreModule
+            _angular_platform_browser__WEBPACK_IMPORTED_MODULE_5__.BrowserModule,
+            _ionic_angular__WEBPACK_IMPORTED_MODULE_6__.IonicModule.forRoot(),
+            _app_routing_module__WEBPACK_IMPORTED_MODULE_1__.AppRoutingModule,
+            (0,_angular_fire_app__WEBPACK_IMPORTED_MODULE_7__.provideFirebaseApp)(() => (0,_angular_fire_app__WEBPACK_IMPORTED_MODULE_7__.initializeApp)(_environments_environment__WEBPACK_IMPORTED_MODULE_2__.environment.firebaseConfig)),
+            (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_8__.provideFirestore)(() => (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_8__.getFirestore)()),
+            //AngularFireModule.initalizeApp(environment.firebaseConfig),
+            //AngularFireDatabaseModule
         ],
-        providers: [{ provide: _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouteReuseStrategy, useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_8__.IonicRouteStrategy }],
-        bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_1__.AppComponent],
+        providers: [{ provide: _angular_router__WEBPACK_IMPORTED_MODULE_9__.RouteReuseStrategy, useClass: _ionic_angular__WEBPACK_IMPORTED_MODULE_6__.IonicRouteStrategy }],
+        bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_0__.AppComponent],
     })
 ], AppModule);
 
@@ -152,28 +202,37 @@ AppModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
 
 /***/ }),
 
-/***/ 6164:
-/*!********************************!*\
-  !*** ./src/app/credentials.ts ***!
-  \********************************/
+/***/ 106:
+/*!********************************************!*\
+  !*** ./src/app/services/events.service.ts ***!
+  \********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "firebaseConfig": () => (/* binding */ firebaseConfig)
+/* harmony export */   "EventsService": () => (/* binding */ EventsService)
 /* harmony export */ });
-// google firestore Credentials
-// https://ionicframework.com/blog/building-ionic-apps-with-firestore/
-const firebaseConfig = {
-    apiKey: "AIzaSyBJUV6W_YqCx8hZ7Wo1Dvt1K3EDug1nB_w",
-    authDomain: "ceg4912-3.firebaseapp.com",
-    projectId: "ceg4912-3",
-    storageBucket: "ceg4912-3.appspot.com",
-    messagingSenderId: "217552768659",
-    appId: "1:217552768659:web:54631bcefa32bdf76c0766",
-    measurementId: "G-CS6XDTTXGF"
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ 4762);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ 6215);
+
+
+
+let EventsService = class EventsService {
+    constructor() {
+        this.messageSource = new rxjs__WEBPACK_IMPORTED_MODULE_0__.BehaviorSubject('default message');
+        this.currentMessage = this.messageSource.asObservable();
+    }
+    changeMessage(message) {
+        this.messageSource.next(message);
+    }
 };
+EventsService.ctorParameters = () => [];
+EventsService = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Injectable)({ providedIn: 'root' })
+], EventsService);
+
 
 
 /***/ }),
@@ -193,7 +252,16 @@ __webpack_require__.r(__webpack_exports__);
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 const environment = {
-    production: false
+    production: false,
+    firebaseConfig: {
+        apiKey: "AIzaSyBJUV6W_YqCx8hZ7Wo1Dvt1K3EDug1nB_w",
+        authDomain: "ceg4912-3.firebaseapp.com",
+        projectId: "ceg4912-3",
+        storageBucket: "ceg4912-3.appspot.com",
+        messagingSenderId: "217552768659",
+        appId: "1:217552768659:web:768603fec702dab26c0766",
+        measurementId: "G-7EWHL30LVT"
+    }
 };
 /*
  * For easier debugging in development mode, you can import the following file
@@ -390,7 +458,7 @@ var map = {
 		"node_modules_ionic_core_dist_esm_ion-searchbar_entry_js"
 	],
 	"./ion-segment_2.entry.js": [
-		3174,
+		6164,
 		"common",
 		"node_modules_ionic_core_dist_esm_ion-segment_2_entry_js"
 	],
@@ -493,7 +561,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-app>\n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<ion-app>\n  <ion-router-outlet></ion-router-outlet>\n</ion-app>\n\n\n<ion-tabs>\n  <ion-tab-bar slot=\"bottom\">\n    <ion-tab-button tab=\"menu\" routerLinkActive=\"tab-selected\" routerLink=\"/browse-menu\">\n      <ion-icon src=\"assets/custom-icons/noun_food menu_4227968.svg\"></ion-icon>\n      <ion-label>Menu</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"order\" routerLink=\"/view-order\">\n      <ion-icon src=\"assets/custom-icons/noun_cloche_3725755.svg\"></ion-icon>\n      <ion-label>View Order</ion-label>\n    </ion-tab-button>\n\n    <ion-tab-button tab=\"account\" routerLink=\"/account\">\n      <ion-icon src=\"assets\\custom-icons\\noun_User_3386846.svg\"></ion-icon>\n      <ion-label>Account</ion-label>\n    </ion-tab-button>\n  </ion-tab-bar>\n</ion-tabs>\n");
 
 /***/ })
 

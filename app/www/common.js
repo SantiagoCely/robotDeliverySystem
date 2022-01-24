@@ -1,4 +1,4 @@
-(self["webpackChunkcapstone"] = self["webpackChunkcapstone"] || []).push([["common"],{
+(self["webpackChunkcapstonev2"] = self["webpackChunkcapstonev2"] || []).push([["common"],{
 
 /***/ 8225:
 /*!*********************************************************************!*\
@@ -440,109 +440,147 @@ const openURL = async (url, ev, direction, animation) => {
 
 /***/ }),
 
-/***/ 8556:
-/*!******************************************************************!*\
-  !*** ./src/app/explore-container/explore-container.component.ts ***!
-  \******************************************************************/
+/***/ 910:
+/*!******************************************!*\
+  !*** ./src/app/services/cart.service.ts ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ExploreContainerComponent": () => (/* binding */ ExploreContainerComponent)
+/* harmony export */   "CartService": () => (/* binding */ CartService)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 4762);
-/* harmony import */ var _raw_loader_explore_container_component_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !raw-loader!./explore-container.component.html */ 6993);
-/* harmony import */ var _explore_container_component_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./explore-container.component.scss */ 3643);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 4762);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var src_app_services_crud_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! src/app/services/crud.service */ 3927);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/operators */ 5257);
+
+// used to implement a local cart service and store items added to cart before order is submitted
 
 
 
-
-let ExploreContainerComponent = class ExploreContainerComponent {
-    constructor() { }
-    ngOnInit() { }
+let CartService = class CartService {
+    constructor(crudService) {
+        this.crudService = crudService;
+        this.items = [];
+        //item: MenuItem;
+        this.total_price = 0;
+        this.total_cart_quantity = 0;
+        this.notSubmitted = 0;
+    }
+    getCartTotalQuantity() {
+        console.log("number of items: ", this.total_cart_quantity);
+        return this.total_cart_quantity;
+    }
+    getCartItems() {
+        console.log("items: ", this.items);
+        return this.items;
+    }
+    getTotal() {
+        return this.total_price;
+    }
+    removeItem(id) {
+        var index = this.items.indexOf(id);
+        this.items.splice(index);
+        --this.total_cart_quantity;
+        --this.notSubmitted;
+        this.crudService.getMenuById(id).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.take)(1)).subscribe(item => {
+            this.total_price -= item.price;
+            console.log("item price: ", item.price);
+        });
+        console.log("added ", id, " removed from order ", "total price: ", this.total_price);
+    }
+    addToLocalCart(id) {
+        this.items.push(id);
+        ++this.total_cart_quantity;
+        ++this.notSubmitted;
+        this.crudService.getMenuById(id).pipe((0,rxjs_operators__WEBPACK_IMPORTED_MODULE_1__.take)(1)).subscribe(item => {
+            this.total_price += item.price;
+            console.log("item price: ", item.price);
+        });
+        console.log("added ", id, " to order, not yet submitted", "total price: ", this.total_price);
+    }
+    clearLocalCart() {
+        this.items = [];
+        this.total_cart_quantity = 0;
+        this.total_price = 0;
+    }
 };
-ExploreContainerComponent.ctorParameters = () => [];
-ExploreContainerComponent.propDecorators = {
-    name: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_2__.Input }]
-};
-ExploreContainerComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Component)({
-        selector: 'app-explore-container',
-        template: _raw_loader_explore_container_component_html__WEBPACK_IMPORTED_MODULE_0__.default,
-        styles: [_explore_container_component_scss__WEBPACK_IMPORTED_MODULE_1__.default]
+CartService.ctorParameters = () => [
+    { type: src_app_services_crud_service__WEBPACK_IMPORTED_MODULE_0__.CrudService }
+];
+CartService = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Injectable)({
+        providedIn: 'root'
     })
-], ExploreContainerComponent);
+], CartService);
 
 
 
 /***/ }),
 
-/***/ 581:
-/*!***************************************************************!*\
-  !*** ./src/app/explore-container/explore-container.module.ts ***!
-  \***************************************************************/
+/***/ 3927:
+/*!******************************************!*\
+  !*** ./src/app/services/crud.service.ts ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ExploreContainerComponentModule": () => (/* binding */ ExploreContainerComponentModule)
+/* harmony export */   "CrudService": () => (/* binding */ CrudService)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ 4762);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 7716);
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common */ 8583);
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ 3679);
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ionic/angular */ 476);
-/* harmony import */ var _explore_container_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./explore-container.component */ 8556);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! tslib */ 4762);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 7716);
+/* harmony import */ var _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/fire/firestore */ 630);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ 9895);
 
 
+//import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 
 
-
-
-let ExploreContainerComponentModule = class ExploreContainerComponentModule {
+let CrudService = class CrudService {
+    constructor(afs, router) {
+        this.afs = afs;
+        this.router = router;
+    }
+    createOrder(order) {
+        const orderRef = (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.collection)(this.afs, 'Orders');
+        return (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.addDoc)(orderRef, order);
+    }
+    getMenuItems() {
+        const menuRef = (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.collection)(this.afs, 'MenuItems');
+        return (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.collectionData)(menuRef, { idField: 'id' });
+        //  return collectionData(menuRef, {id: 'key'})
+        //return this.afs.collection('MenuItems').snapshotChanges();
+    }
+    getMenuById(id) {
+        const menuRef = (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.doc)(this.afs, `MenuItems/${id}`);
+        return (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.docData)(menuRef, { idField: 'id' });
+    }
+    /*
+      getMenuByType(type): Observable<MenuItem[]> {
+        const menuRef = doc(this.afs, 'MenuItems/');
+        return docData(menuRef) as Observable<MenuItem>;
+      }
+      */
+    updateOrder(order, item) {
+        const orderRef = (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.doc)(this.afs, `Orders/${order.id}`);
+        return (0,_angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.updateDoc)(orderRef, { items: item });
+    }
 };
-ExploreContainerComponentModule = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.NgModule)({
-        imports: [_angular_common__WEBPACK_IMPORTED_MODULE_3__.CommonModule, _angular_forms__WEBPACK_IMPORTED_MODULE_4__.FormsModule, _ionic_angular__WEBPACK_IMPORTED_MODULE_5__.IonicModule],
-        declarations: [_explore_container_component__WEBPACK_IMPORTED_MODULE_0__.ExploreContainerComponent],
-        exports: [_explore_container_component__WEBPACK_IMPORTED_MODULE_0__.ExploreContainerComponent]
+CrudService.ctorParameters = () => [
+    { type: _angular_fire_firestore__WEBPACK_IMPORTED_MODULE_0__.Firestore },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_1__.Router }
+];
+CrudService = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_3__.Injectable)({
+        providedIn: 'root'
     })
-], ExploreContainerComponentModule);
+], CrudService);
 
 
-
-/***/ }),
-
-/***/ 3643:
-/*!********************************************************************!*\
-  !*** ./src/app/explore-container/explore-container.component.scss ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("#container {\n  text-align: center;\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 50%;\n  transform: translateY(-50%);\n}\n\n#container strong {\n  font-size: 20px;\n  line-height: 26px;\n}\n\n#container p {\n  font-size: 16px;\n  line-height: 22px;\n  color: #8c8c8c;\n  margin: 0;\n}\n\n#container a {\n  text-decoration: none;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImV4cGxvcmUtY29udGFpbmVyLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0Usa0JBQUE7RUFFQSxrQkFBQTtFQUNBLE9BQUE7RUFDQSxRQUFBO0VBQ0EsUUFBQTtFQUNBLDJCQUFBO0FBQUY7O0FBR0E7RUFDRSxlQUFBO0VBQ0EsaUJBQUE7QUFBRjs7QUFHQTtFQUNFLGVBQUE7RUFDQSxpQkFBQTtFQUVBLGNBQUE7RUFFQSxTQUFBO0FBRkY7O0FBS0E7RUFDRSxxQkFBQTtBQUZGIiwiZmlsZSI6ImV4cGxvcmUtY29udGFpbmVyLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI2NvbnRhaW5lciB7XG4gIHRleHQtYWxpZ246IGNlbnRlcjtcblxuICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gIGxlZnQ6IDA7XG4gIHJpZ2h0OiAwO1xuICB0b3A6IDUwJTtcbiAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKC01MCUpO1xufVxuXG4jY29udGFpbmVyIHN0cm9uZyB7XG4gIGZvbnQtc2l6ZTogMjBweDtcbiAgbGluZS1oZWlnaHQ6IDI2cHg7XG59XG5cbiNjb250YWluZXIgcCB7XG4gIGZvbnQtc2l6ZTogMTZweDtcbiAgbGluZS1oZWlnaHQ6IDIycHg7XG5cbiAgY29sb3I6ICM4YzhjOGM7XG5cbiAgbWFyZ2luOiAwO1xufVxuXG4jY29udGFpbmVyIGEge1xuICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XG59Il19 */");
-
-/***/ }),
-
-/***/ 6993:
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/explore-container/explore-container.component.html ***!
-  \**********************************************************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("<div id=\"container\">\n  <strong>{{ name }}</strong>\n  <p>Explore <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://ionicframework.com/docs/components\">UI Components</a></p>\n</div>");
 
 /***/ })
 
