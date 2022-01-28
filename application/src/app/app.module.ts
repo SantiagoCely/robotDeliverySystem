@@ -16,15 +16,14 @@ import { FallbackComponent } from './fallback.component';
 import { ShouldLoginComponent } from './should-login.component';
 
 // Firebase main
-import { AngularFireModule } from "@angular/fire/compat";
+import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '@env/environment';
 
 // Other modules
-import { AngularFireAuthModule } from "@angular/fire/compat/auth";
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
-
 
 import { NgHttpLoaderModule } from 'ng-http-loader';
 @NgModule({

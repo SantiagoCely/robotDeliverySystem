@@ -10,8 +10,8 @@
 // bundle, and you should not use it for any sensitive information like passwords or keys.
 import { env } from './.env';
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
 
 export const environment = {
   production: false,
@@ -21,14 +21,14 @@ export const environment = {
 
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  firebaseConfig : {
-    apiKey: "AIzaSyBJUV6W_YqCx8hZ7Wo1Dvt1K3EDug1nB_w",
-    authDomain: "ceg4912-3.firebaseapp.com",
-    projectId: "ceg4912-3",
-    storageBucket: "ceg4912-3.appspot.com",
-    messagingSenderId: "217552768659",
-    appId: "1:217552768659:web:75c079be05eb1f386c0766",
-    measurementId: "G-MVM4FZ424H"
+  firebaseConfig: {
+    apiKey: 'AIzaSyBJUV6W_YqCx8hZ7Wo1Dvt1K3EDug1nB_w',
+    authDomain: 'ceg4912-3.firebaseapp.com',
+    projectId: 'ceg4912-3',
+    storageBucket: 'ceg4912-3.appspot.com',
+    messagingSenderId: '217552768659',
+    appId: '1:217552768659:web:75c079be05eb1f386c0766',
+    measurementId: 'G-MVM4FZ424H',
   },
   version: env.npm_package_version + '-dev',
   serverUrl: '/api',
@@ -59,8 +59,8 @@ export const environment = {
 };
 
 // Initialize Firebase
-const app = initializeApp(environment.firebaseConfig)
-const analytics = getAnalytics(app)
+const app = initializeApp(environment.firebaseConfig);
+const analytics = getAnalytics(app);
 
 /*
  * For easier debugging in development mode, you can import the following file
