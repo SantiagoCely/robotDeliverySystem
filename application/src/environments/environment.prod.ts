@@ -5,9 +5,20 @@
 // Note that as usual, any environment variables you expose through it will end up in your
 // bundle, and you should not use it for any sensitive information like passwords or keys.
 import { env } from './.env';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
 export const environment = {
   production: true,
+  firebaseConfig : {
+    apiKey: "AIzaSyBJUV6W_YqCx8hZ7Wo1Dvt1K3EDug1nB_w",
+    authDomain: "ceg4912-3.firebaseapp.com",
+    projectId: "ceg4912-3",
+    storageBucket: "ceg4912-3.appspot.com",
+    messagingSenderId: "217552768659",
+    appId: "1:217552768659:web:75c079be05eb1f386c0766",
+    measurementId: "G-MVM4FZ424H"
+  },
   version: env.npm_package_version,
   serverUrl: 'https://api.chucknorris.io',
   defaultLanguage: 'en-US',
@@ -34,3 +45,7 @@ export const environment = {
   Oidc_clearHashAfterLogin: false, // https://github.com/manfredsteyer/angular-oauth2-oidc/issues/457#issuecomment-431807040,
   Oidc_nonceStateSeparator: 'semicolon', // Real semicolon gets mangled by IdentityServer's URI encoding
 };
+
+// Initialize Firebase
+const app = initializeApp(environment.firebaseConfig)
+const analytics = getAnalytics(app)

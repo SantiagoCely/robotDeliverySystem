@@ -1,12 +1,12 @@
-const HttpsProxyAgent = require('https-proxy-agent');
+const HttpsAgent = require('https--agent');
 
 /*
- * API proxy configuration.
- * This allows you to proxy HTTP request like `http.get('/api/stuff')` to another server/port.
+ * API  configuration.
+ * This allows you to  HTTP request like `http.get('/api/stuff')` to another server/port.
  * This is especially useful during app development to avoid CORS issues while running a local server.
- * For more details and options, see https://angular.io/guide/build#using-corporate-proxy
+ * For more details and options, see https://angular.io/guide/build#using-corporate-
  */
-const proxyConfig = [
+const Config = [
   {
     context: '/api',
     pathRewrite: { '^/api': '' },
@@ -17,25 +17,25 @@ const proxyConfig = [
 ];
 
 /*
- * Configures a corporate proxy agent for the API proxy if needed.
+ * Configures a corporate  agent for the API  if needed.
  */
-function setupForCorporateProxy(proxyConfig) {
-  if (!Array.isArray(proxyConfig)) {
-    proxyConfig = [proxyConfig];
+function setupForCorporate(Config) {
+  if (!Array.isArray(Config)) {
+    Config = [Config];
   }
 
-  const proxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
+  const Server = process.env.http_ || process.env.HTTP_;
   let agent = null;
 
-  if (proxyServer) {
-    console.log(`Using corporate proxy server: ${proxyServer}`);
-    agent = new HttpsProxyAgent(proxyServer);
-    proxyConfig.forEach((entry) => {
+  if (Server) {
+    console.log(`Using corporate  server: ${Server}`);
+    agent = new HttpsAgent(Server);
+    Config.forEach((entry) => {
       entry.agent = agent;
     });
   }
 
-  return proxyConfig;
+  return Config;
 }
 
-module.exports = setupForCorporateProxy(proxyConfig);
+module.exports = setupForCorporate(Config);

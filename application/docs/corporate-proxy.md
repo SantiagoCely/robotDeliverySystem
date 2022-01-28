@@ -1,45 +1,45 @@
-# Working behind a corporate proxy
+# Working behind a corporate
 
 ## Environment
 
-Most tools (including npm and git) use the `HTTP_PROXY` and `HTTPS_PROXY` environment variables to work with a
-corporate proxy.
+Most tools (including npm and git) use the `HTTP_` and `HTTPS_` environment variables to work with a
+corporate .
 
 ### Windows
 
-In Windows environments, add the `HTTP_PROXY` and `HTTPS_PROXY` system environment variable, with these values:
+In Windows environments, add the `HTTP_` and `HTTPS_` system environment variable, with these values:
 
-- HTTP_PROXY: `http://<username>:<password>@<proxy_server>:<proxy_port>`
-- HTTPS_PROXY: `%HTTP_PROXY%`
+- HTTP_: `http://<username>:<password>@<_server>:<_port>`
+- HTTPS_: `%HTTP_%`
 
 ### Unix
 
 Add these lines to your `~/.bash_profile` or `~/.profile`:
 
 ```sh
-export HTTP_PROXY="http://<username>:<password>@<proxy_server>:<proxy_port>"
-export HTTPS_PROXY="$HTTP_PROXY"
+export HTTP_="http://<username>:<password>@<_server>:<_port>"
+export HTTPS_="$HTTP_"
 ```
 
-## Proxy with SSL custom certificate
+##  with SSL custom certificate
 
-Some proxy like **zscaler** use a custom SSL certificate to inspect request, which may cause npm commands to fail.
+Some  like **zscaler** use a custom SSL certificate to inspect request, which may cause npm commands to fail.
 
 To solve this problem, you can disable the `strict-ssl` option in npm.
 
-## Proxy exceptions
+##  exceptions
 
-If you need to access repositories on your local network that should bypass proxy, set the `NO_PROXY` environment
-variable, in the same way as `HTTP_PROXY`:
+If you need to access repositories on your local network that should bypass , set the `NO_` environment
+variable, in the same way as `HTTP_`:
 
 ### Windows
 
-- NO_PROXY: `127.0.0.1, localhost, <your_local_server_ip_or_hostname>`
+- NO_: `127.0.0.1, localhost, <your_local_server_ip_or_hostname>`
 
 ### Unix
 
 ```sh
-export NO_PROXY="127.0.0.1, localhost, <your_local_server_ip_or_hostname>"
+export NO_="127.0.0.1, localhost, <your_local_server_ip_or_hostname>"
 ```
 
 ### Npm

@@ -9,9 +9,27 @@
 // Note that as usual, any environment variables you expose through it will end up in your
 // bundle, and you should not use it for any sensitive information like passwords or keys.
 import { env } from './.env';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 
 export const environment = {
   production: false,
+
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  firebaseConfig : {
+    apiKey: "AIzaSyBJUV6W_YqCx8hZ7Wo1Dvt1K3EDug1nB_w",
+    authDomain: "ceg4912-3.firebaseapp.com",
+    projectId: "ceg4912-3",
+    storageBucket: "ceg4912-3.appspot.com",
+    messagingSenderId: "217552768659",
+    appId: "1:217552768659:web:75c079be05eb1f386c0766",
+    measurementId: "G-MVM4FZ424H"
+  },
   version: env.npm_package_version + '-dev',
   serverUrl: '/api',
   defaultLanguage: 'en-US',
@@ -39,6 +57,10 @@ export const environment = {
   Oidc_clearHashAfterLogin: false, // https://github.com/manfredsteyer/angular-oauth2-oidc/issues/457#issuecomment-431807040,
   Oidc_nonceStateSeparator: 'semicolon', // Real semicolon gets mangled by IdentityServer's URI encoding
 };
+
+// Initialize Firebase
+const app = initializeApp(environment.firebaseConfig)
+const analytics = getAnalytics(app)
 
 /*
  * For easier debugging in development mode, you can import the following file

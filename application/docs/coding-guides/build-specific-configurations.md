@@ -96,9 +96,9 @@ const proxyConfig = [
     secure: false,
   },
   {
-    context: '/auth',
-    pathRewrite: { '^/auth': '' },
-    target: `${process.env.API_PROXY_HOST}/auth`,
+    context: '/',
+    pathRewrite: { '^/': '' },
+    target: `${process.env.API_PROXY_HOST}/`,
     changeOrigin: true,
     secure: false,
   },
