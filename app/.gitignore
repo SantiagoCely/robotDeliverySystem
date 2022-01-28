@@ -36,5 +36,4 @@ dist/*
 /platforms
 /plugins
 www/*
-!www/README.md
 >>>>>>> Stashed changes
