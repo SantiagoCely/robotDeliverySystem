@@ -12,4 +12,10 @@ export class EditMenuPage implements OnInit {
   ngOnInit() {
   }
 
+  editMenuItem(){
+    
+
+  }
+
+
 }
