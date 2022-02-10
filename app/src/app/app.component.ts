@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
-import { EventsService } from 'src/app/services/events.service';
+import { EventsService } from './services/events.service';
 import { Subscription } from 'rxjs';
+import { Router } from "@angular/router";
+
 
 @Component({
   selector: 'app-root',
@@ -12,6 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   constructor(
 
+    private router: Router,
     private events: EventsService
   ) {
     //this.initializeApp();
@@ -22,6 +25,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
   this.subscription.unsubscribe();
+  }
+
+  viewOrder() {
+    this.router.navigateByUrl('view-order');
   }
 
 

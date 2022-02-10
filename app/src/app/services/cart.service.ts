@@ -1,7 +1,7 @@
 // used to implement a local cart service and store items added to cart before order is submitted
 import { Injectable } from '@angular/core';
-import { MenuItem } from 'src/app/interfaces/menu-item';
-import { CrudService } from 'src/app/services/crud.service';
+import { MenuItem } from '../interfaces/menu-item';
+import { CrudService } from '../services/crud.service';
 import { take } from 'rxjs/operators';
 
 @Injectable({

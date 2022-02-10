@@ -1,11 +1,11 @@
 <ion-header>
-  <ion-toolbar color="success">
-    <ion-title>Login</ion-title>
+  <ion-toolbar color="danger">
+    <ion-title>User Registeration</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form class="form" [formGroup]="userForm" (ngSubmit)="signIn(userForm.value)">
+  <form class="form" [formGroup]="userForm" (ngSubmit)="signUp(userForm.value)">
     <ion-item>
       <ion-label position="floating">Email</ion-label>
       <ion-input type="text" formControlName="email"></ion-input>
@@ -28,8 +28,10 @@
         </div>
     </ng-container>
 
-    <ion-button type="submit" expand="block" [disabled]="!userForm.valid">Signin</ion-button>
+    <ion-button type="submit" expand="block" [disabled]="!userForm.valid">Register</ion-button>
 
     <label class="ion-text-center" color="danger">{{errorMsg}}</label>
+    <label class="ion-text-center" color="success">{{successMsg}}</label>
   </form>
+  <p class="ion-text-center">Already registered? <a (click)="goToLogin()">Login</a></p>
 </ion-content>

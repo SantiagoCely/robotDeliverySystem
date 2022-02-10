@@ -32,8 +32,8 @@ npm-debug.log*
 /coverage
 dist/*
 !dist/README.md
-/node_modules
-/platforms
-/plugins
-www/*
+/node_modules/*
+/platforms/*
+/plugins/*
+/www/*
 >>>>>>> Stashed changes

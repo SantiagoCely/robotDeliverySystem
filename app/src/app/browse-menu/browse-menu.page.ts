@@ -1,13 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef, EventEmitter, Output } from '@angular/core';
 //import { AlertController } from '@ionic/angular';
-import { CrudService } from 'src/app/services/crud.service';
+import { CrudService } from '../services/crud.service';
 //import { EventsService } from 'src/app/services/events.service';
 //import { Observable, Subscription } from 'rxjs';
 //import { map, filter } from 'rxjs/operators';
 //import { Firestore } from '@angular/fire/firestore';
-import { MenuItem } from 'src/app/interfaces/menu-item';
-import { CartService } from 'src/app/services/cart.service';
+import { MenuItem } from '../interfaces/menu-item';
+import { CartService } from '../services/cart.service';
 
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-browse-menu',
@@ -28,6 +29,7 @@ export class BrowseMenuPage implements OnInit {
   //message: string;
   //subscription: Subscription;
   constructor(
+    private router: Router,
 
 
     private crudService: CrudService,
@@ -80,6 +82,10 @@ export class BrowseMenuPage implements OnInit {
     }
     console.log("menu items: ", this.menuItems);
 
+  }
+
+  goToSignup() {
+    this.router.navigateByUrl('admin-login');
   }
 
 

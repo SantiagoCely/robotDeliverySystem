@@ -3,13 +3,13 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: '',
     redirectTo: 'browse-menu', //redirect to home later??
     pathMatch: 'full'
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'browse-menu',
@@ -18,10 +18,6 @@ const routes: Routes = [
   {
     path: 'view-order',
     loadChildren: () => import('./view-order/view-order.module').then( m => m.ViewOrderPageModule)
-  },
-  {
-    path: 'account',
-    loadChildren: () => import('./account/account.module').then( m => m.AccountPageModule)
   },
   {
     path: 'admin-login',
@@ -42,6 +38,22 @@ const routes: Routes = [
   {
     path: 'edit-layout',
     loadChildren: () => import('./edit-layout/edit-layout.module').then( m => m.EditLayoutPageModule)
+  },
+  {
+    path: 'registration',
+    loadChildren: () => import('./registration/registration.module').then( m => m.RegistrationPageModule)
+  },
+  {
+    path: 'verify-email',
+    loadChildren: () => import('./verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
+  },
+  {
+    path: 'customer-login',
+    loadChildren: () => import('./customer-login/customer-login.module').then( m => m.CustomerLoginPageModule)
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
   }
 ];
 

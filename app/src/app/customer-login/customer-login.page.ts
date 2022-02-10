@@ -3,12 +3,14 @@ import { Router } from "@angular/router";
 import { IonicAuthService } from '../ionic-auth.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
+
 @Component({
-  selector: 'app-admin-login',
-  templateUrl: './admin-login.page.html',
-  styleUrls: ['./admin-login.page.scss'],
+  selector: 'app-customer-login',
+  templateUrl: './customer-login.page.html',
+  styleUrls: ['./customer-login.page.scss'],
 })
-export class AdminLoginPage implements OnInit {
+export class CustomerLoginPage implements OnInit {
+
   userForm: FormGroup;
   successMsg: string = '';
   errorMsg: string = '';
@@ -61,10 +63,15 @@ export class AdminLoginPage implements OnInit {
       .then((response) => {
         console.log(response)
         this.errorMsg = "";
-        this.router.navigateByUrl('admin');
+        this.router.navigateByUrl('browse-menu');
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
       })
   }
+
+  goToSignup() {
+    this.router.navigateByUrl('registration');
+  }
+
 }

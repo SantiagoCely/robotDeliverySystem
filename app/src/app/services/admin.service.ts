@@ -4,8 +4,8 @@ import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc 
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from "@angular/router";
 //import * as firebase from "firebase/app";
-import { MenuItem } from 'src/app/interfaces/menu-item';
-import { Order } from 'src/app/interfaces/order';
+import { MenuItem } from '../interfaces/menu-item';
+import { Order } from '../interfaces/order';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +57,7 @@ export class AdminService {
 
   }
   removeMenuItem(id){
-    
+
   }
 
   updateOrder(order: Order, item: String){
