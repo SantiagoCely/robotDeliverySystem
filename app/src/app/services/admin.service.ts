@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 //import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
-import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from "@angular/router";
 //import * as firebase from "firebase/app";
@@ -36,31 +36,57 @@ export class AdminService {
   }
 /*
   getMenuByType(type): Observable<MenuItem[]> {
-    const menuRef = doc(this.afs, 'MenuItems/');
-    return docData(menuRef) as Observable<MenuItem>;
+    var menu_items = [];
+    this.getMenuItems().subscribe(res => {
+      if (res.type == type){
+        menu_items.push(res);
+      }
+    })
+    return menu_items;
   }
   */
-  editMenuItemName(id, newName: String){
+  editMenuItemName(id, newName: string){
     const menuRef = doc(this.afs, `MenuItems/${id}`);
     return updateDoc(menuRef, {name: newName});
   }
 
-  editMenuItemPrice(id, newPrice: Number){
+  editMenuItemPrice(id, newPrice: number){
     const menuRef = doc(this.afs, `MenuItems/${id}`);
     return updateDoc(menuRef, {price: newPrice});
   }
 
-  addMenuItemCategory(id, newCategory: String){
+  addMenuItemCategory(id, new_category: string){
+    const menuRef = doc(this.afs, `MenuItems/${id}`);
+    var update_category = [];
+    update_category.push(new_category);
+    this.getMenuById(id).subscribe(res => {
+      res.category.forEach(category => {
+        update_category.push(category);
+      })
+    })
+    return updateDoc(menuRef, {category: update_category});
 
   }
-  removeMenuItemCategory(id, removeCategory: String){
+  removeMenuItemCategory(id, remove_category: string){
+    const menuRef = doc(this.afs, `MenuItems/${id}`);
+    var update_category = []; // temp array to store new category
+    this.getMenuById(id).subscribe(res => {
+      res.category.forEach((category) =>{
+        if (category.includes(remove_category)){
+          update_category.push(category);
+        }
+      })
+    })
 
+    return updateDoc(menuRef, {category: update_category});
   }
-  removeMenuItem(id){
 
+  removeMenuItem(id) {
+    const menuRef = doc(this.afs, `MenuItems/${id}`);
+    return deleteDoc(menuRef);
   }
 
-  updateOrder(order: Order, item: String){
+  updateOrder(order: Order, item: string){
     const orderRef = doc(this.afs, `Orders/${order.id}`);
     return updateDoc(orderRef, {items: item});
 

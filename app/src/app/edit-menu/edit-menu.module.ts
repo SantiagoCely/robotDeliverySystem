@@ -8,12 +8,16 @@ import { EditMenuPageRoutingModule } from './edit-menu-routing.module';
 
 import { EditMenuPage } from './edit-menu.page';
 
+import { EditMenuModalPageModule } from '../edit-menu-modal/edit-menu-modal.module'
+
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    EditMenuPageRoutingModule
+    EditMenuPageRoutingModule,
+    EditMenuModalPageModule
   ],
   declarations: [EditMenuPage]
 })

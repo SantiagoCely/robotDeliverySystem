@@ -30,8 +30,6 @@ export class BrowseMenuPage implements OnInit {
   //subscription: Subscription;
   constructor(
     private router: Router,
-
-
     private crudService: CrudService,
     //private cd: ChangeDetectorRef,
     //private alertCtrl: AlertController,
@@ -43,8 +41,8 @@ export class BrowseMenuPage implements OnInit {
 
 
   addToOrder(id){
-    console.log("trying to add item id: ", id);
-    this.cart.addToLocalCart(id);
+    console.log("trying to add item id from browse menu: ", id);
+    this.cart.publish('items', id);
 
     //this.events.changeMessage(id);
   }

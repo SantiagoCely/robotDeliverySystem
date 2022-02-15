@@ -7,6 +7,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { MenuItem } from 'src/app/interfaces/menu-item';
 import { Order } from 'src/app/interfaces/order';
 import { take } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-view-order',
@@ -19,6 +20,8 @@ export class ViewOrderPage implements OnInit{
   orderId : string;
   total_ordered_quantity: number;
   notSubmitted: MenuItem[] = []; // menu items not yet submitted, and thus not part of the Order yet
+  total = 0;
+
   submitted: MenuItem[] = [];
   //message: string;
   //subscription: Subscription;
@@ -34,20 +37,39 @@ export class ViewOrderPage implements OnInit{
 ){ this.orderId = ""; }
 
   displayLocalCart(){
-    this.notSubmitted = this.cart.getCartItems();
-    console.log("in cart", this.notSubmitted);
-    console.log("total", this.cart.getTotal());
+    console.log("items in cart");
+    this.cart.subscribe('items', (id: any) => {
+      console.log("item in cart, view-order: ", id);
+      console.log("view-order cart 1", this.notSubmitted);
+      this.crudService.getMenuById(id).subscribe( id => {
+        this.notSubmitted.push(id);
+        this.total += id.price;
+        console.log("view-order cart 2", this.notSubmitted);
+        console.log("view-order price ", this.total);
+      })
+    })
   }
 
   displayOrder(){
+    this.cart.subscribe('total_ordered_quantity', (num_items: any) =>{
+      if (num_items > 0){
+        this.order.items.forEach((item) => {
+          this.crudService.getMenuById(item).subscribe( item => {
+            this.submitted.push(item);
+          })
+        })
+      }
+    })
+    /*
     if (this.total_ordered_quantity > 0){
       this.order.items.forEach((item) => {
         this.crudService.getMenuById(item).subscribe( item => {
           this.submitted.push(item);
         })
       })
-    }
+    }*/
   }
+  
   ngOnInit() {
     console.log("View Order module");
     this.displayLocalCart();
@@ -60,11 +82,11 @@ export class ViewOrderPage implements OnInit{
     if (this.orderId = null){
       this.crudService.createOrder(this.order).then(function(docRef){
         this.order.id = docRef.id;
-        this.orderId = this.order.id; 
+        this.orderId = this.order.id;
         console.log("Order created: ", this.order.id);
       })
     }
-
+    /*
     this.notSubmitted.forEach((item) => {
       this.order.items.push(item.id);
     })
@@ -72,7 +94,7 @@ export class ViewOrderPage implements OnInit{
     this.order.total += this.cart.getTotal();
     this.total_ordered_quantity += this.cart.getCartTotalQuantity();
     this.cart.clearLocalCart();
-
+*/
   }
   pay(){
 
