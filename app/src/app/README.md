@@ -1,9 +1,11 @@
 ## Make sure you have the versions indicated below for the packages:
 
 **Ionic**
+
 6.18.1
 
 **NodeJS**
+
 v16.13.0
 
 
