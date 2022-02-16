@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="success">
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form class="form" [formGroup]="userForm" (ngSubmit)="signIn(userForm.value)">
+    <ion-item>
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" formControlName="email"></ion-input>
+    </ion-item>
+
+    <ng-container *ngFor="let error of error_msg.email">
+      <div *ngIf="userForm.get('email').hasError(error.type) && (userForm.get('email').dirty || userForm.get('email').touched)">
+        {{ error.message }}
+      </div>
+    </ng-container>
+
+    <ion-item>
+      <ion-label position="floating" color="primary">Password</ion-label>
+      <ion-input type="password" formControlName="password" class="form-controll" required></ion-input>
+    </ion-item>
+
+    <ng-container *ngFor="let error of error_msg.password">
+        <div *ngIf="userForm.get('password').hasError(error.type) && (userForm.get('password').dirty || userForm.get('password').touched)">
+          {{ error.message }}
+        </div>
+    </ng-container>
+
+    <ion-button type="submit" expand="block" [disabled]="!userForm.valid">Signin</ion-button>
+
+    <label class="ion-text-center" color="danger">{{errorMsg}}</label>
+  </form>
+  <p class="ion-text-center">Not registered yet? <a (click)="goToSignup()">Register</a></p>
+
+  <ion-button expand="block" (click)="doLogin()" color="danger" *ngIf="!isGoogleLogin">
+    <ion-icon slot="start" name="logo-google"></ion-icon>
+    LogIn with Google
+  </ion-button>
+
+  <div *ngIf="isGoogleLogin">
+    <ion-card>
+  <ion-card-header>
+    <ion-card-title class="ion-text-center"><b>{{user.displayName}}</b></ion-card-title>
+
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-img [src]="user.photoURL" style="border-radius: 1px;"></ion-img>
+    <ion-item>
+      <ion-label>email:</ion-label>
+      <span>{{user.email}}</span>
+    </ion-item>
+  </ion-card-content>
+</ion-card>
+
+  <ion-button expand="block" (click)="logout()" color="danger" *ngIf="isGoogleLogin">
+    Log Out
+  </ion-button>
+</div>
+</ion-content>

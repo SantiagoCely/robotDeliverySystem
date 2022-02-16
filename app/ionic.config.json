@@ -1,0 +1,7 @@
+{
+  "name": "capstonev2",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
