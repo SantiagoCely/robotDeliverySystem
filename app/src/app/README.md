@@ -1,4 +1,4 @@
-## Make sure you have the versions indicated below for the packages:
+# Make sure you have the versions indicated below for the packages:
 
 **Ionic**
 
@@ -9,7 +9,7 @@
 v16.13.0
 
 
-To run the app: 
+# To run the app: 
 - clone the repo into your computer
 - navigate to the app folder using the terminal
 - run 'npm install'
