@@ -1,9 +1,20 @@
 <ion-header>
-  <ion-toolbar>
+ <ion-toolbar color="dark">
+
     <ion-title>App Dashboard</ion-title>
   </ion-toolbar>
 </ion-header>
+<style>
+  header {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        margin-bottom: 1.25em;
+        margin-left :5px;
+        text-transform: uppercase;
+      }
 
+</style>
 <ion-content class="ion-padding">
   <ion-grid>
     <ion-row>
@@ -14,18 +25,47 @@
       </ion-col>
     </ion-row>
 
-    <ion-button type="submit" color="danger" expand="block" (click)="signOut()">Signout</ion-button>
+    <header>
+    <div class="ion-text-left">
+      <ion-button type="submit" item-left color="danger" (click)="signOut()">Signout</ion-button>
+    </div>
+</header>
 
-    <ion-button> view current orders </ion-button>
-    <br>
-    <ion-button> edit menu items </ion-button>
-    <br>
-    <ion-button> edit layout </ion-button>
-    <br>
-    <ion-button> view analytics </ion-button>
-    <br>
-    <ion-button> </ion-button>
-    <br>
+<div class="ion-text-center">
+  <header>Robot Commands</header>
+  <ion-button size = "large" color="success">Return to Kitchen</ion-button>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+  <ion-button size = "large" color="success">Deliver Food</ion-button>
+
+  
+      <!--- New line to seperate sections --->
+    <br><br><br>
+ 
+    <ion-button size = "large" color="warning">Greet Customer</ion-button>
+
+    <!--- Small space between buttons --->
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+    <ion-button size = "large" color="warning">Take Order</ion-button>
+  <br><br><br><br>
+
+  <ion-button color="danger">Go to Docking Station</ion-button>
+</div>
+  <br>
+
+    <br><br><br>
+    <div class="ion-text-center">
+    <header>Application Settings</header>
+    <ion-button >View Current Orders</ion-button>
+    <br><br><br>
+    <ion-button>Edit Menu Items</ion-button>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <ion-button>Edit Layout</ion-button>
+    <br><br><br>
+    <ion-button>View Analytics</ion-button>
+    </div>
 
   </ion-grid>
+
 </ion-content>

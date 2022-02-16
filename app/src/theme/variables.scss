@@ -74,6 +74,9 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+  
+
+  --ion-background-color:#fffbcd;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -83,6 +86,8 @@
    */
 
   body {
+    --ion-background-color:#cbefff;
+
     --ion-color-primary: #428cff;
     --ion-color-primary-rgb: 66,140,255;
     --ion-color-primary-contrast: #ffffff;
@@ -227,7 +232,7 @@
 
     --ion-item-background: #1e1e1e;
 
-    --ion-toolbar-background: #1f1f1f;
+    --ion-toolbar-background: #6c5a5a;
 
     --ion-tab-bar-background: #1f1f1f;
 
