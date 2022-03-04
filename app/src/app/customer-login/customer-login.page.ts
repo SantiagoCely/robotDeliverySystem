@@ -57,21 +57,6 @@ export class CustomerLoginPage implements OnInit {
     public loadingController: LoadingController,
     private platform: Platform,
   ) { }
-/*
-  ngOnInit() {
-    this.userForm = this.fb.group({
-      email: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ])),
-      password: new FormControl('', Validators.compose([
-        Validators.minLength(6),
-        Validators.required
-      ])),
-    });
-  }
-  */
-
 
   async ngOnInit() {
     this.userForm = this.fb.group({
