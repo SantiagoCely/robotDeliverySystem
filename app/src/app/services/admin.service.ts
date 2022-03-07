@@ -91,4 +91,14 @@ export class AdminService {
     return updateDoc(orderRef, {items: item});
 
   }
+
+  getOrders(): Observable<Order[]> {
+    const orderRef = collection(this.afs, 'Orders');
+    return collectionData(orderRef, { idField: 'id'}) as Observable <Order[]>;
+  }
+
+  getOrderById(id): Observable<Order> {
+    const orderRef = doc(this.afs, `Orders/${id}`);
+    return docData(orderRef, { idField: 'id' }) as Observable<Order>;
+  }
 }

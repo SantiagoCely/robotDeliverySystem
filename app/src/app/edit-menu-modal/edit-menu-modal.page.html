@@ -5,5 +5,18 @@
 >
   <ng-template>
     <ion-content>Edit Menu Item Modal</ion-content>
+
+    <ion-input id="menuItemName" type="text" placeholder={{item.name}} [(ngModel)]='text'
+              (ionChange)='onMenuItemNameChange($event.target.value)'></ion-input>
+    <br>
+    <ion-input id="menuItemPrice" type="number" placeholder={{item.price}} [(ngModel)]='number'
+              (ionChange)='onMenuItemPriceChange($event.target.value)'></ion-input>
+    <br>
+    <ion-input id="menuItemCategory" placeholder={{item.category}} required="true"></ion-input>
+    <br>
+    <ion-input id="menuItemType" placeholder={{item.type}} required="true"></ion-input>
+
   </ng-template>
+
+
 </ion-modal>

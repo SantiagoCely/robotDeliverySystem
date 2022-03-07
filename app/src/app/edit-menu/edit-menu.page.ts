@@ -4,6 +4,7 @@ import { AdminService } from '../services/admin.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Router } from "@angular/router";
 import { EditMenuModalPage } from '../edit-menu-modal/edit-menu-modal.page';
+
 @Component({
   selector: 'app-edit-menu',
   templateUrl: './edit-menu.page.html',
@@ -19,7 +20,7 @@ export class EditMenuPage implements OnInit {
     public modalController: ModalController
 
   ) {}
-  openEditMenuItem(id){
+  async openEditMenuItem(id){
     // create modal
     // FIGURE OUT HOW TO CREATE AND EDIT MODALS
     const modal = this.modalController.create({
@@ -60,35 +61,6 @@ export class EditMenuPage implements OnInit {
 
   }
 
-  editMenuItemName(id, name){
-    this.adminService.editMenuItemName(id, name);
-    this.adminService.getMenuById(id).subscribe(item => {
-      console.log("new name: " + item.name); // should be updated;
-    })
-  }
-  editMenuItemPrice(id, price){
-    this.adminService.editMenuItemPrice(id, price);
-    this.adminService.getMenuById(id).subscribe(item => {
-      console.log("new price: " + item.name + " " + item.price); // should be updated;
-    })
-  }
-  addMenuItemCategory(id, category){
-    this.adminService.addMenuItemCategory(id, category);
-    this.adminService.getMenuById(id).subscribe(item => {
-      console.log("new category: " + item.name + " " + item.category); // should be updated;
-    })
-  }
-  removeMenuItemCategory(id, category){
-    this.adminService.removeMenuItemCategory(id, category);
-    this.adminService.getMenuById(id).subscribe(item => {
-      console.log("new category: " + item.name + " " + item.category); // should be updated;
-    })
-  }
-  removeMenuItem(id, name){
-    // can add other user control statements here
-    console.log(name + " will be deleted");
-    this.adminService.removeMenuItem(id);
-  }
 
   ngOnInit() {
     console.log("Edit Menu Page")
