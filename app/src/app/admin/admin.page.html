@@ -38,10 +38,10 @@
 
   <ion-button size = "large" color="success">Deliver Food</ion-button>
 
-  
+
       <!--- New line to seperate sections --->
     <br><br><br>
- 
+
     <ion-button size = "large" color="warning">Greet Customer</ion-button>
 
     <!--- Small space between buttons --->
@@ -57,13 +57,15 @@
     <br><br><br>
     <div class="ion-text-center">
     <header>Application Settings</header>
-    <ion-button >View Current Orders</ion-button>
+    <ion-button size="medium" (click)="goToCurrentOrders()">View Current Orders </ion-button>
     <br><br><br>
-    <ion-button>Edit Menu Items</ion-button>
+    <ion-button size="medium" (click)="goToEditMenu()">Edit Menu Items </ion-button>
+
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <ion-button>Edit Layout</ion-button>
+    <ion-button size="medium" (click)="goToEditLayout()">Edit Layout </ion-button>
     <br><br><br>
-    <ion-button>View Analytics</ion-button>
+    <ion-button size="medium" (click)="goToViewAnalytics()">View Analytics </ion-button>
+
     </div>
 
   </ion-grid>

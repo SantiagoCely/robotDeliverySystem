@@ -36,4 +36,22 @@ export class AdminPage implements OnInit {
         console.log(error);
       })
   }
+
+  goToCurrentOrders() {
+    this.router.navigateByUrl('view-current-orders');
+  }
+
+  goToEditMenu() {
+    this.router.navigateByUrl('edit-menu');
+  }
+
+  goToEditLayout() {
+    this.router.navigateByUrl('edit-layout');
+  }
+
+  goToViewAnalytics() {
+    this.router.navigateByUrl('view-analytics');
+  }
+
+
 }

@@ -54,11 +54,11 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
-  },  {
+  },
+  {
     path: 'edit-menu-modal',
     loadChildren: () => import('./edit-menu-modal/edit-menu-modal.module').then( m => m.EditMenuModalPageModule)
-  }
-
+  },
 ];
 
 @NgModule({
