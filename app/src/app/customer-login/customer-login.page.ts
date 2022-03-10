@@ -16,7 +16,7 @@ import * as firebase from 'firebase/auth';
 export class CustomerLoginPage implements OnInit {
 
   public loading: any;
-  public isGoogleLogin = false;
+  public isUserLoggedIn = false;
   public user = null;
 
   userForm: FormGroup;
@@ -79,7 +79,9 @@ export class CustomerLoginPage implements OnInit {
       .then((response) => {
         console.log(response)
         this.errorMsg = "";
-        this.router.navigateByUrl('browse-menu');
+        //this.router.navigateByUrl('browse-menu');
+        this.isUserLoggedIn = true;
+        this.user =  response.user;
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
@@ -113,7 +115,7 @@ export class CustomerLoginPage implements OnInit {
       console.log('else...');
       this.fireAuth.signInWithPopup(new firebase.GoogleAuthProvider()).then(success => {
         console.log('success in google login', success);
-        this.isGoogleLogin = true;
+        this.isUserLoggedIn = true;
         this.user =  success.user;
       }).catch(err => {
         console.log(err.message, 'error in google login');
@@ -127,7 +129,7 @@ export class CustomerLoginPage implements OnInit {
     this.fireAuth.signInWithCredential(credential)
       .then((success) => {
         alert('successfully');
-        this.isGoogleLogin = true;
+        this.isUserLoggedIn = true;
         this.user =  success.user;
         this.loading.dismiss();
       });
@@ -138,7 +140,7 @@ export class CustomerLoginPage implements OnInit {
   }
   logout() {
     this.fireAuth.signOut().then(() => {
-      this.isGoogleLogin = false;
+      this.isUserLoggedIn = false;
     });
   }
 

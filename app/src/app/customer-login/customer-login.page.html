@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form class="form" [formGroup]="userForm" (ngSubmit)="signIn(userForm.value)">
+  <form class="form" [formGroup]="userForm" (ngSubmit)="signIn(userForm.value)" *ngIf="!isUserLoggedIn">
     <ion-item>
       <ion-label position="floating">Email</ion-label>
       <ion-input type="text" formControlName="email"></ion-input>
@@ -31,15 +31,16 @@
     <ion-button type="submit" expand="block" [disabled]="!userForm.valid">Signin</ion-button>
 
     <label class="ion-text-center" color="danger">{{errorMsg}}</label>
-  </form>
-  <p class="ion-text-center">Not registered yet? <a (click)="goToSignup()">Register</a></p>
+    <p class="ion-text-center">Not registered yet? <a (click)="goToSignup()">Register </a> </p>
 
-  <ion-button expand="block" (click)="doLogin()" color="danger" *ngIf="!isGoogleLogin">
+  </form>
+
+  <ion-button expand="block" (click)="doLogin()" color="danger" *ngIf="!isUserLoggedIn">
     <ion-icon slot="start" name="logo-google"></ion-icon>
     LogIn with Google
   </ion-button>
 
-  <div *ngIf="isGoogleLogin">
+  <div *ngIf="isUserLoggedIn">
     <ion-card>
   <ion-card-header>
     <ion-card-title class="ion-text-center"><b>{{user.displayName}}</b></ion-card-title>
@@ -55,7 +56,7 @@
   </ion-card-content>
 </ion-card>
 
-  <ion-button expand="block" (click)="logout()" color="danger" *ngIf="isGoogleLogin">
+  <ion-button expand="block" (click)="logout()" color="danger" *ngIf="isUserLoggedIn">
     Log Out
   </ion-button>
 </div>
