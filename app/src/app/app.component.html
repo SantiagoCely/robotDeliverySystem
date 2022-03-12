@@ -5,17 +5,17 @@
 <ion-button size="small" (click)="goToSignup()">admin-login </ion-button>
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="menu" routerLinkActive="tab-selected" routerLink="browse-menu">
+    <ion-tab-button routerLinkActive="tab-selected" routerLink="browse-menu">
       <ion-icon src="assets/custom-icons/noun_food menu_4227968.svg"></ion-icon>
       <ion-label>Menu</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="order" (click)="viewOrder()">
+    <ion-tab-button routerLink="view-order">
       <ion-icon src="assets/custom-icons/noun_cloche_3725755.svg"></ion-icon>
       <ion-label>View Order</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="account" routerLink="customer-login">
+    <ion-tab-button routerLink="customer-login">
       <ion-icon src="assets\custom-icons\noun_User_3386846.svg"></ion-icon>
       <ion-label>Account</ion-label>
     </ion-tab-button>

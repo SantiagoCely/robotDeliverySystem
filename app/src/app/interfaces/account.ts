@@ -1,4 +1,3 @@
-
 export interface Account{
   id?: string;
   firstName: string;
@@ -6,5 +5,4 @@ export interface Account{
   email: string;
   preferences: string[];
   pastOrders: string[];
-
 }

@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 //import * as firebase from "firebase/app";
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
+import { Account } from '../interfaces/account';
 
 @Injectable({
   providedIn: 'root'
