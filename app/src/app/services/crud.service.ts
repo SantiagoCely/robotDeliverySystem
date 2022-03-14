@@ -7,7 +7,6 @@ import { Router } from "@angular/router";
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import { Account } from '../interfaces/account';
-import { getFirestore } from "firebase/firestore";
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
@@ -59,5 +58,17 @@ export class CrudService {
       pastOrders: account.pastOrders,
       favourites: account.favourites,
     })
+  }
+
+  getAccount(id){
+    return this.afa.collection('Accounts').doc(id).get()
+  }
+
+  renderAccountDetails(localRef, dbRef){
+    //To implement
+  }
+
+  renderMenu(localRef, dbRef){
+    //To implement
   }
 }
