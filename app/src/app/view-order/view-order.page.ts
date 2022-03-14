@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { EventsService } from 'src/app/services/events.service';
-import { CrudService } from 'src/app/services/crud.service';
+import { EventsService } from '../services/events.service';
+import { CrudService } from '../services/crud.service';
 //import { Subscription } from 'rxjs';
 //import { Firestore, doc, onSnapshot, docSnapshots } from '@angular/fire/firestore';
-import { CartService } from 'src/app/services/cart.service';
-import { MenuItem } from 'src/app/interfaces/menu-item';
-import { Order } from 'src/app/interfaces/order';
+import { CartService } from '../services/cart.service';
+import { MenuItem } from '../interfaces/menu-item';
+import { Order } from '../interfaces/order';
 import { take } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
 
@@ -69,7 +69,7 @@ export class ViewOrderPage implements OnInit{
       })
     }*/
   }
-  
+
   ngOnInit() {
     console.log("View Order module");
     this.displayLocalCart();

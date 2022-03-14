@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
 //import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
-import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, setDoc } from '@angular/fire/firestore';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from "@angular/router";
 //import * as firebase from "firebase/app";
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import { Account } from '../interfaces/account';
+import { getFirestore } from "firebase/firestore";
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CrudService {
 
-  constructor( private afs: Firestore, private router: Router) { }
+  constructor( private afs: Firestore, private router: Router, private afa: AngularFirestore) { }
 
   createOrder(order: Order){
     const orderRef = collection(this.afs, 'Orders');
@@ -46,5 +48,16 @@ export class CrudService {
     const orderRef = doc(this.afs, `Orders/${order.id}`);
     return updateDoc(orderRef, {items: item});
 
+  }
+
+  createAccount(account: Account){
+    return this.afa.collection("Accounts").doc(account.id).set({
+      firstName: account.firstName,
+      lastName: account.lastName,
+      email: account.email,
+      preferences: account.preferences,
+      pastOrders: account.pastOrders,
+      favourites: account.favourites,
+    })
   }
 }

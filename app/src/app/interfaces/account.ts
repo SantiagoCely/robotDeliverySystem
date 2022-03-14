@@ -5,4 +5,5 @@ export interface Account{
   email: string;
   preferences: string[];
   pastOrders: string[];
+  favourites: string[];
 }

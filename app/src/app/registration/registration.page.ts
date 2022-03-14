@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { IonicAuthService } from '../ionic-auth.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+
+import { CrudService } from '../services/crud.service';
+import { Account } from '../interfaces/account';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.page.html',
@@ -12,6 +15,7 @@ export class RegistrationPage implements OnInit {
   userForm: FormGroup;
   successMsg: string = '';
   errorMsg: string = '';
+  account: Account;
 
 
   error_msg = {
@@ -40,7 +44,8 @@ export class RegistrationPage implements OnInit {
   constructor(
     private router: Router,
     private ionicAuthService: IonicAuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private crudService: CrudService
   ) { }
 
   ngOnInit() {
@@ -61,6 +66,22 @@ export class RegistrationPage implements OnInit {
       .then((response) => {
         this.errorMsg = "";
         this.successMsg = "New user created.";
+
+        this.account = {
+          email : response.user.email,
+          firstName : '',
+          id : response.user.uid,
+          lastName : '',
+          pastOrders : [],
+          preferences : [],
+          favourites : [],
+        }
+        this.crudService.createAccount(this.account).then(() => {
+          console.log("New account created in database");
+        }), (error: any) => {
+          console.log(error);
+        }
+
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
