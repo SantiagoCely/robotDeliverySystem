@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 //import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
-import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, setDoc, getDoc } from '@angular/fire/firestore';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from "@angular/router";
 //import * as firebase from "firebase/app";
@@ -58,14 +58,6 @@ export class CrudService {
       pastOrders: account.pastOrders,
       favourites: account.favourites,
     })
-  }
-
-  getAccount(id){
-    return this.afa.collection('Accounts').doc(id).get()
-  }
-
-  renderAccountDetails(localRef, dbRef){
-    //To implement
   }
 
   renderMenu(localRef, dbRef){

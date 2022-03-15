@@ -7,6 +7,10 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { LoadingController, Platform } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import * as firebase from 'firebase/auth';
+import { CrudService } from '../services/crud.service';
+import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, setDoc, getDoc } from '@angular/fire/firestore';
+
+
 
 @Component({
   selector: 'app-customer-login',
@@ -56,6 +60,9 @@ export class CustomerLoginPage implements OnInit {
     private google: GooglePlus,
     public loadingController: LoadingController,
     private platform: Platform,
+
+    private crudService: CrudService,
+    private afs: Firestore
   ) { }
 
   async ngOnInit() {
@@ -81,7 +88,8 @@ export class CustomerLoginPage implements OnInit {
         this.errorMsg = "";
         //this.router.navigateByUrl('browse-menu');
         this.isUserLoggedIn = true;
-        this.user =  response.user;
+        this.user = response.user;
+        this.showUserDetails();
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
@@ -117,6 +125,7 @@ export class CustomerLoginPage implements OnInit {
         console.log('success in google login', success);
         this.isUserLoggedIn = true;
         this.user =  success.user;
+        this.showUserDetails();
       }).catch(err => {
         console.log(err.message, 'error in google login');
       });
@@ -132,6 +141,7 @@ export class CustomerLoginPage implements OnInit {
         this.isUserLoggedIn = true;
         this.user =  success.user;
         this.loading.dismiss();
+        this.showUserDetails();
       });
 
   }
@@ -140,8 +150,46 @@ export class CustomerLoginPage implements OnInit {
   }
   logout() {
     this.fireAuth.signOut().then(() => {
+      this.user =  null;
       this.isUserLoggedIn = false;
     });
+  }
+
+  showUserDetails(){
+    const docRef = doc(this.afs, "Accounts", this.user.uid);
+    const accountRef = getDoc(docRef)
+      .then((doc) => {
+        this.renderAccountDetails(doc);
+      });
+  }
+
+  renderAccountDetails(dbRef){
+    const accountDetails = document.querySelector('#account-details')
+    let acc = document.createElement('li');
+
+    let email = document.createElement('span');
+    let favourites = document.createElement('span');
+    let firstName = document.createElement('span');
+    let lastName = document.createElement('span');
+    let pastOrders = document.createElement('span');
+    let preferences = document.createElement('span');
+
+    acc.setAttribute('data-id', dbRef.id);
+    email.textContent = dbRef.data().email;
+    favourites.textContent = dbRef.data().favourites;
+    firstName.textContent = dbRef.data().firstName;
+    lastName.textContent = dbRef.data().lastName;
+    pastOrders.textContent = dbRef.data().pastOrders;
+    preferences.textContent = dbRef.data().preferences;
+
+    acc.appendChild(email);
+    acc.appendChild(favourites);
+    acc.appendChild(firstName);
+    acc.appendChild(lastName);
+    acc.appendChild(pastOrders);
+    acc.appendChild(preferences);
+
+    accountDetails.appendChild(acc);
   }
 
 }
