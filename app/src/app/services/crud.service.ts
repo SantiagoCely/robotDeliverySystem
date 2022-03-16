@@ -50,13 +50,18 @@ export class CrudService {
   }
 
   createAccount(account: Account){
-    return this.afa.collection("Accounts").doc(account.id).set({
-      firstName: account.firstName,
-      lastName: account.lastName,
-      email: account.email,
-      preferences: account.preferences,
-      pastOrders: account.pastOrders,
-      favourites: account.favourites,
+    return new Promise<any>((resolve, reject) => {
+      this.afa.collection("Accounts").doc(account.id).set({
+        firstName: account.firstName,
+        lastName: account.lastName,
+        email: account.email,
+        preferences: account.preferences,
+        pastOrders: account.pastOrders,
+        favourites: account.favourites,
+      })
+        .then(
+          res => resolve(res),
+          err => reject(err))
     })
   }
 

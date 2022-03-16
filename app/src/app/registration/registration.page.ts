@@ -81,7 +81,6 @@ export class RegistrationPage implements OnInit {
         }), (error: any) => {
           console.log(error);
         }
-
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";

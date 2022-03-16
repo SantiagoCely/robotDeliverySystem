@@ -8,7 +8,8 @@ import { LoadingController, Platform } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import * as firebase from 'firebase/auth';
 import { CrudService } from '../services/crud.service';
-import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, setDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import { Account } from '../interfaces/account';
 
 
 
@@ -22,10 +23,12 @@ export class CustomerLoginPage implements OnInit {
   public loading: any;
   public isUserLoggedIn = false;
   public user = null;
+  public accountDetails = null;
 
   userForm: FormGroup;
   successMsg: string = '';
   errorMsg: string = '';
+  account: Account;
 
 
   error_msg = {
@@ -89,7 +92,7 @@ export class CustomerLoginPage implements OnInit {
         //this.router.navigateByUrl('browse-menu');
         this.isUserLoggedIn = true;
         this.user = response.user;
-        this.showUserDetails();
+        this.showUserDetails(false);
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
@@ -125,7 +128,7 @@ export class CustomerLoginPage implements OnInit {
         console.log('success in google login', success);
         this.isUserLoggedIn = true;
         this.user =  success.user;
-        this.showUserDetails();
+        this.showUserDetails(true);
       }).catch(err => {
         console.log(err.message, 'error in google login');
       });
@@ -141,7 +144,7 @@ export class CustomerLoginPage implements OnInit {
         this.isUserLoggedIn = true;
         this.user =  success.user;
         this.loading.dismiss();
-        this.showUserDetails();
+        this.showUserDetails(true);
       });
 
   }
@@ -152,15 +155,65 @@ export class CustomerLoginPage implements OnInit {
     this.fireAuth.signOut().then(() => {
       this.user =  null;
       this.isUserLoggedIn = false;
+      this.accountDetails = null;
+      // re-initialize account var
+      this.account = null;
     });
   }
 
-  showUserDetails(){
+  verifyAccount(response){
+    // Try to get account from the 'Accounts' and if not found, create one
+    console.log("verifying account");
+    console.log(response.user.uid);
+    const docRef = doc(this.afs, "Accounts", response.user.uid);
+    getDoc(docRef).then((responseDoc) => {
+      console.log(responseDoc.exists());
+      if (responseDoc.exists()) {
+        console.log("Account exists in database");
+      } else {
+        console.log('creating Account');
+        this.account = {
+          email : response.user.email,
+          firstName : response.user.displayName,
+          id : response.user.uid,
+          lastName : '',
+          pastOrders : [],
+          preferences : [],
+          favourites : [],
+        }
+        this.crudService.createAccount(this.account).then(() => {
+          console.log("New account created in database");
+        }), (error: any) => {
+          console.log(error);
+        }
+      }
+    })
+  }
+
+  showUserDetails(externalProvider){
     const docRef = doc(this.afs, "Accounts", this.user.uid);
-    const accountRef = getDoc(docRef)
-      .then((doc) => {
-        this.renderAccountDetails(doc);
-      });
+    getDoc(docRef).then((responseDoc) => {
+      if (!responseDoc.exists() && externalProvider){
+        console.log('creating Account');
+        this.account = {
+          email : this.user.email,
+          firstName : this.user.displayName,
+          id : this.user.uid,
+          lastName : '',
+          pastOrders : [],
+          preferences : [],
+          favourites : [],
+        };
+        this.accountDetails = this.crudService.createAccount(this.account).then(() => {
+          console.log("New account created in database");
+        }), (error: any) => {
+          console.log(error);
+        }
+      } else {
+        this.accountDetails = responseDoc;
+        //this.renderAccountDetails(doc);
+      }
+    });
   }
 
   renderAccountDetails(dbRef){

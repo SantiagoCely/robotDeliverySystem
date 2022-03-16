@@ -41,24 +41,42 @@
   </ion-button>
 
   <div *ngIf="isUserLoggedIn">
-    <ion-card>
+  <ion-card>
   <ion-card-header>
     <ion-card-title class="ion-text-center"><b>{{user.displayName}}</b></ion-card-title>
-    <ul id="account-details"></ul>
+
 
   </ion-card-header>
 
   <ion-card-content>
-    <ion-img [src]="user.photoURL" style="border-radius: 1px;"></ion-img>
     <ion-item>
-      <ion-label>email:</ion-label>
-      <span>{{user.email}}</span>
+      <ion-label>Email:</ion-label>
+      <ion-input value={{accountDetails.data().email}} readonly></ion-input>
     </ion-item>
-  </ion-card-content>
-</ion-card>
-
-  <ion-button expand="block" (click)="logout()" color="danger" *ngIf="isUserLoggedIn">
+    <ion-item>
+      <ion-label>First Name:</ion-label>
+      <ion-input value={{accountDetails.data().firstName}}></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Last Name:</ion-label>
+      <ion-input value={{accountDetails.data().lastName}}></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Favourites:</ion-label>
+      <span>{{accountDetails.data().favourites}}</span>
+    </ion-item>
+    <ion-item>
+      <ion-label>Past Orders:</ion-label>
+      <span>{{accountDetails.data().pastOrders}}</span>
+    </ion-item>
+    <ion-item>
+      <ion-label>Preferences:</ion-label>
+      <span>{{accountDetails.data().preferences}}</span>
+    </ion-item>
+   </ion-card-content>
+  </ion-card>
+  <ion-button expand="block" (click)="logout()" color="danger">
     Log Out
   </ion-button>
-</div>
+  </div>
 </ion-content>
