@@ -14,11 +14,16 @@
     <ion-row  class="align-items-center" *ngFor="let item of menuItems; let i = index">
       <div class="scrolling-wrapper">
         <ion-card class="item-card" *ngIf="item.type == 'Burgers'">
-          <ion-card-header>{{item.name}}</ion-card-header><br>
-          <ion-note>{{item.price}}</ion-note>
-          <ion-button size="small" *ngIf="item.type == 'Burgers'" (click)="openEditMenuItem(item.id)">
-            Edit
-          </ion-button>
+          <ion-input id="menuItemName" type="text" placeholder={{item.name}} [(ngModel)]='text'
+                    (ionChange)='onMenuItemNameChange(item.id, $event.target.value)'></ion-input>
+          <br>
+          <ion-input id="menuItemPrice" type="number" placeholder={{item.price}} [(ngModel)]='number'
+                    (ionChange)='onMenuItemPriceChange(item.id, $event.target.value)'></ion-input>
+          <br>
+          <ion-input id="menuItemCategory" placeholder={{item.category}} required="true"></ion-input>
+          <br>
+          <ion-input id="menuItemType" placeholder={{item.type}} [(ngModel)] ='text'
+                      (ionChange)='onMenuItemTypeChange(item.id, $event.target.value)' required="true"></ion-input>
         </ion-card>
       </div>
     </ion-row>
