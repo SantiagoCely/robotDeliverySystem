@@ -86,6 +86,11 @@ export class BrowseMenuPage implements OnInit {
     this.router.navigateByUrl('admin-login');
   }
 
+  clearFilters() {
+    this.filters = [];
+    this.displayMenuItems();
+  }
+
 
   ngOnInit() {
     console.log("Browse Menu Page")
