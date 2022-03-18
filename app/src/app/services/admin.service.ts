@@ -14,10 +14,7 @@ export class AdminService {
 
   constructor( private afs: Firestore, private router: Router) { }
 
-  createOrder(order: Order){
-    const orderRef = collection(this.afs, 'Orders');
-    return addDoc(orderRef, order);
-  }
+
 
   getMenuItems(): Observable<MenuItem[]>{
 
@@ -54,19 +51,25 @@ export class AdminService {
     const menuRef = doc(this.afs, `MenuItems/${id}`);
     return updateDoc(menuRef, {price: newPrice});
   }
-
-  addMenuItemCategory(id, new_category: string){
+  editMenuItemType(id, newType: string){
     const menuRef = doc(this.afs, `MenuItems/${id}`);
-    var update_category = [];
+    return updateDoc(menuRef, {type: newType});
+  }
+
+  editMenuItemCategory(id, new_category: string []){
+    const menuRef = doc(this.afs, `MenuItems/${id}`);
+    /*var update_category = [];
     update_category.push(new_category);
     this.getMenuById(id).subscribe(res => {
       res.category.forEach(category => {
         update_category.push(category);
       })
     })
-    return updateDoc(menuRef, {category: update_category});
+    */
+    return updateDoc(menuRef, {category: new_category});
 
   }
+  /*
   removeMenuItemCategory(id, remove_category: string){
     const menuRef = doc(this.afs, `MenuItems/${id}`);
     var update_category = []; // temp array to store new category
@@ -79,6 +82,11 @@ export class AdminService {
     })
 
     return updateDoc(menuRef, {category: update_category});
+  }*/
+
+  createMenuItem(item: MenuItem){
+    const menuRef = collection(this.afs, 'MenuItems');
+    return addDoc(menuRef, item);
   }
 
   removeMenuItem(id) {

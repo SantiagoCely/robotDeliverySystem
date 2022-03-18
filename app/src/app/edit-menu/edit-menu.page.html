@@ -14,12 +14,19 @@
     <ion-row  class="align-items-center" *ngFor="let item of menuItems; let i = index">
       <div class="scrolling-wrapper">
         <ion-card class="item-card" *ngIf="item.type == 'Burgers'">
-          <ion-card-header>{{item.name}}</ion-card-header><br>
-          <ion-note>{{item.price}}</ion-note>
-          <ion-button size="small" *ngIf="item.type == 'Burgers'" (click)="openEditMenuItem(item.id)">
-            Edit
-          </ion-button>
+          <ion-input id="menuItemName" type="text" placeholder={{item.name}} [(ngModel)]='text'
+                    (ionChange)='onMenuItemNameChange(item.id, $event.target.value)'></ion-input>
+          <br>
+          <ion-input id="menuItemPrice" type="number" placeholder={{item.price}} [(ngModel)]='number'
+                    (ionChange)='onMenuItemPriceChange(item.id, $event.target.value)'></ion-input>
+          <br>
+          <ion-input id="menuItemCategory" placeholder={{item.category}} required="true"></ion-input>
+          <br>
+          <ion-input id="menuItemType" placeholder={{item.type}} [(ngModel)] ='text'
+                      (ionChange)='onMenuItemTypeChange(item.id, $event.target.value)' required="true"></ion-input>
+          <ion-button size="small" type="submit" expand="block" (ionClick)='onDeleteMenuItem(item.id)'>delete item</ion-button>
         </ion-card>
+
       </div>
     </ion-row>
   </div>
@@ -63,5 +70,36 @@
         </ion-card>
       </ion-col>
     </ion-row>
+
+
+  <form  #form="ngForm" (ngSubmit)="onAddMenuItem(form)">
+    <ion-grid>
+      <ion-row color="primary" justify-content-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+          <div text-center>
+            <h3>Create New Menu Item</h3>
+          </div>
+          <div padding>
+            <ion-item>
+              <ion-input  name="name" type="text" placeholder="Name" ngModel required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input name="price" type="number" placeholder="$0.00" ngModel required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input name="category" type="array" placeholder="categories" ngModel required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input name="type" type="text" placeholder="type" ngModel required></ion-input>
+            </ion-item>
+          </div>
+          <div padding>
+            <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">add item</ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
 
 </ion-content>

@@ -10,7 +10,6 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 })
 export class AdminLoginPage implements OnInit {
   userForm: FormGroup;
-  successMsg: string = '';
   errorMsg: string = '';
 
 
@@ -59,12 +58,23 @@ export class AdminLoginPage implements OnInit {
   signIn(value) {
     this.ionicAuthService.signinUser(value)
       .then((response) => {
-        console.log(response)
         this.errorMsg = "";
-        this.router.navigateByUrl('admin');
+        if (response.user.uid != 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3') {
+          this.signOut();
+        } else {
+          this.router.navigateByUrl('admin');
+        }
       }, error => {
         this.errorMsg = error.message;
-        this.successMsg = "";
+      })
+  }
+  signOut() {
+    this.ionicAuthService.signoutUser()
+      .then(() => {
+        this.errorMsg = "You do not have Admin privileges. Please use an Admin account";
+      })
+      .catch(error => {
+        console.log(error);
       })
   }
 }
