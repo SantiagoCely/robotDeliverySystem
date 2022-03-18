@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { AdminService } from '../services/admin.service';
 import { MenuItem } from '../interfaces/menu-item';
@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
   templateUrl: './edit-menu.page.html',
   styleUrls: ['./edit-menu.page.scss'],
 })
-export class EditMenuPage implements OnInit {
+export class EditMenuPage implements OnInit, OnChanges {
   menuItems: MenuItem[] = [];
   filters: string [] = [];
   dataFromModal: any;
@@ -65,6 +65,10 @@ export class EditMenuPage implements OnInit {
   }
 
   onAddMenuItem(item){
+    console.log("Values of created item: ", item.value);
+  //  var newMenuItem = <MenuItem>{};
+    //newMenuItem.name = 
+
     var newId = this.adminService.createMenuItem(item);
     if (newId != null){
       console.log(`"new menu item created:" ${newId}`);
@@ -78,6 +82,11 @@ export class EditMenuPage implements OnInit {
 
   ngOnInit() {
     console.log("Edit Menu Page")
+    this.displayMenuItems();
+  }
+
+  ngOnChanges(){
+    console.log("Edit Menu Page Refreshed")
     this.displayMenuItems();
   }
 
