@@ -65,6 +65,11 @@ export class CrudService {
     })
   }
 
+  getAccount(id): Observable<Account> {
+    const accountRef = doc(this.afs, `Accounts/${id}`);
+    return docData(accountRef) as Observable<Account>;
+  }
+
   renderMenu(localRef, dbRef){
     //To implement
   }

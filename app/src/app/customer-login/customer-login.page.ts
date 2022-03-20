@@ -29,6 +29,7 @@ export class CustomerLoginPage implements OnInit {
   successMsg: string = '';
   errorMsg: string = '';
   account: Account;
+  accountTest: Account;
 
 
   error_msg = {
@@ -89,7 +90,6 @@ export class CustomerLoginPage implements OnInit {
       .then((response) => {
         console.log(response)
         this.errorMsg = "";
-        //this.router.navigateByUrl('browse-menu');
         this.isUserLoggedIn = true;
         this.user = response.user;
         this.showUserDetails(false);
@@ -191,6 +191,13 @@ export class CustomerLoginPage implements OnInit {
   }
 
   showUserDetails(externalProvider){
+    /*
+    this.crudService.getAccount(this.user.id).subscribe(res => {
+      this.accountTest = res;
+      console.log(res.email);
+      //console.log(this.accountTest);
+    });
+    */
     const docRef = doc(this.afs, "Accounts", this.user.uid);
     getDoc(docRef).then((responseDoc) => {
       if (!responseDoc.exists() && externalProvider){
@@ -199,10 +206,10 @@ export class CustomerLoginPage implements OnInit {
           email : this.user.email,
           firstName : this.user.displayName,
           id : this.user.uid,
-          lastName : '',
-          pastOrders : [],
-          preferences : [],
-          favourites : [],
+          lastName : 'None',
+          pastOrders : ['None'],
+          preferences : ['None'],
+          favourites : ['None'],
         };
         this.accountDetails = this.crudService.createAccount(this.account).then(() => {
           console.log("New account created in database");
