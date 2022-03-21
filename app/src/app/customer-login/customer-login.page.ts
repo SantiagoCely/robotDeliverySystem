@@ -8,8 +8,8 @@ import { LoadingController, Platform } from '@ionic/angular';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import * as firebase from 'firebase/auth';
 import { CrudService } from '../services/crud.service';
-import { Firestore, doc, getDoc } from '@angular/fire/firestore';
-import { Account } from '../interfaces/account';
+import { Firestore, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
+import Account from '../interfaces/account';
 
 
 
@@ -88,7 +88,7 @@ export class CustomerLoginPage implements OnInit {
   signIn(value) {
     this.ionicAuthService.signinUser(value)
       .then((response) => {
-        console.log(response)
+        console.log('Success in log in', response)
         this.errorMsg = "";
         this.isUserLoggedIn = true;
         this.user = response.user;
@@ -161,45 +161,8 @@ export class CustomerLoginPage implements OnInit {
     });
   }
 
-  verifyAccount(response){
-    // Try to get account from the 'Accounts' and if not found, create one
-    console.log("verifying account");
-    console.log(response.user.uid);
-    const docRef = doc(this.afs, "Accounts", response.user.uid);
-    getDoc(docRef).then((responseDoc) => {
-      console.log(responseDoc.exists());
-      if (responseDoc.exists()) {
-        console.log("Account exists in database");
-      } else {
-        console.log('creating Account');
-        this.account = {
-          email : response.user.email,
-          firstName : response.user.displayName,
-          id : response.user.uid,
-          lastName : '',
-          pastOrders : [],
-          preferences : [],
-          favourites : [],
-        }
-        this.crudService.createAccount(this.account).then(() => {
-          console.log("New account created in database");
-        }), (error: any) => {
-          console.log(error);
-        }
-      }
-    })
-  }
-
   showUserDetails(externalProvider){
-    /*
-    this.crudService.getAccount(this.user.id).subscribe(res => {
-      this.accountTest = res;
-      console.log(res.email);
-      //console.log(this.accountTest);
-    });
-    */
-    const docRef = doc(this.afs, "Accounts", this.user.uid);
-    getDoc(docRef).then((responseDoc) => {
+    onSnapshot(doc(this.afs, "Accounts", this.user.uid), (responseDoc) => {
       if (!responseDoc.exists() && externalProvider){
         console.log('creating Account');
         this.account = {
@@ -220,7 +183,8 @@ export class CustomerLoginPage implements OnInit {
         this.accountDetails = responseDoc;
         //this.renderAccountDetails(doc);
       }
-    });
+
+  });
   }
 
   renderAccountDetails(dbRef){

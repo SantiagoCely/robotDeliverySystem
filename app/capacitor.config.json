@@ -2,6 +2,8 @@
 	"appId": "io.ionic.capstone",
 	"appName": "capstonev2",
 	"webDir": "www",
+	"emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
 	"bundledWebRuntime": false,
 	"compilerOptions": {
 		"emitDecoratorMetadata": true,

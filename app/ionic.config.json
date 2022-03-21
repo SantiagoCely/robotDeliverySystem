@@ -1,5 +1,7 @@
 {
   "name": "capstonev2",
+  "emitDecoratorMetadata": true,
+  "experimentalDecorators": true,
   "integrations": {
     "capacitor": {}
   },

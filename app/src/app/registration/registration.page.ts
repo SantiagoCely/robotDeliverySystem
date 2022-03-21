@@ -4,7 +4,7 @@ import { IonicAuthService } from '../ionic-auth.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { CrudService } from '../services/crud.service';
-import { Account } from '../interfaces/account';
+import Account from '../interfaces/account';
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.page.html',
