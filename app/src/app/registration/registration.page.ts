@@ -70,13 +70,12 @@ export class RegistrationPage implements OnInit {
         this.account = {
           email : response.user.email,
           firstName : 'None',
-          id : response.user.uid,
           lastName : 'None',
           pastOrders : ['None'],
           preferences : ['None'],
           favourites : ['None'],
         }
-        this.crudService.createAccount(this.account).then(() => {
+        this.crudService.createAccount(this.account, response.user.uid).then(() => {
           console.log("New account created in database");
         }), (error: any) => {
           console.log(error);

@@ -24,6 +24,7 @@ export class CustomerLoginPage implements OnInit {
   public isUserLoggedIn = false;
   public user = null;
   public accountDetails = null;
+  private unsub;
 
   userForm: FormGroup;
   successMsg: string = '';
@@ -158,24 +159,26 @@ export class CustomerLoginPage implements OnInit {
       this.accountDetails = null;
       // re-initialize account var
       this.account = null;
+      this.unsub();
+      console.log('User logged out');
     });
   }
 
   showUserDetails(externalProvider){
-    onSnapshot(doc(this.afs, "Accounts", this.user.uid), (responseDoc) => {
+    this.unsub = onSnapshot(doc(this.afs, "Accounts", this.user.uid), (responseDoc) => {
       if (!responseDoc.exists() && externalProvider){
         console.log('creating Account');
         this.account = {
           email : this.user.email,
           firstName : this.user.displayName,
-          id : this.user.uid,
           lastName : 'None',
           pastOrders : ['None'],
           preferences : ['None'],
           favourites : ['None'],
         };
-        this.accountDetails = this.crudService.createAccount(this.account).then(() => {
+        this.crudService.createAccount(this.account, this.user.uid).then((res) => {
           console.log("New account created in database");
+          this.accountDetails = res;
         }), (error: any) => {
           console.log(error);
         }
@@ -183,7 +186,6 @@ export class CustomerLoginPage implements OnInit {
         this.accountDetails = responseDoc;
         //this.renderAccountDetails(doc);
       }
-
   });
   }
 
