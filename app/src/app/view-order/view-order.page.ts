@@ -8,6 +8,7 @@ import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import { take } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
+//import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-view-order',
@@ -73,18 +74,25 @@ export class ViewOrderPage implements OnInit{
   ngOnInit() {
     console.log("View Order module");
     this.displayLocalCart();
-    this.displayOrder();
+    //this.displayOrder();
     //this.subscription = this.events.currentMessage.subscribe(message => this.message = message);
   }
 
   submitOrder(){
     //order cannot be empty
-    if (this.orderId = null){
-      this.crudService.createOrder(this.order).then(function(docRef){
-        this.order.id = docRef.id;
-        this.orderId = this.order.id;
-        console.log("Order created: ", this.order.id);
+    if (this.notSubmitted.length > 0){
+      this.order.table = 7.0;
+      this.order.items = this.notSubmitted;
+      this.order.status = false;
+      this.order.total = this.total;
+      this.order.totalPaid = 0;
+      this.crudService.createOrder2(this.order).then((docRef) => {
+        this.orderId = docRef.uid;
+        console.log("Order created: ", this.orderId);
       })
+      this.notSubmitted = []; //Clear cart after submitted
+    } else {
+      console.log('Order is empy');
     }
     /*
     this.notSubmitted.forEach((item) => {

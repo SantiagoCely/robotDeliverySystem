@@ -38,6 +38,17 @@ export class CrudService {
     });
   }
 
+  createOrder2(order: Order){
+    return new Promise<any>((resolve, reject) => {
+      this.afa.collection("Orders").add({
+        ... order
+      })
+        .then(
+          res => resolve(res),
+          err => reject(err))
+    })
+  }
+
   getMenuItems(): Observable<MenuItem[]>{
 
     const menuRef = collection(this.afs, 'MenuItems');
@@ -50,7 +61,7 @@ export class CrudService {
 
 
   getMenuById(id): Observable<MenuItem> {
-    const menuRef = doc(this.afs, `MenuItems/${id}`);
+    const menuRef = doc(this.afs, 'MenuItems', id);
     return docData(menuRef, { idField: 'id' }) as Observable<MenuItem>;
   }
 /*
@@ -60,8 +71,8 @@ export class CrudService {
   }
   */
 
-  updateOrder(order: Order, item: String){
-    const orderRef = doc(this.afs, `Orders/${order.id}`);
+  updateOrder(order: Order, item: String, id){
+    const orderRef = doc(this.afs, 'Orders', id);
     return updateDoc(orderRef, {items: item});
 
   }

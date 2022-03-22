@@ -107,8 +107,8 @@ export class AdminService {
     return deleteDoc(menuRef);
   }
 
-  updateOrder(order: Order, item: string){
-    const orderRef = doc(this.afs, `Orders/${order.id}`);
+  updateOrder(order: Order, item: string, id){
+    const orderRef = doc(this.afs, 'Orders', id);
     return updateDoc(orderRef, {items: item});
 
   }
