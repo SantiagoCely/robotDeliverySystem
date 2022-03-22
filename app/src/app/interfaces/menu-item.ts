@@ -4,5 +4,5 @@ export interface MenuItem{
   price: number;
   category: string[];
   type: string;
-  image: string;
+  image: string; //path to image
 }

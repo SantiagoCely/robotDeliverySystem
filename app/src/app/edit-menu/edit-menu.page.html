@@ -71,35 +71,19 @@
       </ion-col>
     </ion-row>
 
+    <form #newItemForm = "ngForm" (ngSubmit) = "onAddMenuItem(newItemForm.value)" >
+       <input type = "text" name = "newItemName" placeholder = "Name" ngModel>
+       <br/>
+       <input type = "number" name = "newItemPrice" placeholder = "$0.00" ngModel>
+       <br/>
+       <input type = "text" name = "newItemCategory" placeholder = "Category1, Category2" ngModel>
+       <br/>
+       <input type = "text" name = "newItemType" placeholder = "Type" ngModel>
+       <br/>
 
-  <form  #form="ngForm" (ngSubmit)="onAddMenuItem(form)">
-    <ion-grid>
-      <ion-row color="primary" justify-content-center>
-        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-          <div text-center>
-            <h3>Create New Menu Item</h3>
-          </div>
-          <div padding>
-            <ion-item>
-              <ion-input  name="name" type="text" placeholder="Name" ngModel required></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input name="price" type="number" placeholder="$0.00" ngModel required></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input name="category" type="array" placeholder="categories" ngModel required></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-input name="type" type="text" placeholder="type" ngModel required></ion-input>
-            </ion-item>
-          </div>
-          <div padding>
-            <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">add item</ion-button>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
+       <input type = "submit" value ="submit">
+    </form>
+    <br>
 
 
 </ion-content>

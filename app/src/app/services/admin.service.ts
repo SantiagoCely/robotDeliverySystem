@@ -86,7 +86,20 @@ export class AdminService {
 
   createMenuItem(item: MenuItem){
     const menuRef = collection(this.afs, 'MenuItems');
-    return addDoc(menuRef, item);
+    const docRef = addDoc(menuRef, {
+      name: item.name,
+      price: item.price,
+      category: item.category,
+      type: item.type,
+      image: item.image
+    });
+    console.log("New menu item id: ", docRef);
+    /*
+    return addDoc(menuRef, { name: item.name,
+                             price: item.price,
+                             category: item.category,
+                             type: item.type,
+                             image: item.image});*/
   }
 
   removeMenuItem(id) {

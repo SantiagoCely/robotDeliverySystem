@@ -9,7 +9,7 @@ import { Order } from '../interfaces/order';
 import Account from '../interfaces/account';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-import Account2 from '../models/account2.model';
+
 //import firebase from 'firebase/compat/app';
 @Injectable({
   providedIn: 'root'

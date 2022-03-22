@@ -1,8 +1,11 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+//import { ModalController } from '@ionic/angular';
 import { AdminService } from '../services/admin.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Router } from "@angular/router";
+
+//import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
+
 //import { EditMenuModalPage } from '../edit-menu-modal/edit-menu-modal.page';
 
 @Component({
@@ -13,12 +16,23 @@ import { Router } from "@angular/router";
 export class EditMenuPage implements OnInit, OnChanges {
   menuItems: MenuItem[] = [];
   filters: string [] = [];
-  dataFromModal: any;
+  /*newItemForm = this.formBuilder.group({
+    name: '',
+    price: 0,
+    category: '',
+    type: '',
+    image: ''
+  });*/
+
+  //dataFromModal: any
   constructor(
     private adminService: AdminService,
     private router: Router,
+    //private formBuilder: FormBuilder
     //public modalController: ModalController
-  ) {}
+  ) {
+
+  }
 
   displayMenuItems(){
     // if there are filters selected, filter menu items
@@ -64,29 +78,42 @@ export class EditMenuPage implements OnInit, OnChanges {
     console.log(`"Updated id and type:" ${id} ${type}`);
   }
 
-  onAddMenuItem(item){
-    console.log("Values of created item: ", item.value);
-  //  var newMenuItem = <MenuItem>{};
-    //newMenuItem.name = 
-
-    var newId = this.adminService.createMenuItem(item);
-    if (newId != null){
-      console.log(`"new menu item created:" ${newId}`);
+  onAddMenuItem(newItemFormData) {
+    console.log("New item data: " , newItemFormData);
+    console.log(typeof newItemFormData.newItemName, typeof newItemFormData.newItemPrice,
+    newItemFormData.newItemCategory, newItemFormData.newItemType);
+    const newItem : MenuItem = {
+      name : '',
+      price: 0,
+      category : [],
+      type : '',
+      image : ''
     }
+    newItem.name = newItemFormData.newItemName;
+    newItem.price = newItemFormData.newItemPrice;
+    newItem.category = newItemFormData.newItemCategory.split(',');
+    newItem.type = newItemFormData.newItemType;
+    newItem.image = "add image path here";
+
+    console.log(newItem);
+    this.adminService.createMenuItem(newItem);
+
   }
 
   onDeleteMenuItem(id){
+    console.log("Id to delete: ", id);
     this.adminService.removeMenuItem(id);
+    console.log(`"Deleted id: " ${id}`);
 
   }
 
   ngOnInit() {
-    console.log("Edit Menu Page")
+    console.log("Edit Menu Page");
     this.displayMenuItems();
   }
 
   ngOnChanges(){
-    console.log("Edit Menu Page Refreshed")
+    console.log("Edit Menu Page Refreshed");
     this.displayMenuItems();
   }
 
