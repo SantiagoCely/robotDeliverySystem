@@ -5,7 +5,9 @@ export interface Order{
   id?: string;
   items: string[]; //string array of menu item ids
   status: boolean;
+  table?: number;
   total: number;
+  totalPaid?: number;
 
 }
 /*
