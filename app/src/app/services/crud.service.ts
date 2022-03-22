@@ -33,10 +33,9 @@ export class CrudService {
     return addDoc(orderRef, {
       items: order.items,
       table: order.table,
-      total: order.table, 
+      total: order.table,
       totalPaid: order.totalPaid,
     });
-    return addDoc(orderRef, order);
   }
 
   getMenuItems(): Observable<MenuItem[]>{
