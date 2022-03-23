@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 //import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
-import { Firestore, collection, collectionData, doc, onSnapshot , docData, addDoc, updateDoc, setDoc, getDoc } from '@angular/fire/firestore';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Firestore, collection, collectionData, doc , docData, addDoc, updateDoc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
 //import * as firebase from "firebase/app";
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import Account from '../interfaces/account';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { AngularFireList } from '@angular/fire/compat/database';
 
 //import firebase from 'firebase/compat/app';
 @Injectable({
@@ -71,7 +71,7 @@ export class CrudService {
   }
   */
 
-  updateOrder(order: Order, item: String, id){
+  updateOrder(order: Order, item: string, id){
     const orderRef = doc(this.afs, 'Orders', id);
     return updateDoc(orderRef, {items: item});
 

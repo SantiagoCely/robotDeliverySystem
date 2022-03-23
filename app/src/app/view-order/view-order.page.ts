@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { EventsService } from '../services/events.service';
+import { Component, OnInit } from '@angular/core';
+//import { EventsService } from '../services/events.service';
 import { CrudService } from '../services/crud.service';
 //import { Subscription } from 'rxjs';
 //import { Firestore, doc, onSnapshot, docSnapshots } from '@angular/fire/firestore';
 import { CartService } from '../services/cart.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
-import { take } from 'rxjs/operators';
-import { Observable, BehaviorSubject } from 'rxjs';
+i//mport { take } from 'rxjs/operators';
+//import { Observable, BehaviorSubject } from 'rxjs';
 //import { timingSafeEqual } from 'crypto';
 
 @Component({
@@ -17,7 +17,13 @@ import { Observable, BehaviorSubject } from 'rxjs';
 })
 
 export class ViewOrderPage implements OnInit{
-  order: Order;
+  order: Order = {
+    items : [],
+    status : false,
+    table : 0,
+    total : 0,
+    totalPaid : 0
+  };
   orderId : string;
   total_ordered_quantity: number;
   notSubmitted: MenuItem[] = []; // menu items not yet submitted, and thus not part of the Order yet
@@ -27,9 +33,7 @@ export class ViewOrderPage implements OnInit{
   //message: string;
   //subscription: Subscription;
   constructor(
-    //private afs: Firestore,
     private crudService: CrudService,
-    //public events: EventsService,
     public cart: CartService
 
 
@@ -82,10 +86,10 @@ export class ViewOrderPage implements OnInit{
     //order cannot be empty
     if (this.notSubmitted.length > 0){
       this.order.table = 7.0;
-      this.order.items = this.notSubmitted;
-      this.order.status = false;
-      this.order.total = this.total;
-      this.order.totalPaid = 0;
+      for (const menuItem of this.notSubmitted) {
+        this.order.items.push(menuItem.id);
+        //this.submitted.push(menuItem);
+      }
       this.crudService.createOrder2(this.order).then((docRef) => {
         this.orderId = docRef.uid;
         console.log("Order created: ", this.orderId);
