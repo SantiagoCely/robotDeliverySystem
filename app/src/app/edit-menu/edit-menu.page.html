@@ -24,7 +24,7 @@
           <br>
           <ion-input id="menuItemType" placeholder={{item.type}} [(ngModel)] ='text'
                       (ionChange)='onMenuItemTypeChange(item.id, $event.target.value)' required="true"></ion-input>
-          <ion-button size="small" type="submit" expand="block" (ionClick)='onDeleteMenuItem(item.id)'>delete item</ion-button>
+          <ion-button size="small" type="submit" expand="block" (ionChange)='onDeleteMenuItem(item.id)'>delete item</ion-button>
         </ion-card>
 
       </div>

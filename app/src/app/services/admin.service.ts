@@ -114,6 +114,7 @@ export class AdminService {
   }
 
   getOrders(): Observable<Order[]> {
+    console.log("admin service getting all orders");
     const orderRef = collection(this.afs, 'Orders');
     return collectionData(orderRef, { idField: 'id'}) as Observable <Order[]>;
   }
