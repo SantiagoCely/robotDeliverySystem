@@ -30,23 +30,7 @@ export class CrudService {
 
   createOrder(order: Order){
     const orderRef = collection(this.afs, 'Orders');
-    return addDoc(orderRef, {
-      items: order.items,
-      table: order.table,
-      total: order.table,
-      totalPaid: order.totalPaid,
-    });
-  }
-
-  createOrder2(order: Order){
-    return new Promise<any>((resolve, reject) => {
-      this.afa.collection("Orders").add({
-        ... order
-      })
-        .then(
-          res => resolve(res),
-          err => reject(err))
-    })
+    return addDoc(orderRef, { ... order});
   }
 
   getMenuItems(): Observable<MenuItem[]>{

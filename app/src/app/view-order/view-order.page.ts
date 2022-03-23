@@ -6,7 +6,7 @@ import { CrudService } from '../services/crud.service';
 import { CartService } from '../services/cart.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
-i//mport { take } from 'rxjs/operators';
+//import { take } from 'rxjs/operators';
 //import { Observable, BehaviorSubject } from 'rxjs';
 //import { timingSafeEqual } from 'crypto';
 
@@ -90,9 +90,9 @@ export class ViewOrderPage implements OnInit{
         this.order.items.push(menuItem.id);
         //this.submitted.push(menuItem);
       }
-      this.crudService.createOrder2(this.order).then((docRef) => {
-        this.orderId = docRef.uid;
-        console.log("Order created: ", this.orderId);
+      this.crudService.createOrder(this.order).then((docRef) => {
+        console.log("Order created: ", docRef.id);
+        this.orderId = docRef.id;
       })
       this.notSubmitted = []; //Clear cart after submitted
     } else {
