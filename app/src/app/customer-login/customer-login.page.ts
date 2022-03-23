@@ -188,34 +188,4 @@ export class CustomerLoginPage implements OnInit {
       }
   });
   }
-
-  renderAccountDetails(dbRef){
-    const accountDetails = document.querySelector('#account-details')
-    let acc = document.createElement('li');
-
-    let email = document.createElement('span');
-    let favourites = document.createElement('span');
-    let firstName = document.createElement('span');
-    let lastName = document.createElement('span');
-    let pastOrders = document.createElement('span');
-    let preferences = document.createElement('span');
-
-    acc.setAttribute('data-id', dbRef.id);
-    email.textContent = dbRef.data().email;
-    favourites.textContent = dbRef.data().favourites;
-    firstName.textContent = dbRef.data().firstName;
-    lastName.textContent = dbRef.data().lastName;
-    pastOrders.textContent = dbRef.data().pastOrders;
-    preferences.textContent = dbRef.data().preferences;
-
-    acc.appendChild(email);
-    acc.appendChild(favourites);
-    acc.appendChild(firstName);
-    acc.appendChild(lastName);
-    acc.appendChild(pastOrders);
-    acc.appendChild(preferences);
-
-    accountDetails.appendChild(acc);
-  }
-
 }
