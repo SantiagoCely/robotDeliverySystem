@@ -16,7 +16,7 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
 
   constructor(private adminService: AdminService) {
     this.displayCompletedOrdersOnly = false;
-    this.displayUncompletedOrdersOnly = false; 
+    this.displayUncompletedOrdersOnly = false;
   }
 
   ngOnInit() { this.displayOrders(); }
@@ -54,7 +54,6 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
       this.orders = res;
     });
   }
-
     console.log("current orders: ", this.orders);
   }
 

@@ -5,12 +5,32 @@
 </ion-header>
 
 <ion-content>
+  <ion-button color="light" size="small" (click)="goCreateMenuItem()"> Create a New Menu Item </ion-button>
   <ion-button size="small" (click)="filterItems('Vegetarian')"> Vegetarian </ion-button>
   <ion-button size="small" (click)="filterItems('Halal')"> Halal </ion-button>
 
   <div class="scrolling-wrapper">
     <br>
+
     <ion-note h2>Burgers</ion-note>
+
+
+    <ion-row  class="align-items-center" *ngFor="let item of menuItems; let i = index">
+      <div class="scrolling-wrapper">
+        <ion-card class="item-card" *ngIf="item.name == 'New Burger 1'">
+          <ion-input id="menuItemName" type="text" placeholder={{item.name}} [(ngModel)]='text'
+                    (ionChange)='onMenuItemNameChange(item.id, $event.target.value)'></ion-input>
+          <br>
+          <ion-input id="menuItemPrice" type="number" placeholder={{item.price}} [(ngModel)]='number'
+                    (ionChange)='onMenuItemPriceChange(item.id, $event.target.value)'></ion-input>
+          <br>
+          <ion-input id="menuItemCategory" placeholder={{item.category}} required="true"></ion-input>
+          <br>
+          <ion-input id="menuItemType" placeholder={{item.type}} [(ngModel)] ='text'
+                      (ionChange)='onMenuItemTypeChange(item.id, $event.target.value)' required="true"></ion-input>
+          <ion-button size="small" type="submit" expand="block" (click)='onDeleteMenuItem(item.id)'>delete item</ion-button>
+        </ion-card>
+        <!-->
     <ion-row  class="align-items-center" *ngFor="let item of menuItems; let i = index">
       <div class="scrolling-wrapper">
         <ion-card class="item-card" *ngIf="item.type == 'Burgers'">
@@ -26,6 +46,7 @@
                       (ionChange)='onMenuItemTypeChange(item.id, $event.target.value)' required="true"></ion-input>
           <ion-button size="small" type="submit" expand="block" (ionChange)='onDeleteMenuItem(item.id)'>delete item</ion-button>
         </ion-card>
+        <!-->
 
       </div>
     </ion-row>
@@ -70,6 +91,7 @@
         </ion-card>
       </ion-col>
     </ion-row>
+    <br>
 
     <form #newItemForm = "ngForm" (ngSubmit) = "onAddMenuItem(newItemForm.value)" >
        <input type = "text" name = "newItemName" placeholder = "Name" ngModel>
