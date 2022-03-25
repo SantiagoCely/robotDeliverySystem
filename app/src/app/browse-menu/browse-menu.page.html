@@ -23,7 +23,7 @@
     <ion-col *ngFor="let item of menuItems; let i = index">
 
       <ion-slide *ngIf="item.type == 'Burgers'">
-        <ion-card>
+        <ion-card (click)="addToOrder(item.id)">
           <ion-img src="./assets/menu/{{item.name}}.jpg"></ion-img>
           <ion-card-header>{{item.name}}</ion-card-header>
           <ion-note>{{item.price}}</ion-note>
@@ -52,7 +52,7 @@
     <ion-col *ngFor="let item of menuItems; let i = index">
 
       <ion-slide *ngIf="item.type == 'Chicken & Fish'">
-        <ion-card>
+        <ion-card (click)="addToOrder(item.id)">
           <ion-img src="./assets/menu/{{item.name}}.jpg"></ion-img>
           <ion-card-header>{{item.name}}</ion-card-header>
           <ion-note>{{item.price}}</ion-note>
@@ -82,7 +82,7 @@
     <ion-col *ngFor="let item of menuItems; let i = index">
 
       <ion-slide *ngIf="item.type == 'Sweets & Treats'">
-        <ion-card>
+        <ion-card (click)="addToOrder(item.id)">
           <ion-img src="./assets/menu/{{item.name}}.jpg"></ion-img>
           <ion-card-header>{{item.name}}</ion-card-header>
           <ion-note>{{item.price}}</ion-note>
@@ -112,7 +112,7 @@
     <ion-col *ngFor="let item of menuItems; let i = index">
 
       <ion-slide *ngIf="item.type == 'Cold Drinks'">
-        <ion-card>
+        <ion-card (click)="addToOrder(item.id)">
           <ion-img src="./assets/menu/{{item.name}}.jpg"></ion-img>
           <ion-card-header>{{item.name}}</ion-card-header>
           <ion-note>{{item.price}}</ion-note>

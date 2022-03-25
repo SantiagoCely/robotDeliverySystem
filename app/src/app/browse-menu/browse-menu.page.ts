@@ -40,7 +40,8 @@ export class BrowseMenuPage implements OnInit {
   ){}
 
 
-  addToOrder(id){
+  addToOrder(item) {
+    var id = item.toString();
     console.log("trying to add item id from browse menu: ", id);
     this.cart.publish('items', id);
 
