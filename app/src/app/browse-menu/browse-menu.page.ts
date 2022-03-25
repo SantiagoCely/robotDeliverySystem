@@ -9,6 +9,8 @@ import { MenuItem } from '../interfaces/menu-item';
 import { CartService } from '../services/cart.service';
 
 import { Router } from "@angular/router";
+import { ViewOrderPage } from '../view-order/view-order.page';
+import { increment } from 'firebase/firestore';
 
 @Component({
   selector: 'app-browse-menu',
@@ -44,7 +46,6 @@ export class BrowseMenuPage implements OnInit {
     var id = item.toString();
     console.log("trying to add item id from browse menu: ", id);
     this.cart.publish('items', id);
-
     //this.events.changeMessage(id);
   }
 
@@ -96,7 +97,6 @@ export class BrowseMenuPage implements OnInit {
   ngOnInit() {
     console.log("Browse Menu Page")
     this.displayMenuItems();
-
   }
 
 

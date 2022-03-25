@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'browse-menu', //redirect to home later??
+    redirectTo: 'view-order', //redirect to home later??
     pathMatch: 'full'
   },
   {

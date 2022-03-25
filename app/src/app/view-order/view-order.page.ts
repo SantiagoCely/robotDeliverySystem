@@ -6,6 +6,8 @@ import { CrudService } from '../services/crud.service';
 import { CartService } from '../services/cart.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
+import { Router } from "@angular/router";
+
 //import { take } from 'rxjs/operators';
 //import { Observable, BehaviorSubject } from 'rxjs';
 //import { timingSafeEqual } from 'crypto';
@@ -27,14 +29,14 @@ export class ViewOrderPage implements OnInit{
   orderId : string;
   total_ordered_quantity: number;
   notSubmitted: MenuItem[] = []; // menu items not yet submitted, and thus not part of the Order yet
-  total = 0;
 
   submitted: MenuItem[] = [];
   //message: string;
   //subscription: Subscription;
   constructor(
     private crudService: CrudService,
-    public cart: CartService
+    public cart: CartService,
+    private router: Router,
 
 
   //  private activatedRoute: ActivatedRoute,
@@ -47,9 +49,9 @@ export class ViewOrderPage implements OnInit{
       this.crudService.getMenuById2(id).then( menuItem => {
         this.order.items.push(menuItem.id)
         this.notSubmitted.push(menuItem.data());
-        this.total += menuItem.data().price;
+        this.order.total += menuItem.data().price;
         console.log("view-order cart", this.notSubmitted);
-        console.log("view-order price ", this.total);
+        console.log("view-order price ", this.order.total);
       })
     })
   }
@@ -77,8 +79,24 @@ export class ViewOrderPage implements OnInit{
   ngOnInit() {
     console.log("View Order module");
     this.displayLocalCart();
+    this.router.navigateByUrl('browse-menu');
+    /*
+    if (!this.initViewOrderPage) {
+      this.router.navigateByUrl('browse-menu');
+      this.initViewOrderPage = true;
+    }
+    */
     //this.displayOrder();
     //this.subscription = this.events.currentMessage.subscribe(message => this.message = message);
+  }
+
+  ngAfterViewInit() {
+    //this.router.navigateByUrl('browse-menu');
+    /*
+    if (!this.initViewOrderPage) {
+      this.router.navigateByUrl('browse-menu');
+      this.initViewOrderPage = true;
+    }*/
   }
 
   submitOrder(){
@@ -89,7 +107,8 @@ export class ViewOrderPage implements OnInit{
         console.log("Order created: ", docRef.id);
         this.orderId = docRef.id;
       })
-      this.notSubmitted = []; //Clear cart after submitted
+      this.notSubmitted = []; //Clear the items in the not submitted cart var after submitting it
+      this.order.items = []; //Clear items in the cart after submitted
     } else {
       console.log('Order is empy');
     }
