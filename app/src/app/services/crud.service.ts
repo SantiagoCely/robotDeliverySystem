@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 //import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
-import { Firestore, collection, collectionData, doc , docData, addDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc , docData, addDoc, updateDoc, getDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
 //import * as firebase from "firebase/app";
@@ -48,6 +48,13 @@ export class CrudService {
     const menuRef = doc(this.afs, 'MenuItems', id);
     return docData(menuRef, { idField: 'id' }) as Observable<MenuItem>;
   }
+
+  getMenuById2(id) {
+    const menuRef = doc(this.afs, 'MenuItems', id);
+    return getDoc(menuRef);
+  }
+
+
 /*
   getMenuByType(type): Observable<MenuItem[]> {
     const menuRef = doc(this.afs, 'MenuItems/');

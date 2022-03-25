@@ -44,12 +44,11 @@ export class ViewOrderPage implements OnInit{
   displayLocalCart(){
     console.log("items in cart");
     this.cart.subscribe('items', (id: any) => {
-      console.log("item in cart, view-order: ", id);
-      console.log("view-order cart 1", this.notSubmitted);
-      this.crudService.getMenuById(id).subscribe( id => {
-        this.notSubmitted.push(id);
-        this.total += id.price;
-        console.log("view-order cart 2", this.notSubmitted);
+      this.crudService.getMenuById2(id).then( menuItem => {
+        this.order.items.push(menuItem.id)
+        this.notSubmitted.push(menuItem.data());
+        this.total += menuItem.data().price;
+        console.log("view-order cart", this.notSubmitted);
         console.log("view-order price ", this.total);
       })
     })
@@ -86,10 +85,6 @@ export class ViewOrderPage implements OnInit{
     //order cannot be empty
     if (this.notSubmitted.length > 0){
       this.order.table = 7.0;
-      for (const menuItem of this.notSubmitted) {
-        this.order.items.push(menuItem.id);
-        //this.submitted.push(menuItem);
-      }
       this.crudService.createOrder(this.order).then((docRef) => {
         console.log("Order created: ", docRef.id);
         this.orderId = docRef.id;
