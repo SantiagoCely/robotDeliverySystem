@@ -108,7 +108,12 @@ export class ViewOrderPage implements OnInit{
         this.orderId = docRef.id;
       })
       this.notSubmitted = []; //Clear the items in the not submitted cart var after submitting it
-      this.order.items = []; //Clear items in the cart after submitted
+      // Reset attributes or order
+      this.order.items = [];
+      this.order.status = false;
+      this.order.table = 0;
+      this.order.total = 0;
+      this.order.totalPaid = 0;
     } else {
       console.log('Order is empy');
     }
