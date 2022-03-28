@@ -20,37 +20,19 @@
     <ion-row>
       <ion-col text-center>
         Welcome Admin!
-
-        <p>User email : <strong>{{ userDetail }}</strong></p>
       </ion-col>
     </ion-row>
 
     <header>
-    <div class="ion-text-left">
+    <div class="ion-text-right">
+      <p>User email : <strong>{{ userDetail }}</strong></p>
       <ion-button type="submit" item-left color="danger" (click)="signOut()">Signout</ion-button>
     </div>
 </header>
 
 <div class="ion-text-center">
   <header>Robot Commands</header>
-  <ion-button size = "large" color="success">Return to Kitchen</ion-button>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-  <ion-button size = "large" color="success">Deliver Food</ion-button>
-
-
-      <!--- New line to seperate sections --->
-    <br><br><br>
-
-    <ion-button size = "large" color="warning">Greet Customer</ion-button>
-
-    <!--- Small space between buttons --->
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-    <ion-button size = "large" color="warning">Take Order</ion-button>
-  <br><br><br><br>
-
-  <ion-button color="danger">Go to Docking Station</ion-button>
+  <ion-button size = "large" color="success" strong = true href="http://localhost:8100/admin" fill="outline">Control Robot</ion-button>
 </div>
   <br>
 
