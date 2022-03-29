@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { IonicAuthService } from '../ionic-auth.service';
-
+import { CrudService } from '../services/crud.service';
+import { UserRequest } from '../interfaces/user-requests';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.page.html',
@@ -9,10 +10,12 @@ import { IonicAuthService } from '../ionic-auth.service';
 })
 export class AdminPage implements OnInit {
   userDetail: string;
+  userRequests: UserRequest[] = [];
 
   constructor(
     private router: Router,
-    private ionicAuthService: IonicAuthService
+    private ionicAuthService: IonicAuthService,
+    private crudService: CrudService,
   ) { }
 
   ngOnInit() {
@@ -25,6 +28,7 @@ export class AdminPage implements OnInit {
     }, error => {
       console.log(error);
     })
+    this.viewUserRequests();
   }
 
   signOut() {
@@ -35,6 +39,17 @@ export class AdminPage implements OnInit {
       .catch(error => {
         console.log(error);
       })
+  }
+
+  viewUserRequests() {
+    this.crudService.getUserRequests().subscribe(res => {
+      this.userRequests = res;
+      console.log(this.userRequests);
+    });
+  }
+
+  acknowledgeRequest(id) {
+    this.crudService.updateRequest(id);
   }
 
   goToCurrentOrders() {

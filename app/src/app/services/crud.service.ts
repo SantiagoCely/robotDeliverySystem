@@ -9,8 +9,8 @@ import { Order } from '../interfaces/order';
 import Account from '../interfaces/account';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { AngularFireList } from '@angular/fire/compat/database';
+import { UserRequest } from '../interfaces/user-requests';
 
-//import firebase from 'firebase/compat/app';
 @Injectable({
   providedIn: 'root'
 })
@@ -42,7 +42,6 @@ export class CrudService {
   //  return collectionData(menuRef, {id: 'key'})
     //return this.afs.collection('MenuItems').snapshotChanges();
   }
-
 
   getMenuById(id): Observable<MenuItem> {
     const menuRef = doc(this.afs, 'MenuItems', id);
@@ -79,7 +78,19 @@ export class CrudService {
     })
   }
 
-  renderMenu(localRef, dbRef){
-    //To implement
+  getUserRequests(): Observable<UserRequest[]>{
+    const requestRef = collection(this.afs, 'Nlp');
+    return collectionData(requestRef, { idField: 'id'}) as Observable <UserRequest[]>;
+  }
+
+  updateRequest(id) {
+    return new Promise<any>((resolve, reject) => {
+      this.afa.collection("Nlp").doc(id).update({
+        Acknowledged: true,
+      })
+        .then(
+          res => resolve(res),
+          err => reject(err))
+    })
   }
 }

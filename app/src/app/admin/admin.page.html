@@ -31,6 +31,19 @@
 </header>
 
 <div class="ion-text-center">
+  <br>
+  <header>Customer Requests</header>
+  <ion-col *ngFor="let request of userRequests; let i = index">
+    <ion-slide *ngIf="!request.Acknowledged">
+      <ion-card (click)="acknowledgeRequest(request.id)" button="true" color="warning" type="submit">
+        <ion-card-header>REQUEST TABLE {{request.Table}}</ion-card-header>
+        <ion-card-content><strong>{{request.Request}}</strong></ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-col>
+</div>
+
+<div class="ion-text-center">
   <header>Robot Commands</header>
   <ion-button size = "large" color="success" strong = true href="http://localhost:8100/admin" fill="outline">Control Robot</ion-button>
 </div>
