@@ -10,16 +10,24 @@
   </ion-note>
   <br><br>
   <ion-note h2> In Cart, not yet submitted: </ion-note>
-  <ion-row  class="align-items-center" *ngFor="let item of localCart; let i = index">
-    <div class="scrolling-wrapper">
-      <ion-card class="item-card">
-        <ion-card-header>{{item.name}}</ion-card-header><br>
-        <ion-note>{{item.price}}</ion-note>
-      </ion-card>
-    </div>
-  </ion-row>
+  <br>
+  <br>
+  <ion-col class="align-items-center" *ngFor="let item of notSubmitted; let i = index">
+    <ion-card (click)="addToOrder(item.id)">
+      <ion-img src="./assets/menu/{{item.name}}.jpg"></ion-img>
+      <ion-card-header>{{item.name}}</ion-card-header>
+      <ion-note>{{item.price}}</ion-note>
+    </ion-card>
+  </ion-col>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
 
-<br><br>
+  <br><br>
   <ion-button size="large" (click)=submitOrder()>SEND ORDER</ion-button>
   <ion-note> Order number:  </ion-note>
   <ion-button size="large" (click)=pay()>Pay</ion-button>
