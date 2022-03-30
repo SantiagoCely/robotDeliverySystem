@@ -1,31 +1,28 @@
-ion-slide {
-  width: 150px !important;
-  height: 150px !important;
-  background-color: #000;
-  float: left;
-  margin-left: 1.5px !important;
-  margin-right: 1.5px !important;
-  border-radius: 50px !important;
-}
 
-ion-slides {
-  background-color: rgba(194, 193, 194, 0.52);
-}
 
 ion-img {
-  height: 75px;
-  width: 75px;
+  height: 50px;
+  width: 50px;
   margin: auto;
   display: block;
 }
 
 
-ion-card {
-  width: 140px !important;
+ion-grid {
+  width: 840px !important;
   height: 140px !important;
   float: left;
   margin-left: 1.5px !important;
   margin-right: 1.5px !important;
-  border-radius: 50px !important;
-  border-radius: 50px !important;
+  //border-radius: 50px !important;
+  //border-radius: 50px !important;
+}
+
+#item-text {
+  
+  font-size: 15px !important;
+}
+
+#item-divider {
+  margin-top: 17.5px !important;
 }

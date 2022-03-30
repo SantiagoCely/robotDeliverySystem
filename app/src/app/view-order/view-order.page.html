@@ -4,31 +4,73 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-note>
+<ion-content class="ion-padding-top">
+  <ion-note class="ion-padding">
     Items added to the order will be displayed here along with the statuses of the food items.
   </ion-note>
   <br><br>
-  <ion-note h2> In Cart, not yet submitted: </ion-note>
+  <ion-note class="ion-padding" h2> In Cart, not yet submitted: </ion-note>
   <br>
   <br>
-  <ion-col class="align-items-center" *ngFor="let item of notSubmitted; let i = index">
-    <ion-card (click)="addToOrder(item.id)">
-      <ion-img src="./assets/menu/{{item.name}}.jpg"></ion-img>
-      <ion-card-header>{{item.name}}</ion-card-header>
-      <ion-note>{{item.price}}</ion-note>
-    </ion-card>
-  </ion-col>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  
+  <ion-grid class="ion-align-items-start">
+    <ion-row class="ion-align-items-start" *ngFor="let item of notSubmitted; let i = index">
+      <ion-col class="ion-align-items-center">
+        <ion-img src="./assets/menu/{{item.name}}.jpg"></ion-img>
+      </ion-col>
+      <ion-col class="ion-align-items-center">
+        <div class="ion-align-items-center" id="item-divider">
+          <ion-note id="item-text">{{item.name}}</ion-note>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="ion-align-items-center" id="item-divider">
+          <ion-note id="item-text">$ {{item.price}}</ion-note>
+        </div>
+      </ion-col>
+    </ion-row>
+    <br>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center">
+          <ion-note> _______ </ion-note>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="ion-text-center">
+          <ion-note> </ion-note>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="ion-text-start">
+          <ion-note> </ion-note>
+        </div>
+      </ion-col>
+    </ion-row>
 
-  <br><br>
-  <ion-button size="large" (click)=submitOrder()>SEND ORDER</ion-button>
-  <ion-note> Order number:  </ion-note>
-  <ion-button size="large" (click)=pay()>Pay</ion-button>
+      <ion-row>
+        <ion-col>
+          <div class="ion-text-center">
+            <ion-note h2> TOTAL </ion-note>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div class="ion-text-center">
+            <ion-note h2> </ion-note>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div class="ion-text-start">
+            <ion-note>${{order.total}}</ion-note>
+          </div>
+        </ion-col>
+      </ion-row>
+      <br><br>
+      <ion-row>
+        <ion-button size="large" (click)=submitOrder()>SEND ORDER</ion-button>
+        <ion-note> Order number:  </ion-note>
+        <ion-button size="large" (click)=pay()>Pay</ion-button>
+      </ion-row>
+  </ion-grid>
+  
 </ion-content>
