@@ -16,7 +16,6 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
   orders: Order[] = [];
   displayUncompletedOrdersOnly: boolean;
   displayCompletedOrdersOnly: boolean;
-  userSubscription: Subscription;
   orderSubscription: Subscription;
 
   constructor(
@@ -29,26 +28,15 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.userSubscription = this.ionicAuthService.userDetails().subscribe(response => {
-      if (response) {
-        if (response.uid !== 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3') {
-          this.router.navigateByUrl('browse-menu');
-          console.log('You do not have admin privileges');
-        }
-        this.displayOrders();
-      } else {
-        this.router.navigateByUrl('browse-menu');
-        console.log(response);
-      }
-    }, error => {
-      console.log(error);
+    if (!this.ionicAuthService.isAdminLoggedIn()){
+      console.log('Current user does not have admin priviledges')
       this.router.navigateByUrl('browse-menu');
-    })
+    }
+    this.displayOrders();
   }
 
   ngOnDestroy() {
     // Unsubscribe from elements that are not needed outside of this scope
-    this.userSubscription.unsubscribe();
     this.orderSubscription.unsubscribe();
   }
 

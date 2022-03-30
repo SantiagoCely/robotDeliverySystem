@@ -56,25 +56,13 @@ export class AdminLoginPage implements OnInit {
   }
 
   signIn(value) {
-    this.ionicAuthService.signinUser(value)
-      .then((response) => {
-        this.errorMsg = "";
-        if (response.user.uid != 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3') {
-          this.signOut();
-        } else {
-          this.router.navigateByUrl('admin');
-        }
-      }, error => {
-        this.errorMsg = error.message;
-      })
-  }
-  signOut() {
-    this.ionicAuthService.signoutUser()
+    this.ionicAuthService.signinAdmin(value)
       .then(() => {
-        this.errorMsg = "You do not have Admin privileges. Please use an Admin account";
-      })
-      .catch(error => {
-        console.log(error);
+        this.errorMsg = "";
+        console.log('Admin successfully logged in');
+        this.router.navigateByUrl('admin');
+      }, error => {
+        this.errorMsg = error;
       })
   }
 }

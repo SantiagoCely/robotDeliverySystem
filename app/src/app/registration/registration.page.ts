@@ -66,6 +66,7 @@ export class RegistrationPage implements OnInit {
       .then((response) => {
         this.errorMsg = "";
         this.successMsg = "New user created.";
+        console.log(response);
 
         this.account = {
           email : response.user.email,
@@ -78,9 +79,10 @@ export class RegistrationPage implements OnInit {
         this.crudService.createAccount(this.account, response.user.uid).then(() => {
           console.log("New account created in database");
         }), (error: any) => {
-          console.log(error);
+          this.errorMsg = error.message;
+          this.successMsg = "";
         }
-      }, error => {
+      }, (error: any) => {
         this.errorMsg = error.message;
         this.successMsg = "";
       })

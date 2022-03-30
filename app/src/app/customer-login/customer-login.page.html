@@ -35,7 +35,7 @@
 
   </form>
 
-  <ion-button expand="block" (click)="doLogin()" color="danger" *ngIf="!isUserLoggedIn">
+  <ion-button expand="block" (click)="googleLogin()" color="danger" *ngIf="!isUserLoggedIn">
     <ion-icon slot="start" name="logo-google"></ion-icon>
     LogIn with Google
   </ion-button>
@@ -51,27 +51,27 @@
   <ion-card-content>
     <ion-item>
       <ion-label>Email:</ion-label>
-      <ion-input value={{accountDetails.data().email}} readonly></ion-input>
+      <ion-input value={{accountDetails.email}} readonly></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>First Name:</ion-label>
-      <ion-input value={{accountDetails.data().firstName}}></ion-input>
+      <ion-input value={{accountDetails.firstName}}></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Last Name:</ion-label>
-      <ion-input value={{accountDetails.data().lastName}}></ion-input>
+      <ion-input value={{accountDetails.lastName}}></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Favourites:</ion-label>
-      <ion-input value={{accountDetails.data().favourites}} readonly></ion-input>
+      <ion-input value={{accountDetails.favourites}} readonly></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Past Orders:</ion-label>
-      <ion-input value={{accountDetails.data().pastOrders}} readonly></ion-input>
+      <ion-input value={{accountDetails.pastOrders}} readonly></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Preferences:</ion-label>
-      <ion-input value={{accountDetails.data().preferences}} readonly></ion-input>
+      <ion-input value={{accountDetails.preferences}} readonly></ion-input>
     </ion-item>
    </ion-card-content>
   </ion-card>

@@ -13,7 +13,6 @@ export class AdminPage implements OnInit, OnDestroy {
   userDetail: string;
   userRequests: UserRequest[] = [];
   requestSubscription : Subscription;
-  userSubscription: Subscription;
 
   constructor(
     private router: Router,
@@ -22,27 +21,16 @@ export class AdminPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.userSubscription = this.ionicAuthService.userDetails().subscribe(response => {
-      if (response) {
-        if (response.uid !== 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3') {
-          this.router.navigateByUrl('browse-menu');
-          console.log('You do not have admin privileges');
-        }
-        this.userDetail = response.email;
-      } else {
-        this.router.navigateByUrl('browse-menu');
-      }
-    }, error => {
-      console.log(error);
+    if (!this.ionicAuthService.isAdminLoggedIn()){
+      console.log('Current user does not have admin priviledges')
       this.router.navigateByUrl('browse-menu');
-    })
+    }
     this.viewUserRequests();
   }
 
   ngOnDestroy() {
     // Unsubscribe from elements that are not needed outside of this scope
     this.requestSubscription.unsubscribe();
-    this.userSubscription.unsubscribe();
 }
 
   signOut() {
@@ -68,19 +56,39 @@ export class AdminPage implements OnInit, OnDestroy {
   }
 
   goToCurrentOrders() {
-    this.router.navigateByUrl('view-current-orders');
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('view-current-orders');
+    } else {
+      console.log('Current user does not have admin priviledges')
+      this.router.navigateByUrl('browse-menu');
+    }
   }
 
   goToEditMenu() {
-    this.router.navigateByUrl('edit-menu');
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('edit-menu');
+    } else {
+      console.log('Current user does not have admin priviledges')
+      this.router.navigateByUrl('browse-menu');
+    }
   }
 
   goToEditLayout() {
-    this.router.navigateByUrl('edit-layout');
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('edit-layout');
+    } else {
+      console.log('Current user does not have admin priviledges')
+      this.router.navigateByUrl('browse-menu');
+    }
   }
 
   goToViewAnalytics() {
-    this.router.navigateByUrl('view-analytics');
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('view-analytics');
+    } else {
+      console.log('Current user does not have admin priviledges')
+      this.router.navigateByUrl('browse-menu');
+    }
   }
 
 

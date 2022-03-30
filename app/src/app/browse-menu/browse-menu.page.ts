@@ -7,10 +7,12 @@ import { CrudService } from '../services/crud.service';
 //import { Firestore } from '@angular/fire/firestore';
 import { MenuItem } from '../interfaces/menu-item';
 import { CartService } from '../services/cart.service';
+import { IonicAuthService } from '../ionic-auth.service';
+
 
 import { Router } from "@angular/router";
-import { ViewOrderPage } from '../view-order/view-order.page';
-import { increment } from 'firebase/firestore';
+//import { ViewOrderPage } from '../view-order/view-order.page';
+//import { increment } from 'firebase/firestore';
 
 @Component({
   selector: 'app-browse-menu',
@@ -33,6 +35,7 @@ export class BrowseMenuPage implements OnInit {
   constructor(
     private router: Router,
     private crudService: CrudService,
+    private ionicAuthService: IonicAuthService,
     //private cd: ChangeDetectorRef,
     //private alertCtrl: AlertController,
     public cart: CartService
@@ -85,7 +88,11 @@ export class BrowseMenuPage implements OnInit {
   }
 
   goToSignup() {
-    this.router.navigateByUrl('admin-login');
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('admin');
+    } else {
+      this.router.navigateByUrl('admin-login');
+    }
   }
 
   clearFilters() {
@@ -98,18 +105,6 @@ export class BrowseMenuPage implements OnInit {
     console.log("Browse Menu Page")
     this.displayMenuItems();
   }
-
-
-
-
-//This method sends the item id to view-order
-/*
-  publishEvent(id, price){
-    this.events.publish('item:added',{
-      item: id,
-      price: price});
-  }
-*/
 
   slideOpts = {
     slidesPerView: 10,

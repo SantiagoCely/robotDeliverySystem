@@ -128,7 +128,7 @@ export class ViewOrderPage implements OnInit{
 */
   }
   pay(){
-
+    console.log('Function to implement');
   }
   slideOpts = {
     slidesPerView: 10,

@@ -63,7 +63,8 @@ const routes: Routes = [
   /*{
     path: 'edit-menu-modal',
     loadChildren: () => import('./edit-menu-modal/edit-menu-modal.module').then( m => m.EditMenuModalPageModule)
-  },  {
+  },
+  {
     path: 'create-new-menu-item',
     loadChildren: () => import('./modals/create-new-menu-item/create-new-menu-item.module').then( m => m.CreateNewMenuItemPageModule)
   },

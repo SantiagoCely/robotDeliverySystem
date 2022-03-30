@@ -12,7 +12,7 @@
   <ion-note class="ion-padding" h2> In Cart, not yet submitted: </ion-note>
   <br>
   <br>
-  
+
   <ion-grid class="ion-align-items-start">
     <ion-row class="ion-align-items-start" *ngFor="let item of notSubmitted; let i = index">
       <ion-col class="ion-align-items-center">
@@ -68,9 +68,8 @@
       <br><br>
       <ion-row>
         <ion-button size="large" (click)=submitOrder()>SEND ORDER</ion-button>
-        <ion-note> Order number:  </ion-note>
         <ion-button size="large" (click)=pay()>Pay</ion-button>
       </ion-row>
   </ion-grid>
-  
+
 </ion-content>

@@ -20,7 +20,6 @@ import { CreateNewMenuItemModalPage } from '../modals/create-new-menu-item-modal
 export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
   menuItems: MenuItem[] = [];
   filters: string [] = [];
-  userSubscription: Subscription;
   menuItemsSubscription: Subscription;
   dataReturned: any;
   /*newItemForm = this.formBuilder.group({
@@ -141,26 +140,15 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     console.log("Edit Menu Page");
-    this.userSubscription = this.ionicAuthService.userDetails().subscribe(response => {
-      if (response) {
-        if (response.uid !== 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3') {
-          this.router.navigateByUrl('browse-menu');
-          console.log('You do not have admin privileges');
-        }
-        this.displayMenuItems();
-      } else {
-        this.router.navigateByUrl('browse-menu');
-        console.log(response);
-      }
-    }, error => {
-      console.log(error);
+    if (!this.ionicAuthService.isAdminLoggedIn()){
+      console.log('Current user does not have admin priviledges')
       this.router.navigateByUrl('browse-menu');
-    })
+    }
+    this.displayMenuItems();
   }
 
   ngOnDestroy() {
     // Unsubscribe from elements that are not needed outside of this scope
-    this.userSubscription.unsubscribe();
     this.menuItemsSubscription.unsubscribe();
   }
 

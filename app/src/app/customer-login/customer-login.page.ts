@@ -3,12 +3,9 @@ import { Router } from "@angular/router";
 import { IonicAuthService } from '../ionic-auth.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { LoadingController, Platform } from '@ionic/angular';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import * as firebase from 'firebase/auth';
 import { CrudService } from '../services/crud.service';
-import { Firestore, doc, getDoc, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, doc, onSnapshot } from '@angular/fire/firestore';
 import Account from '../interfaces/account';
 
 
@@ -23,7 +20,15 @@ export class CustomerLoginPage implements OnInit {
   public loading: any;
   public isUserLoggedIn = false;
   public user = null;
-  public accountDetails = null;
+  private additionalInfo = null;
+  public accountDetails: Account = {
+    firstName: 'None',
+    lastName: 'None',
+    email : 'None',
+    preferences: ['None'],
+    pastOrders: ['None'],
+    favourites: ['None'],
+  };
   private unsub;
 
   userForm: FormGroup;
@@ -61,10 +66,7 @@ export class CustomerLoginPage implements OnInit {
     private ionicAuthService: IonicAuthService,
     private fb: FormBuilder,
 
-    private fireAuth: AngularFireAuth,
-    private google: GooglePlus,
     public loadingController: LoadingController,
-    private platform: Platform,
 
     private crudService: CrudService,
     private afs: Firestore
@@ -89,11 +91,10 @@ export class CustomerLoginPage implements OnInit {
   signIn(value) {
     this.ionicAuthService.signinUser(value)
       .then((response) => {
-        console.log('Success in log in', response)
-        this.errorMsg = "";
         this.isUserLoggedIn = true;
+        this.loading.dismiss();
         this.user = response.user;
-        this.showUserDetails(false);
+        this.showUserDetails(true);
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
@@ -104,61 +105,35 @@ export class CustomerLoginPage implements OnInit {
     this.router.navigateByUrl('registration');
   }
 
-  doLogin(){
-    let params: any;
-    if (this.platform.is('cordova')) {
-      if (this.platform.is('android')) {
-        params = {
-          webClientId: '<WEB_CLIENT_ID>', //  webclientID 'string'
-          offline: true
-        };
-      } else {
-        params = {};
-      }
-      this.google.login(params)
+  googleLogin(){
+    this.ionicAuthService.signinUserGoogle()
       .then((response) => {
-        const { idToken, accessToken } = response;
-        this.onLoginSuccess(idToken, accessToken);
-      }).catch((error) => {
-        console.log(error);
-        alert('error:' + JSON.stringify(error));
-      });
-    } else{
-      console.log('else...');
-      this.fireAuth.signInWithPopup(new firebase.GoogleAuthProvider()).then(success => {
-        console.log('success in google login', success);
         this.isUserLoggedIn = true;
-        this.user =  success.user;
-        this.showUserDetails(true);
-      }).catch(err => {
-        console.log(err.message, 'error in google login');
-      });
-    }
-  }
-  onLoginSuccess(accessToken, accessSecret) {
-    const credential = accessSecret ? firebase.GoogleAuthProvider
-        .credential(accessToken, accessSecret) : firebase.GoogleAuthProvider
-            .credential(accessToken);
-    this.fireAuth.signInWithCredential(credential)
-      .then((success) => {
-        alert('successfully');
-        this.isUserLoggedIn = true;
-        this.user =  success.user;
         this.loading.dismiss();
+        this.user = response.user;
+        this.additionalInfo = response.additionalUserInfo.profile;
         this.showUserDetails(true);
-      });
+      }, error => {
+        this.errorMsg = error.message;
+        this.successMsg = "";
+      })
+  }
 
-  }
-  onLoginError(err) {
-    console.log(err);
-  }
   logout() {
-    this.fireAuth.signOut().then(() => {
+    this.ionicAuthService.signoutUser().then(() => {
       this.user =  null;
       this.isUserLoggedIn = false;
       this.accountDetails = null;
       // re-initialize account var
-      this.account = null;
+      this.accountDetails = {
+        firstName: 'None',
+        lastName: 'None',
+        email : 'None',
+        preferences: ['None'],
+        pastOrders: ['None'],
+        favourites: ['None'],
+      };
+      this.additionalInfo = null;
       this.unsub();
       console.log('User logged out');
     });
@@ -169,22 +144,35 @@ export class CustomerLoginPage implements OnInit {
       if (!responseDoc.exists() && externalProvider){
         console.log('creating Account');
         this.account = {
-          email : this.user.email,
-          firstName : this.user.displayName,
-          lastName : 'None',
+          email : this.additionalInfo.email,
+          firstName : this.additionalInfo.given_name,
+          lastName : this.additionalInfo.family_name,
           pastOrders : ['None'],
           preferences : ['None'],
           favourites : ['None'],
         };
         this.crudService.createAccount(this.account, this.user.uid).then((res) => {
           console.log("New account created in database");
-          this.accountDetails = res;
+          this.accountDetails = {
+            firstName: res.data().firstName,
+            lastName: res.data().lastName,
+            email : res.data().email,
+            preferences: res.data().preferences,
+            pastOrders: res.data().pastOrders,
+            favourites: res.data().favourites,
+          }
         }), (error: any) => {
           console.log(error);
         }
       } else {
-        this.accountDetails = responseDoc;
-        //this.renderAccountDetails(doc);
+        this.accountDetails = {
+          firstName: responseDoc.data().firstName,
+          lastName: responseDoc.data().lastName,
+          email : responseDoc.data().email,
+          preferences: responseDoc.data().preferences,
+          pastOrders: responseDoc.data().pastOrders,
+          favourites: responseDoc.data().favourites,
+        }
       }
   });
   }
