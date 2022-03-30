@@ -1,11 +1,12 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
-//import { ModalController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { AdminService } from '../services/admin.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Router } from "@angular/router";
 import { IonicAuthService } from '../ionic-auth.service';
 import { Subscription } from 'rxjs';
 
+import { CreateNewMenuItemModalPage } from '../modals/create-new-menu-item-modal/create-new-menu-item-modal.page';
 
 //import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 
@@ -21,7 +22,7 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
   filters: string [] = [];
   userSubscription: Subscription;
   menuItemsSubscription: Subscription;
-
+  dataReturned: any;
   /*newItemForm = this.formBuilder.group({
     name: '',
     price: 0,
@@ -36,9 +37,31 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
     private router: Router,
     private ionicAuthService: IonicAuthService,
     //private formBuilder: FormBuilder
-    //public modalController: ModalController
+    public modalController: ModalController,
   ) {
 
+  }
+
+  async openCreateNewMenuItemModal() {
+    const modal = await this.modalController.create({
+      component: CreateNewMenuItemModalPage,
+
+      componentProps: {
+        "paramID": 123,
+        "paramTitle": "Test Title"
+      }
+    });
+    console.log("Modal created");
+
+    modal.onDidDismiss().then((dataReturned) => {
+    if (dataReturned !== null) {
+        this.dataReturned = dataReturned.data;
+        console.log(this.dataReturned);
+        //alert('Modal Sent Data :'+ dataReturned);
+      }
+    });
+    //await modal.present();
+   return await modal.present();
   }
 
   displayMenuItems(){

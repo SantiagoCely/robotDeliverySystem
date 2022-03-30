@@ -5,7 +5,12 @@
 </ion-header>
 
 <ion-content>
-  <ion-button color="light" size="small" (click)="goCreateMenuItem()"> Create a New Menu Item </ion-button>
+
+  <ion-button (click)="openCreateNewMenuItemModal()">Create New Menu Item</ion-button>
+
+  <p *ngIf="dataReturned">{{dataReturned}}</p>
+  <br><br>
+
   <ion-button size="small" (click)="filterItems('Vegetarian')"> Vegetarian </ion-button>
   <ion-button size="small" (click)="filterItems('Halal')"> Halal </ion-button>
 
@@ -19,15 +24,16 @@
       <div class="scrolling-wrapper">
         <ion-card class="item-card" *ngIf="item.name == 'New Burger 1'">
           <ion-input id="menuItemName" type="text" placeholder={{item.name}} [(ngModel)]='text'
-                    (ionChange)='onMenuItemNameChange(item.id, $event.target.value)'></ion-input>
+                    (keyup.enter)="onMenuItemNameChange(item.id, $event.target.value)" min=3></ion-input>
           <br>
           <ion-input id="menuItemPrice" type="number" placeholder={{item.price}} [(ngModel)]='number'
-                    (ionChange)='onMenuItemPriceChange(item.id, $event.target.value)'></ion-input>
+                    (keyup.enter)="onMenuItemPriceChange(item.id, $event.target.value)"></ion-input>
           <br>
-          <ion-input id="menuItemCategory" placeholder={{item.category}} required="true"></ion-input>
+          <ion-input id="menuItemCategory" placeholder={{item.category}} required="true"
+          (keyup.enter) = "onMenuItemCategoryChange(item.id, $event.target.value)"></ion-input>
           <br>
           <ion-input id="menuItemType" placeholder={{item.type}} [(ngModel)] ='text'
-                      (ionChange)='onMenuItemTypeChange(item.id, $event.target.value)' required="true"></ion-input>
+                      (keyup.enter)='onMenuItemTypeChange(item.id, $event.target.value)' required="true"></ion-input>
           <ion-button size="small" type="submit" expand="block" (click)='onDeleteMenuItem(item.id)'>delete item</ion-button>
         </ion-card>
         <!-->

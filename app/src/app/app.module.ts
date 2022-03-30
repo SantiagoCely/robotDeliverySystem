@@ -4,7 +4,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-
 //import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 //import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -29,6 +28,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
+
   ],
   providers: [
     {
@@ -41,4 +41,3 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 })
 
 export class AppModule {}
-
