@@ -54,10 +54,11 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.module').then( m => m.AdminPageModule)
-  },  {
-    path: 'my-modal',
-    loadChildren: () => import('./modals/my-modal/my-modal.module').then( m => m.MyModalPageModule)
-  }
+  },
+  {
+   path: 'create-new-menu-item-modal',
+   loadChildren: () => import('./modals/create-new-menu-item-modal/create-new-menu-item-modal.module').then( m => m.CreateNewMenuItemModalPageModule)
+ }
 
   /*{
     path: 'edit-menu-modal',
