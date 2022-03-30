@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./admin.page.scss'],
 })
 export class AdminPage implements OnInit, OnDestroy {
-  userDetail: string;
   userRequests: UserRequest[] = [];
   requestSubscription : Subscription;
 
