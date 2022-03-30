@@ -6,10 +6,18 @@
 
 <ion-content>
 
-  <ion-button (click)="openCreateNewMenuItemModal()">Create New Menu Item</ion-button>
-
+<!--  <ion-button (click)="openCreateNewMenuItemModal()">Create New Menu Item</ion-button>
   <p *ngIf="dataReturned">{{dataReturned}}</p>
-  <br><br>
+  <br><br>!-->
+
+  <ion-button id="create-menu-item-trigger-button">Create New Menu Item </ion-button>
+<ion-modal trigger="create-menu-item-trigger-button">
+  <ng-template>
+    <ion-title> test modal </ion-title>
+    <ion-content>
+    </ion-content>
+  </ng-template>
+</ion-modal>
 
   <ion-button size="small" (click)="filterItems('Vegetarian')"> Vegetarian </ion-button>
   <ion-button size="small" (click)="filterItems('Halal')"> Halal </ion-button>

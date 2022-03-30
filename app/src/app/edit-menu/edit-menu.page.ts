@@ -43,6 +43,7 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
   }
 
   async openCreateNewMenuItemModal() {
+  //  this.router.navigateByUrl('create-new-menu-item');
     const modal = await this.modalController.create({
       component: CreateNewMenuItemModalPage,
 
@@ -62,6 +63,7 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
     });
     //await modal.present();
    return await modal.present();
+
   }
 
   displayMenuItems(){

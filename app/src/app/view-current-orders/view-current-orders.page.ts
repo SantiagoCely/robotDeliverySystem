@@ -82,12 +82,20 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
       this.orders = temp;
     }
     else { // display all orders; happens on init
+
     this.orderSubscription = this.adminService.getOrders().subscribe(res =>{
       console.log(res);
+      this.orders = res;
     });
     console.log("admin service getting all orders");
   }
     console.log("current orders: ", this.orders);
+  }
+
+  getMenuItemById(id){
+    return this.adminService.getMenuById(id).subscribe( res => {
+      console.log(res); 
+    })
   }
 
 }
