@@ -130,7 +130,9 @@ export class IonicAuthService {
     })
   }
 
-  userDetails() { return this.userFireAuth.user }
+  getUserAuth() { return this.userFireAuth.user }
+
+  getAdminAuth() { return this.adminFireAuth.user }
 
   getUser() { return this.user }
 
