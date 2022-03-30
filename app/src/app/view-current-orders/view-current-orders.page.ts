@@ -1,8 +1,11 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Order } from 'src/app/interfaces/order';
-import { MenuItem } from 'src/app/interfaces/menu-item';
-import { AdminService } from 'src/app/services/admin.service';
+import { Order } from '../interfaces/order';
+import { MenuItem } from '../interfaces/menu-item';
+import { AdminService } from '../services/admin.service';
+import { IonicAuthService } from '../ionic-auth.service';
+import { Subscription } from 'rxjs';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-view-current-orders',
@@ -13,13 +16,42 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
   orders: Order[] = [];
   displayUncompletedOrdersOnly: boolean;
   displayCompletedOrdersOnly: boolean;
+  userSubscription: Subscription;
+  orderSubscription: Subscription;
 
-  constructor(private adminService: AdminService) {
+  constructor(
+    private adminService: AdminService,
+    private router: Router,
+    private ionicAuthService: IonicAuthService
+    ) {
     this.displayCompletedOrdersOnly = false;
     this.displayUncompletedOrdersOnly = false;
   }
 
-  ngOnInit() { this.displayOrders(); }
+  ngOnInit() {
+    this.userSubscription = this.ionicAuthService.userDetails().subscribe(response => {
+      if (response) {
+        if (response.uid !== 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3') {
+          this.router.navigateByUrl('browse-menu');
+          console.log('You do not have admin privileges');
+        }
+        this.displayOrders();
+      } else {
+        this.router.navigateByUrl('browse-menu');
+        console.log(response);
+      }
+    }, error => {
+      console.log(error);
+      this.router.navigateByUrl('browse-menu');
+    })
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from elements that are not needed outside of this scope
+    this.userSubscription.unsubscribe();
+    this.orderSubscription.unsubscribe();
+  }
+
   ngOnChanges(){
     console.log("View current orders refreshed. ");
     this.displayOrders();
@@ -50,7 +82,7 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
       this.orders = temp;
     }
     else { // display all orders; happens on init
-    this.adminService.getOrders().subscribe(res =>{
+    this.orderSubscription = this.adminService.getOrders().subscribe(res =>{
       console.log(res);
     });
     console.log("admin service getting all orders");

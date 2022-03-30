@@ -1,8 +1,11 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 //import { ModalController } from '@ionic/angular';
 import { AdminService } from '../services/admin.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Router } from "@angular/router";
+import { IonicAuthService } from '../ionic-auth.service';
+import { Subscription } from 'rxjs';
+
 
 //import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 
@@ -13,9 +16,12 @@ import { Router } from "@angular/router";
   templateUrl: './edit-menu.page.html',
   styleUrls: ['./edit-menu.page.scss'],
 })
-export class EditMenuPage implements OnInit, OnChanges {
+export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
   menuItems: MenuItem[] = [];
   filters: string [] = [];
+  userSubscription: Subscription;
+  menuItemsSubscription: Subscription;
+
   /*newItemForm = this.formBuilder.group({
     name: '',
     price: 0,
@@ -28,6 +34,7 @@ export class EditMenuPage implements OnInit, OnChanges {
   constructor(
     private adminService: AdminService,
     private router: Router,
+    private ionicAuthService: IonicAuthService,
     //private formBuilder: FormBuilder
     //public modalController: ModalController
   ) {
@@ -51,7 +58,7 @@ export class EditMenuPage implements OnInit, OnChanges {
       })
 
     } else { // no filters -- happens OnInit
-      this.adminService.getMenuItems().subscribe(res => {
+      this.menuItemsSubscription = this.adminService.getMenuItems().subscribe(res => {
         this.menuItems = res;
         //this.cd.detectChanges();
       });
@@ -109,7 +116,27 @@ export class EditMenuPage implements OnInit, OnChanges {
 
   ngOnInit() {
     console.log("Edit Menu Page");
-    this.displayMenuItems();
+    this.userSubscription = this.ionicAuthService.userDetails().subscribe(response => {
+      if (response) {
+        if (response.uid !== 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3') {
+          this.router.navigateByUrl('browse-menu');
+          console.log('You do not have admin privileges');
+        }
+        this.displayMenuItems();
+      } else {
+        this.router.navigateByUrl('browse-menu');
+        console.log(response);
+      }
+    }, error => {
+      console.log(error);
+      this.router.navigateByUrl('browse-menu');
+    })
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from elements that are not needed outside of this scope
+    this.userSubscription.unsubscribe();
+    this.menuItemsSubscription.unsubscribe();
   }
 
   ngOnChanges(){
