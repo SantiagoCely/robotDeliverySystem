@@ -40,6 +40,11 @@
     LogIn with Google
   </ion-button>
 
+  <ion-button expand="block" (click)="facebookLogin()" color="primary" *ngIf="!isUserLoggedIn">
+    <ion-icon slot="start" name="logo-facebook"></ion-icon>
+    LogIn with Facebook
+  </ion-button>
+
   <div *ngIf="isUserLoggedIn">
   <ion-card>
   <ion-card-header>

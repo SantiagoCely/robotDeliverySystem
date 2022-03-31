@@ -94,7 +94,7 @@ export class CustomerLoginPage implements OnInit {
         this.isUserLoggedIn = true;
         this.loading.dismiss();
         this.user = response.user;
-        this.showUserDetails(true);
+        this.showUserDetails(false, 'Firebase');
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
@@ -112,7 +112,23 @@ export class CustomerLoginPage implements OnInit {
         this.loading.dismiss();
         this.user = response.user;
         this.additionalInfo = response.additionalUserInfo.profile;
-        this.showUserDetails(true);
+        this.showUserDetails(true, 'Google');
+      }, error => {
+        this.errorMsg = error.message;
+        this.successMsg = "";
+      })
+  }
+
+  facebookLogin(){
+    this.ionicAuthService.signinUserFacebook()
+      .then((response) => {
+        console.log('user');
+        console.log(response.additionalUserInfo.profile);
+        this.isUserLoggedIn = true;
+        this.loading.dismiss();
+        this.user = response.user;
+        this.additionalInfo = response.additionalUserInfo.profile;
+        this.showUserDetails(true, 'Facebook');
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
@@ -139,18 +155,29 @@ export class CustomerLoginPage implements OnInit {
     });
   }
 
-  showUserDetails(externalProvider){
+  showUserDetails(externalProvider: boolean, externalProviderName: string ){
     this.unsub = onSnapshot(doc(this.afs, "Accounts", this.user.uid), (responseDoc) => {
-      if (!responseDoc.exists() && externalProvider){
+      if (!responseDoc.exists() && externalProvider) {
         console.log('creating Account');
-        this.account = {
-          email : this.additionalInfo.email,
-          firstName : this.additionalInfo.given_name,
-          lastName : this.additionalInfo.family_name,
-          pastOrders : ['None'],
-          preferences : ['None'],
-          favourites : ['None'],
-        };
+        if (externalProviderName == "Google") {
+          this.account = {
+            firstName: this.additionalInfo.given_name,
+            lastName: this.additionalInfo.family_name,
+            email : this.additionalInfo.email,
+            preferences: ['None'],
+            pastOrders: ['None'],
+            favourites: ['None'],
+          }
+        } else if (externalProviderName == "Facebook") {
+          this.account = {
+            firstName: this.additionalInfo.first_name,
+            lastName: this.additionalInfo.last_name,
+            email : this.additionalInfo.email,
+            preferences: ['None'],
+            pastOrders: ['None'],
+            favourites: ['None'],
+          }
+        }
         this.crudService.createAccount(this.account, this.user.uid).then((res) => {
           console.log("New account created in database");
           this.accountDetails = {

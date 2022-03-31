@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { LoadingController, Platform } from '@ionic/angular';
 import * as firebase from 'firebase/auth';
+import { getAuth, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class IonicAuthService {
     private google: GooglePlus,
     public loadingController: LoadingController,
     private platform: Platform,
+    private provider: FacebookAuthProvider,
   ) { }
 
   createUser(value) {
@@ -56,7 +58,20 @@ export class IonicAuthService {
     })
   }
 
-  signinUserGoogle(){
+  signinUserFacebook() {
+    return new Promise<any>((resolve, reject) => {
+      this.userFireAuth.signInWithPopup(this.provider).then(success => {
+        this.subscribeToUserState();
+        console.log('success in facebook login', success);
+        resolve(success);
+      }).catch(err => {
+        console.log(err.message, 'error in facebook login');
+        reject(err);
+      });
+    })
+  }
+
+  signinUserGoogle() {
     return new Promise<any>((resolve, reject) => {
       let params: any;
       if (this.platform.is('cordova')) {
@@ -77,9 +92,10 @@ export class IonicAuthService {
                   .credential(idToken);
           this.userFireAuth.signInWithCredential(credential)
             .then((success) => {
+              this.subscribeToUserState();
               resolve(success);
               alert('successfully');
-              this.subscribeToUserState();
+
             });
         }).catch((error) => {
           console.log(error);
@@ -89,9 +105,9 @@ export class IonicAuthService {
       } else{
         console.log('else...');
         this.userFireAuth.signInWithPopup(new firebase.GoogleAuthProvider()).then(success => {
+          this.subscribeToUserState();
           console.log('success in google login', success);
           resolve(success);
-          this.subscribeToUserState();
         }).catch(err => {
           console.log(err.message, 'error in google login');
           reject(err);
@@ -105,8 +121,8 @@ export class IonicAuthService {
       this.adminFireAuth.signInWithEmailAndPassword(value.email, value.password)
         .then(res => {
           if (res.user.uid == this.adminUID){
-            resolve(res);
             this.subscribeToAdminState();
+            resolve(res);
           } else {
             this.signoutAdmin();
             reject("You do not have admin priviledges. Please use an Admin account");
@@ -121,7 +137,6 @@ export class IonicAuthService {
       if (this.adminFireAuth.currentUser) {
         this.adminFireAuth.signOut()
           .then(() => {
-            //console.log("Sign out");
             resolve();
           }).catch(() => {
             reject();
