@@ -20,7 +20,7 @@ export class IonicAuthService {
     private google: GooglePlus,
     public loadingController: LoadingController,
     private platform: Platform,
-    private provider: FacebookAuthProvider,
+    private facebook: FacebookAuthProvider,
   ) { }
 
   createUser(value) {
@@ -60,9 +60,9 @@ export class IonicAuthService {
 
   signinUserFacebook() {
     return new Promise<any>((resolve, reject) => {
-      this.userFireAuth.signInWithPopup(this.provider).then(success => {
+      this.userFireAuth.signInWithPopup(this.facebook).then(success => {
         this.subscribeToUserState();
-        console.log('success in facebook login', success);
+        console.log('success in facebook login');
         resolve(success);
       }).catch(err => {
         console.log(err.message, 'error in facebook login');
@@ -106,7 +106,7 @@ export class IonicAuthService {
         console.log('else...');
         this.userFireAuth.signInWithPopup(new firebase.GoogleAuthProvider()).then(success => {
           this.subscribeToUserState();
-          console.log('success in google login', success);
+          console.log('success in google login');
           resolve(success);
         }).catch(err => {
           console.log(err.message, 'error in google login');

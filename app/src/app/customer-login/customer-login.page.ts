@@ -91,9 +91,9 @@ export class CustomerLoginPage implements OnInit {
   signIn(value) {
     this.ionicAuthService.signinUser(value)
       .then((response) => {
-        this.isUserLoggedIn = true;
-        this.loading.dismiss();
         this.user = response.user;
+        this.loading.dismiss();
+        this.isUserLoggedIn = true;
         this.showUserDetails(false, 'Firebase');
       }, error => {
         this.errorMsg = error.message;
@@ -108,10 +108,10 @@ export class CustomerLoginPage implements OnInit {
   googleLogin(){
     this.ionicAuthService.signinUserGoogle()
       .then((response) => {
-        this.isUserLoggedIn = true;
-        this.loading.dismiss();
         this.user = response.user;
         this.additionalInfo = response.additionalUserInfo.profile;
+        this.loading.dismiss();
+        this.isUserLoggedIn = true;
         this.showUserDetails(true, 'Google');
       }, error => {
         this.errorMsg = error.message;
@@ -122,12 +122,10 @@ export class CustomerLoginPage implements OnInit {
   facebookLogin(){
     this.ionicAuthService.signinUserFacebook()
       .then((response) => {
-        console.log('user');
-        console.log(response.additionalUserInfo.profile);
-        this.isUserLoggedIn = true;
-        this.loading.dismiss();
         this.user = response.user;
         this.additionalInfo = response.additionalUserInfo.profile;
+        this.loading.dismiss();
+        this.isUserLoggedIn = true;
         this.showUserDetails(true, 'Facebook');
       }, error => {
         this.errorMsg = error.message;
