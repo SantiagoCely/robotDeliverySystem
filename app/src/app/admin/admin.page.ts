@@ -51,7 +51,8 @@ export class AdminPage implements OnInit, OnDestroy {
   }
 
   acknowledgeRequest(id) {
-    this.crudService.updateRequest(id);
+    //this.crudService.updateRequest(id);
+    this.crudService.acknowledgeRequest(id);
   }
 
   goToCurrentOrders() {

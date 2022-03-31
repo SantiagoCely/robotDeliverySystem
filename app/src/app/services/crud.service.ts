@@ -83,6 +83,15 @@ export class CrudService {
     return collectionData(requestRef, { idField: 'id'}) as Observable <UserRequest[]>;
   }
 
+  acknowledgeRequest(id) {
+    return new Promise<any>((resolve, reject) => {
+      this.afa.collection("Nlp").doc(id).delete()
+        .then(
+          res => resolve(res),
+          err => reject(err))
+    })
+  }
+
   updateRequest(id) {
     return new Promise<any>((resolve, reject) => {
       this.afa.collection("Nlp").doc(id).update({
