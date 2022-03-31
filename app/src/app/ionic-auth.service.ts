@@ -3,7 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { LoadingController, Platform } from '@ionic/angular';
 import * as firebase from 'firebase/auth';
-import { getAuth, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, FacebookAuthProvider, OAuthProvider } from "firebase/auth";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,7 @@ export class IonicAuthService {
     public loadingController: LoadingController,
     private platform: Platform,
     private facebook: FacebookAuthProvider,
+    private microsoft: OAuthProvider,
   ) { }
 
   createUser(value) {
@@ -66,6 +67,20 @@ export class IonicAuthService {
         resolve(success);
       }).catch(err => {
         console.log(err.message, 'error in facebook login');
+        reject(err);
+      });
+    })
+  }
+
+  signinUserMicrosoft() {
+    this.microsoft = new OAuthProvider('microsoft.com');
+    return new Promise<any>((resolve, reject) => {
+      this.userFireAuth.signInWithPopup(this.microsoft).then(success => {
+        this.subscribeToUserState();
+        console.log('success in microsoft login');
+        resolve(success);
+      }).catch(err => {
+        console.log(err.message, 'error in microsoft login');
         reject(err);
       });
     })

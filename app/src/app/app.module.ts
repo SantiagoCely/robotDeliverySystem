@@ -17,7 +17,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 // Sign in with different providers
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import { FacebookAuthProvider } from "firebase/auth";
+import { FacebookAuthProvider, OAuthProvider} from "firebase/auth";
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,7 +38,8 @@ import { FacebookAuthProvider } from "firebase/auth";
       useClass: IonicRouteStrategy
     },
     GooglePlus,
-    FacebookAuthProvider
+    FacebookAuthProvider,
+    OAuthProvider,
   ],
   bootstrap: [AppComponent],
 })

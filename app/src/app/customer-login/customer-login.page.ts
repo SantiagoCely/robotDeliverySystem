@@ -133,6 +133,20 @@ export class CustomerLoginPage implements OnInit {
       })
   }
 
+  microsoftLogin(){
+    this.ionicAuthService.signinUserMicrosoft()
+      .then((response) => {
+        this.user = response.user;
+        this.additionalInfo = response.additionalUserInfo.profile;
+        this.loading.dismiss();
+        this.isUserLoggedIn = true;
+        this.showUserDetails(true, 'Microsoft');
+      }, error => {
+        this.errorMsg = error.message;
+        this.successMsg = "";
+      })
+  }
+
   logout() {
     this.ionicAuthService.signoutUser().then(() => {
       this.user =  null;

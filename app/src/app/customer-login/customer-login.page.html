@@ -45,6 +45,12 @@
     LogIn with Facebook
   </ion-button>
 
+  <ion-button expand="block" (click)="microsoftLogin()" color="warning" *ngIf="!isUserLoggedIn">
+    <ion-icon slot="start" name="logo-microsoft"></ion-icon>
+    LogIn with Microsoft
+  </ion-button>
+
+
   <div *ngIf="isUserLoggedIn">
   <ion-card>
   <ion-card-header>
