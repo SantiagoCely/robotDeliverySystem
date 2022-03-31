@@ -28,7 +28,7 @@
         </div>
     </ng-container>
 
-    <ion-button type="submit" expand="block" [disabled]="!userForm.valid">Signin</ion-button>
+    <ion-button type="submit" expand="block" [disabled]="!userForm.valid" color="medium">Signin</ion-button>
 
     <label class="ion-text-center" color="danger">{{errorMsg}}</label>
     <p class="ion-text-center">Not registered yet? <a (click)="goToSignup()">Register </a> </p>
@@ -40,14 +40,19 @@
     LogIn with Google
   </ion-button>
 
-  <ion-button expand="block" (click)="facebookLogin()" color="primary" *ngIf="!isUserLoggedIn">
-    <ion-icon slot="start" name="logo-facebook"></ion-icon>
-    LogIn with Facebook
-  </ion-button>
-
   <ion-button expand="block" (click)="microsoftLogin()" color="warning" *ngIf="!isUserLoggedIn">
     <ion-icon slot="start" name="logo-microsoft"></ion-icon>
     LogIn with Microsoft
+  </ion-button>
+
+  <ion-button expand="block" (click)="gitHubLogin()" color="light" *ngIf="!isUserLoggedIn">
+    <ion-icon slot="start" name="logo-gitHub"></ion-icon>
+    LogIn with GitHub
+  </ion-button>
+
+  <ion-button expand="block" (click)="twitterLogin()" color="secondary" *ngIf="!isUserLoggedIn">
+    <ion-icon slot="start" name="logo-twitter"></ion-icon>
+    LogIn with Twitter
   </ion-button>
 
 

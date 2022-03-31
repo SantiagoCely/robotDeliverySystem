@@ -119,20 +119,6 @@ export class CustomerLoginPage implements OnInit {
       })
   }
 
-  facebookLogin(){
-    this.ionicAuthService.signinUserFacebook()
-      .then((response) => {
-        this.user = response.user;
-        this.additionalInfo = response.additionalUserInfo.profile;
-        this.loading.dismiss();
-        this.isUserLoggedIn = true;
-        this.showUserDetails(true, 'Facebook');
-      }, error => {
-        this.errorMsg = error.message;
-        this.successMsg = "";
-      })
-  }
-
   microsoftLogin(){
     this.ionicAuthService.signinUserMicrosoft()
       .then((response) => {
@@ -141,6 +127,39 @@ export class CustomerLoginPage implements OnInit {
         this.loading.dismiss();
         this.isUserLoggedIn = true;
         this.showUserDetails(true, 'Microsoft');
+      }, error => {
+        this.errorMsg = error.message;
+        this.successMsg = "";
+      })
+  }
+
+  twitterLogin(){
+    this.errorMsg = "This method of authentication is not available for the moment";
+
+    /*
+    this.ionicAuthService.signinUserTwitter()
+      .then((response) => {
+        this.user = response.user;
+        this.additionalInfo = response.additionalUserInfo.profile;
+        this.loading.dismiss();
+        this.isUserLoggedIn = true;
+        console.log(response);
+        //this.showUserDetails(true, 'Twitter');
+      }, error => {
+        this.errorMsg = error.message;
+        this.successMsg = "";
+      })
+      */
+  }
+
+  gitHubLogin(){
+    this.ionicAuthService.signinUserGitHub()
+      .then((response) => {
+        this.user = response.user;
+        this.additionalInfo = response.additionalUserInfo.profile;
+        this.loading.dismiss();
+        this.isUserLoggedIn = true;
+        this.showUserDetails(true, 'GitHub');
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
@@ -180,11 +199,29 @@ export class CustomerLoginPage implements OnInit {
             pastOrders: ['None'],
             favourites: ['None'],
           }
-        } else if (externalProviderName == "Facebook") {
+        } else if (externalProviderName == "GitHub") {
           this.account = {
-            firstName: this.additionalInfo.first_name,
-            lastName: this.additionalInfo.last_name,
-            email : this.additionalInfo.email,
+            firstName: this.additionalInfo.name,
+            lastName: 'None',
+            email : this.user.email,
+            preferences: ['None'],
+            pastOrders: ['None'],
+            favourites: ['None'],
+          }
+        } else if (externalProviderName == "Microsoft") {
+          this.account = {
+            firstName: this.additionalInfo.givenName,
+            lastName: this.additionalInfo.surname,
+            email : this.additionalInfo.mail,
+            preferences: ['None'],
+            pastOrders: ['None'],
+            favourites: ['None'],
+          }
+        } else if (externalProviderName == "Twitter") {
+          this.account = {
+            firstName: this.additionalInfo.givenName,
+            lastName: this.additionalInfo.surname,
+            email : this.additionalInfo.mail,
             preferences: ['None'],
             pastOrders: ['None'],
             favourites: ['None'],

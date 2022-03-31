@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import { LoadingController, Platform } from '@ionic/angular';
-import * as firebase from 'firebase/auth';
-import { getAuth, signInWithPopup, FacebookAuthProvider, OAuthProvider } from "firebase/auth";
+import { LoadingController } from '@ionic/angular';
+import { GoogleAuthProvider, TwitterAuthProvider, OAuthProvider, GithubAuthProvider } from "firebase/auth";
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +15,14 @@ export class IonicAuthService {
   constructor(
     private userFireAuth: AngularFireAuth,
     private adminFireAuth: AngularFireAuth,
-    private google: GooglePlus,
+    private google: GoogleAuthProvider,
     public loadingController: LoadingController,
-    private platform: Platform,
-    private facebook: FacebookAuthProvider,
     private microsoft: OAuthProvider,
-  ) { }
+    private twitter: TwitterAuthProvider,
+    private gitHub: GithubAuthProvider,
+  ) {
+    this.microsoft = new OAuthProvider('microsoft.com');
+   }
 
   createUser(value) {
     return new Promise<any>((resolve, reject) => {
@@ -59,77 +59,27 @@ export class IonicAuthService {
     })
   }
 
-  signinUserFacebook() {
+  signinUserProvider(provider) {
     return new Promise<any>((resolve, reject) => {
-      this.userFireAuth.signInWithPopup(this.facebook).then(success => {
+      this.userFireAuth.signInWithPopup(provider)
+      .then(success => {
         this.subscribeToUserState();
-        console.log('success in facebook login');
+        console.log('success in external provider login');
         resolve(success);
       }).catch(err => {
-        console.log(err.message, 'error in facebook login');
+        console.log(err.message, 'error in external provider login');
         reject(err);
       });
     })
   }
 
-  signinUserMicrosoft() {
-    this.microsoft = new OAuthProvider('microsoft.com');
-    return new Promise<any>((resolve, reject) => {
-      this.userFireAuth.signInWithPopup(this.microsoft).then(success => {
-        this.subscribeToUserState();
-        console.log('success in microsoft login');
-        resolve(success);
-      }).catch(err => {
-        console.log(err.message, 'error in microsoft login');
-        reject(err);
-      });
-    })
-  }
+  signinUserTwitter() { return this.signinUserProvider(this.twitter) }
 
-  signinUserGoogle() {
-    return new Promise<any>((resolve, reject) => {
-      let params: any;
-      if (this.platform.is('cordova')) {
-        if (this.platform.is('android')) {
-          params = {
-            webClientId: '<WEB_CLIENT_ID>', //  webclientID 'string'
-            offline: true
-          };
-        } else {
-          params = {};
-        }
+  signinUserMicrosoft() { return this.signinUserProvider(this.microsoft) }
 
-        this.google.login(params)
-        .then((response) => {
-          const { idToken, accessToken } = response;
-          const credential = accessToken ? firebase.GoogleAuthProvider
-              .credential(idToken, accessToken) : firebase.GoogleAuthProvider
-                  .credential(idToken);
-          this.userFireAuth.signInWithCredential(credential)
-            .then((success) => {
-              this.subscribeToUserState();
-              resolve(success);
-              alert('successfully');
+  signinUserGoogle() { return this.signinUserProvider(this.google) }
 
-            });
-        }).catch((error) => {
-          console.log(error);
-          reject(error);
-          alert('error:' + JSON.stringify(error));
-        });
-      } else{
-        console.log('else...');
-        this.userFireAuth.signInWithPopup(new firebase.GoogleAuthProvider()).then(success => {
-          this.subscribeToUserState();
-          console.log('success in google login');
-          resolve(success);
-        }).catch(err => {
-          console.log(err.message, 'error in google login');
-          reject(err);
-        });
-      }
-    })
-  }
+  signinUserGitHub() { return this.signinUserProvider(this.gitHub) }
 
   signinAdmin(value: { email: string; password: string; }) {
     return new Promise<any>((resolve, reject) => {

@@ -4,8 +4,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-//import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-//import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 // Firebase
 import { AngularFireModule } from '@angular/fire/compat';
@@ -16,8 +14,7 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 // Sign in with different providers
-import { GooglePlus } from '@ionic-native/google-plus/ngx';
-import { FacebookAuthProvider, OAuthProvider} from "firebase/auth";
+import { GoogleAuthProvider, OAuthProvider, TwitterAuthProvider, GithubAuthProvider} from "firebase/auth";
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,9 +34,10 @@ import { FacebookAuthProvider, OAuthProvider} from "firebase/auth";
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
     },
-    GooglePlus,
-    FacebookAuthProvider,
     OAuthProvider,
+    TwitterAuthProvider,
+    GoogleAuthProvider,
+    GithubAuthProvider,
   ],
   bootstrap: [AppComponent],
 })
