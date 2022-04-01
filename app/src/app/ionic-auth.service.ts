@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { LoadingController } from '@ionic/angular';
 import { GoogleAuthProvider, TwitterAuthProvider, OAuthProvider, GithubAuthProvider } from "firebase/auth";
+import firebase from 'firebase/compat';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,8 @@ import { GoogleAuthProvider, TwitterAuthProvider, OAuthProvider, GithubAuthProvi
 
 export class IonicAuthService {
   private readonly adminUID = 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3';
-  private user = null;
-  private admin = null;
+  private user: firebase.User;
+  private admin: firebase.User;
 
   constructor(
     private userFireAuth: AngularFireAuth,
@@ -22,6 +23,12 @@ export class IonicAuthService {
     private gitHub: GithubAuthProvider,
   ) {
     this.microsoft = new OAuthProvider('microsoft.com');
+    this.userFireAuth.authState.subscribe((res) => {
+      this.user = res;
+    })
+    this.adminFireAuth.authState.subscribe((res) => {
+      this.admin = res;
+    })
    }
 
   async createUser(value) {
@@ -38,7 +45,6 @@ export class IonicAuthService {
     return new Promise<any>(async (resolve, reject) => {
       await this.userFireAuth.signInWithEmailAndPassword(value.email, value.password)
         .then(async res => {
-          this.user = res.user;
           resolve(res);
         },
           err => reject(err))
@@ -63,7 +69,6 @@ export class IonicAuthService {
     return new Promise<any>(async (resolve, reject) => {
       await this.userFireAuth.signInWithPopup(provider)
       .then(async success => {
-        this.user = success.user;
         console.log('success in external provider login');
         resolve(success);
       }).catch(err => {
@@ -86,7 +91,6 @@ export class IonicAuthService {
       await this.adminFireAuth.signInWithEmailAndPassword(value.email, value.password)
         .then(async res => {
           if (res.user.uid == this.adminUID){
-            this.admin = res.user;
             resolve(res);
           } else {
             await this.signoutAdmin();
@@ -118,27 +122,7 @@ export class IonicAuthService {
 
   getAdmin() { return this.admin }
 
-  isAdminLoggedIn() {
-    if (this.admin) {
-      return true;
-    } return false;
-  }
+  isAdminLoggedIn() { return !!this.user }
 
-  isUserLoggedIn() {
-    if (this.user) {
-      return true;
-    } return false;
-  }
-
-  async subscribeToUserState() {
-    this.userFireAuth.authState.subscribe((res) => {
-      this.user = res;
-    })
-  }
-
-  async subscribeToAdminState() {
-    this.adminFireAuth.authState.subscribe((res) => {
-      this.admin = res;
-    })
-  }
+  isUserLoggedIn() { return !!this.admin }
 }
