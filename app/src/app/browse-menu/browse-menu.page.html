@@ -5,14 +5,31 @@
   </ion-toolbar>
 </ion-header>
 
+<ion-item lines="none">
+  <ion-avatar slot="start">
+  <ion-img src= "/assets/icon/robot.png"></ion-img> />>
+  </ion-avatar>
+  <ion-label>Welcome Customer!</ion-label>
+</ion-item>
+
 <ion-content>
-  <ion-button color="light" size="small" (click)="goToSignup()">admin-login </ion-button>
 
   <br><br>
 
-  <ion-button color="light" size="small" (click)="filterItems('Vegetarian')"> Vegetarian </ion-button>
-  <ion-button color="light" size="small" (click)="filterItems('Halal')"> Halal </ion-button>
-  <ion-button color="light" size="small" (click)="clearFilters()"> Clear Filters </ion-button>
+  <ion-chip (click)="filterItems('Vegetarian')" outline color="success">
+    <ion-icon name="restaurant"></ion-icon>
+    <ion-label>Vegetarian</ion-label>
+  </ion-chip>
+
+  <ion-chip (click)="filterItems('Halal')" outline color="tertiary">
+    <ion-icon name="restaurant"></ion-icon>
+    <ion-label>Halal</ion-label>
+  </ion-chip>
+
+  <ion-chip (click)="clearFilters()" outline color="dark">
+    <ion-label>Clear Filters</ion-label>
+    <ion-icon name="close-circle"></ion-icon>
+  </ion-chip>
 
   <div class="scrolling-wrapper">
     <br>

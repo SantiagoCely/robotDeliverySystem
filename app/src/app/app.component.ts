@@ -45,6 +45,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('browse-menu');
   }
 
+  goToSignup() {
+    console.log(this.ionicAuthService.isAdminLoggedIn())
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('admin');
+    } else {
+      this.router.navigateByUrl('admin-login');
+    }
+  }
   goToAccount() {
     this.verifyAdminStatus();
     this.router.navigateByUrl('customer-login');

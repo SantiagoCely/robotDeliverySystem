@@ -87,13 +87,6 @@ export class BrowseMenuPage implements OnInit {
 
   }
 
-  goToSignup() {
-    if (this.ionicAuthService.isAdminLoggedIn()) {
-      this.router.navigateByUrl('admin');
-    } else {
-      this.router.navigateByUrl('admin-login');
-    }
-  }
 
   clearFilters() {
     this.filters = [];
