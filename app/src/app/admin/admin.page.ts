@@ -20,11 +20,11 @@ export class AdminPage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.viewUserRequests();
     if (!this.ionicAuthService.isAdminLoggedIn()){
       console.log('Current user does not have admin priviledges')
       this.router.navigateByUrl('browse-menu');
     }
-    this.viewUserRequests();
   }
 
   ngOnDestroy() {

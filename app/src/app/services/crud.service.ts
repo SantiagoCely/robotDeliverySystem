@@ -7,7 +7,7 @@ import { Router } from "@angular/router";
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import Account from '../interfaces/account';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireList } from '@angular/fire/compat/database';
 import { UserRequest } from '../interfaces/user-requests';
 
@@ -16,17 +16,12 @@ import { UserRequest } from '../interfaces/user-requests';
 })
 export class CrudService {
   accountRef: AngularFireList<any>;
-  private dbPath = '/Accounts';
-
-  accountsRef2: AngularFirestoreCollection<Account>;
 
   constructor(
     private afs: Firestore,
     private router: Router,
     private afa: AngularFirestore,
-    ) {
-      this.accountsRef2 = afa.collection(this.dbPath);
-     }
+    ) { }
 
   createOrder(order: Order){
     const orderRef = collection(this.afs, 'Orders');
@@ -67,9 +62,9 @@ export class CrudService {
 
   }
 
-  createAccount(account: Account, id){
-    return new Promise<any>((resolve, reject) => {
-      this.afa.collection("Accounts").doc(id).set({
+  async createAccount(account: Account, id: string){
+    return new Promise<any>(async (resolve, reject) => {
+      await this.afa.collection("Accounts").doc(id).set({
         ... account
       })
         .then(
@@ -84,15 +79,15 @@ export class CrudService {
   }
 
   acknowledgeRequest(id) {
-    return new Promise<any>((resolve, reject) => {
-      this.afa.collection("Nlp").doc(id).delete()
+    return new Promise<any>(async (resolve, reject) => {
+      await this.afa.collection("Nlp").doc(id).delete()
         .then(
           res => resolve(res),
           err => reject(err))
     })
   }
 
-  updateRequest(id) {
+  updateRequest(id: string) {
     return new Promise<any>((resolve, reject) => {
       this.afa.collection("Nlp").doc(id).update({
         Acknowledged: true,

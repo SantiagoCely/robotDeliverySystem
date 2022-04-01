@@ -182,70 +182,70 @@ export class CustomerLoginPage implements OnInit {
     });
   }
 
-  showUserDetails(externalProvider: boolean, externalProviderName: string ){
-    this.unsub = onSnapshot(doc(this.afs, "Accounts", this.user.uid), (responseDoc) => {
+  async showUserDetails(externalProvider: boolean, externalProviderName: string ){
+    this.unsub = onSnapshot(doc(this.afs, "Accounts", this.user.uid), async (responseDoc) => {
       if (!responseDoc.exists() && externalProvider) {
         console.log('creating Account');
         if (externalProviderName == "Google") {
           this.account = {
             firstName: this.additionalInfo.given_name,
             lastName: this.additionalInfo.family_name,
-            email : this.additionalInfo.email,
+            email: this.additionalInfo.email,
             preferences: ['None'],
             pastOrders: ['None'],
             favourites: ['None'],
-          }
+          };
         } else if (externalProviderName == "GitHub") {
           this.account = {
             firstName: this.additionalInfo.name,
             lastName: 'None',
-            email : this.user.email,
+            email: this.user.email,
             preferences: ['None'],
             pastOrders: ['None'],
             favourites: ['None'],
-          }
+          };
         } else if (externalProviderName == "Microsoft") {
           this.account = {
             firstName: this.additionalInfo.givenName,
             lastName: this.additionalInfo.surname,
-            email : this.additionalInfo.mail,
+            email: this.additionalInfo.mail,
             preferences: ['None'],
             pastOrders: ['None'],
             favourites: ['None'],
-          }
+          };
         } else if (externalProviderName == "Twitter") {
           this.account = {
             firstName: this.additionalInfo.name,
             lastName: 'None',
-            email : 'None',
+            email: 'None',
             preferences: ['None'],
             pastOrders: ['None'],
             favourites: ['None'],
-          }
+          };
         }
-        this.crudService.createAccount(this.account, this.user.uid).then((res) => {
+        await this.crudService.createAccount(this.account, this.user.uid).then((res) => {
           console.log("New account created in database");
           this.accountDetails = {
             firstName: res.data().firstName,
             lastName: res.data().lastName,
-            email : res.data().email,
+            email: res.data().email,
             preferences: res.data().preferences,
             pastOrders: res.data().pastOrders,
             favourites: res.data().favourites,
-          }
+          };
         }), (error: any) => {
           console.log(error);
-        }
+        };
       } else {
         this.accountDetails = {
           firstName: responseDoc.data().firstName,
           lastName: responseDoc.data().lastName,
-          email : responseDoc.data().email,
+          email: responseDoc.data().email,
           preferences: responseDoc.data().preferences,
           pastOrders: responseDoc.data().pastOrders,
           favourites: responseDoc.data().favourites,
-        }
+        };
       }
-  });
+    });
   }
 }

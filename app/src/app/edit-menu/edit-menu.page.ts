@@ -140,11 +140,11 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     console.log("Edit Menu Page");
+    this.displayMenuItems();
     if (!this.ionicAuthService.isAdminLoggedIn()){
       console.log('Current user does not have admin priviledges')
       this.router.navigateByUrl('browse-menu');
     }
-    this.displayMenuItems();
   }
 
   ngOnDestroy() {

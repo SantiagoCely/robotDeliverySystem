@@ -24,9 +24,9 @@ export class IonicAuthService {
     this.microsoft = new OAuthProvider('microsoft.com');
    }
 
-  createUser(value) {
-    return new Promise<any>((resolve, reject) => {
-      this.userFireAuth.createUserWithEmailAndPassword(value.email, value.password)
+  async createUser(value) {
+    return new Promise<any>(async (resolve, reject) => {
+      await this.userFireAuth.createUserWithEmailAndPassword(value.email, value.password)
         .then(res => {
           resolve(res);
         },
@@ -34,21 +34,21 @@ export class IonicAuthService {
     })
   }
 
-  signinUser(value: { email: string; password: string; }) {
-    return new Promise<any>((resolve, reject) => {
-      this.userFireAuth.signInWithEmailAndPassword(value.email, value.password)
-        .then(res => {
+  async signinUser(value: { email: string; password: string; }) {
+    return new Promise<any>(async (resolve, reject) => {
+      await this.userFireAuth.signInWithEmailAndPassword(value.email, value.password)
+        .then(async res => {
+          this.user = res.user;
           resolve(res);
-          this.subscribeToUserState();
         },
           err => reject(err))
     })
   }
 
-  signoutUser() {
-    return new Promise<void>((resolve, reject) => {
+  async signoutUser() {
+    return new Promise<void>(async (resolve, reject) => {
       if (this.userFireAuth.currentUser) {
-        this.userFireAuth.signOut()
+        await this.userFireAuth.signOut()
           .then(() => {
             console.log("Sign out");
             resolve();
@@ -59,11 +59,11 @@ export class IonicAuthService {
     })
   }
 
-  signinUserProvider(provider) {
-    return new Promise<any>((resolve, reject) => {
-      this.userFireAuth.signInWithPopup(provider)
-      .then(success => {
-        this.subscribeToUserState();
+  async signinUserProvider(provider) {
+    return new Promise<any>(async (resolve, reject) => {
+      await this.userFireAuth.signInWithPopup(provider)
+      .then(async success => {
+        this.user = success.user;
         console.log('success in external provider login');
         resolve(success);
       }).catch(err => {
@@ -73,23 +73,23 @@ export class IonicAuthService {
     })
   }
 
-  signinUserTwitter() { return this.signinUserProvider(this.twitter) }
+  async signinUserTwitter() { return this.signinUserProvider(this.twitter) }
 
-  signinUserMicrosoft() { return this.signinUserProvider(this.microsoft) }
+  async signinUserMicrosoft() { return this.signinUserProvider(this.microsoft) }
 
-  signinUserGoogle() { return this.signinUserProvider(this.google) }
+  async signinUserGoogle() { return this.signinUserProvider(this.google) }
 
-  signinUserGitHub() { return this.signinUserProvider(this.gitHub) }
+  async signinUserGitHub() { return this.signinUserProvider(this.gitHub) }
 
-  signinAdmin(value: { email: string; password: string; }) {
-    return new Promise<any>((resolve, reject) => {
-      this.adminFireAuth.signInWithEmailAndPassword(value.email, value.password)
-        .then(res => {
+  async signinAdmin(value: { email: string; password: string; }) {
+    return new Promise<any>(async (resolve, reject) => {
+      await this.adminFireAuth.signInWithEmailAndPassword(value.email, value.password)
+        .then(async res => {
           if (res.user.uid == this.adminUID){
-            this.subscribeToAdminState();
+            this.admin = res.user;
             resolve(res);
           } else {
-            this.signoutAdmin();
+            await this.signoutAdmin();
             reject("You do not have admin priviledges. Please use an Admin account");
           }
         },
@@ -97,10 +97,10 @@ export class IonicAuthService {
     })
   }
 
-  signoutAdmin() {
-    return new Promise<void>((resolve, reject) => {
+  async signoutAdmin() {
+    return new Promise<void>(async (resolve, reject) => {
       if (this.adminFireAuth.currentUser) {
-        this.adminFireAuth.signOut()
+        await this.adminFireAuth.signOut()
           .then(() => {
             resolve();
           }).catch(() => {
@@ -130,13 +130,13 @@ export class IonicAuthService {
     } return false;
   }
 
-  subscribeToUserState() {
+  async subscribeToUserState() {
     this.userFireAuth.authState.subscribe((res) => {
       this.user = res;
     })
   }
 
-  subscribeToAdminState() {
+  async subscribeToAdminState() {
     this.adminFireAuth.authState.subscribe((res) => {
       this.admin = res;
     })

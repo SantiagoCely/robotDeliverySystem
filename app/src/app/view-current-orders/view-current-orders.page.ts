@@ -28,11 +28,11 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.displayOrders();
     if (!this.ionicAuthService.isAdminLoggedIn()){
       console.log('Current user does not have admin priviledges')
       this.router.navigateByUrl('browse-menu');
     }
-    this.displayOrders();
   }
 
   ngOnDestroy() {
@@ -82,7 +82,7 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
 
   getMenuItemById(id){
     return this.adminService.getMenuById(id).subscribe( res => {
-      console.log(res); 
+      console.log(res);
     })
   }
 

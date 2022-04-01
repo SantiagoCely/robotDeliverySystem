@@ -55,8 +55,8 @@ export class AdminLoginPage implements OnInit {
     });
   }
 
-  signIn(value) {
-    this.ionicAuthService.signinAdmin(value)
+  async signIn(value) {
+    await this.ionicAuthService.signinAdmin(value)
       .then(() => {
         this.errorMsg = "";
         console.log('Admin successfully logged in');
