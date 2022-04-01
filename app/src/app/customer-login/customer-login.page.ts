@@ -134,22 +134,18 @@ export class CustomerLoginPage implements OnInit {
   }
 
   twitterLogin(){
-    this.errorMsg = "This method of authentication is not available for the moment";
-
-    /*
     this.ionicAuthService.signinUserTwitter()
       .then((response) => {
         this.user = response.user;
         this.additionalInfo = response.additionalUserInfo.profile;
         this.loading.dismiss();
         this.isUserLoggedIn = true;
-        console.log(response);
-        //this.showUserDetails(true, 'Twitter');
+        this.showUserDetails(true, 'Twitter');
       }, error => {
         this.errorMsg = error.message;
         this.successMsg = "";
       })
-      */
+
   }
 
   gitHubLogin(){
@@ -219,9 +215,9 @@ export class CustomerLoginPage implements OnInit {
           }
         } else if (externalProviderName == "Twitter") {
           this.account = {
-            firstName: this.additionalInfo.givenName,
-            lastName: this.additionalInfo.surname,
-            email : this.additionalInfo.mail,
+            firstName: this.additionalInfo.name,
+            lastName: 'None',
+            email : 'None',
             preferences: ['None'],
             pastOrders: ['None'],
             favourites: ['None'],
