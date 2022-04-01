@@ -16,6 +16,8 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 // Sign in with different providers
 import { GoogleAuthProvider, OAuthProvider, TwitterAuthProvider, GithubAuthProvider} from "firebase/auth";
 
+// Google analytics
+import { AnalyticsService } from './services/analytics.service';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -38,6 +40,7 @@ import { GoogleAuthProvider, OAuthProvider, TwitterAuthProvider, GithubAuthProvi
     TwitterAuthProvider,
     GoogleAuthProvider,
     GithubAuthProvider,
+    AnalyticsService,
   ],
   bootstrap: [AppComponent],
 })

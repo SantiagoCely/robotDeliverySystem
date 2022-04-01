@@ -3,6 +3,7 @@ import { EventsService } from './services/events.service';
 import { Subscription } from 'rxjs';
 import { Router } from "@angular/router";
 import { IonicAuthService } from './ionic-auth.service';
+import { AnalyticsService } from './services/analytics.service';
 
 
 @Component({
@@ -18,8 +19,14 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private events: EventsService,
     private ionicAuthService: IonicAuthService,
+    private analyticsService: AnalyticsService,
 
-  ) {  }
+  ) { this.initializeApp(); }
+
+  initializeApp() {
+    this.analyticsService.startTrackerWithId('G-BEP5XWQ71Y');
+    //this.analyticsService.startTrackerWithId('G-ZDF586HMBY');
+}
 
   ngOnInit(){
     this.subscription = this.events.currentMessage.subscribe(message => this.message = message)
