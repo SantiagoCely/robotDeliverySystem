@@ -17,7 +17,7 @@ export class AdminLoginPage implements OnInit {
     'email': [
       {
         type: 'required',
-        message: 'Provide email.'
+        message: 'Please provide a valid email.'
       },
       {
         type: 'pattern',
