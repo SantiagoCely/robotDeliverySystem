@@ -1,7 +1,15 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Current Orders</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button fill="solid" (click)="goHome()" color="success">
+        Admin Home
+        <ion-icon slot="start" name="home-outline"></ion-icon>
+
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content>
@@ -15,5 +23,5 @@
       </ion-card>
       <br><br>
     </ion-col>
-  </ion-row>>
+  </ion-row>
 </ion-content>
