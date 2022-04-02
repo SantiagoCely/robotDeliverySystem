@@ -39,11 +39,7 @@ export class ViewOrderPage implements OnInit{
     private crudService: CrudService,
     public cart: CartService,
     private router: Router,
-
-
-  //  private activatedRoute: ActivatedRoute,
-  //  private router: Router
-){ this.orderId = ""; }
+){ }
 
   displayLocalCart(){
     console.log("items in cart");
@@ -105,7 +101,6 @@ export class ViewOrderPage implements OnInit{
   submitOrder(){
     //order cannot be empty
     if (this.notSubmitted.length > 0){
-      this.order.table = 7.0;
       var tmp = new Date().getTime();
       this.order.timePlaced = tmp;
       this.timeSubmitted = (new Date(this.order.timePlaced)).toString();
@@ -117,7 +112,6 @@ export class ViewOrderPage implements OnInit{
       // Reset attributes or order
       this.order.items = [];
       this.order.ready = false;
-      this.order.table = 0;
       this.order.total = 0;
       this.order.totalPaid = 0;
       this.order.timePlaced = 0;
@@ -136,6 +130,10 @@ export class ViewOrderPage implements OnInit{
   }
   pay(){
     console.log('Function to implement');
+  }
+
+  setTableNumber(inputValue: number) {
+    this.order.table = inputValue;
   }
   slideOpts = {
     slidesPerView: 10,
