@@ -12,11 +12,12 @@ import { Subscription } from 'rxjs';
 export class AdminPage implements OnInit, OnDestroy {
   userRequests: UserRequest[] = [];
   requestSubscription : Subscription;
+  hiddenRequests: boolean = true;
 
   constructor(
     private router: Router,
     private ionicAuthService: IonicAuthService,
-    private crudService: CrudService,
+    private crudService: CrudService
   ) { }
 
   ngOnInit() {
@@ -50,8 +51,24 @@ export class AdminPage implements OnInit, OnDestroy {
     });
   }
 
+
+  openReqs(){
+
+    if(this.hiddenRequests === true){
+
+      this.hiddenRequests = false;
+      document.getElementById("reqCard").hidden = false;
+
+    }else if(this.hiddenRequests === false){
+
+      this.hiddenRequests = true;
+      document.getElementById("reqCard").hidden = true;
+
+    }
+  }
+
   acknowledgeRequest(id) {
-    this.crudService.acknowledgeRequest(id);
+    //this.crudService.acknowledgeRequest(id);
   }
 
   goToCurrentOrders() {
