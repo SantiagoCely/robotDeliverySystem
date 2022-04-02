@@ -1,8 +1,16 @@
 <ion-header>
   <ion-toolbar color="success">
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
+  <ion-title>Login</ion-title>
+  <ion-buttons slot="primary">
+    <ion-button *ngIf="isUserLoggedIn" fill="solid" (click)="logout()" color="danger">
+     Log out
+      <ion-icon slot="start" name="exit-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
 </ion-header>
+
+
 
 <ion-content class="ion-padding">
 <div *ngIf="!isUserLoggedIn">
@@ -64,41 +72,48 @@
 
   <div *ngIf="isUserLoggedIn">
   <ion-card>
-  <ion-card-header>
-    <ion-card-title class="ion-text-center"><b>{{user.displayName}}</b></ion-card-title>
-
-
-  </ion-card-header>
-
   <ion-card-content>
+
+      
+
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+      <ion-img src= "/assets/icon/robot.png"></ion-img> />>
+      </ion-avatar>
+      <ion-label class="my-label">Hi {{accountDetails.firstName}}!</ion-label>
+    </ion-item>
+
     <ion-item>
-      <ion-label>Email:</ion-label>
+      <ion-icon name="mail-outline"></ion-icon>
+      <ion-label><strong>Email:</strong></ion-label>
       <ion-input value={{accountDetails.email}} readonly></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>First Name:</ion-label>
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-label><strong>First Name:</strong></ion-label>
       <ion-input value={{accountDetails.firstName}}></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Last Name:</ion-label>
+      <ion-icon name="person-add-outline"></ion-icon>
+      <ion-label><strong>Last Name:</strong></ion-label>
       <ion-input value={{accountDetails.lastName}}></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Favourites:</ion-label>
+      <ion-icon name="star-outline"></ion-icon>
+      <ion-label><strong>Favourites:</strong></ion-label>
       <ion-input value={{accountDetails.favourites}} readonly></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Past Orders:</ion-label>
+      <ion-icon name="basket-outline"></ion-icon>
+      <ion-label><strong>Past Orders:</strong></ion-label>
       <ion-input value={{accountDetails.pastOrders}} readonly></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Preferences:</ion-label>
+      <ion-icon name="heart-circle-outline"></ion-icon>
+      <ion-label><strong>Preferences:</strong></ion-label>
       <ion-input value={{accountDetails.preferences}} readonly></ion-input>
     </ion-item>
    </ion-card-content>
   </ion-card>
-  <ion-button expand="block" (click)="logout()" color="danger">
-    Log Out
-  </ion-button>
   </div>
 </ion-content>
