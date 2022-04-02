@@ -21,6 +21,15 @@ export class EditLayoutPage implements OnInit, OnDestroy {
     }
   }
 
+  goHome() {
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('admin');
+    } else {
+      console.log('Current user does not have admin priviledges')
+      this.router.navigateByUrl('browse-menu');
+    }
+  }
+  
   ngOnDestroy() {
     // Unsubscribe from elements that are not needed outside of this scope
   }

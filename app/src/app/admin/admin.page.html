@@ -10,11 +10,17 @@
         Edit Layout
         <ion-icon slot="start" name="apps-outline"></ion-icon>
       </ion-button>
+      <ion-button clear>  </ion-button>
+      <ion-button clear>  </ion-button>
+      <ion-button clear>  </ion-button>
+      <ion-button clear>  </ion-button>
+
     </ion-buttons>
     <ion-title>Admin Dashboard</ion-title>
     <ion-buttons slot="primary">
       <ion-button fill="solid" (click)="signOut()" color="danger">
         Sign Out
+        <ion-icon name="exit-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -31,6 +37,7 @@
       }
 
 </style>
+
 <ion-content class="ion-padding">
   <ion-grid>
     <ion-item lines="none">
@@ -42,13 +49,13 @@
     <br><br><br>
 
     <div class="ion-text-center">
-    <ion-button size="large" (click)="goToCurrentOrders()" fill="solid" color="secondary">
+    <ion-button size="large" (click)="goToCurrentOrders()" fill="solid" color="warning">
     <ion-icon slot="end" name="fast-food-outline"></ion-icon>
     Current Orders
     </ion-button>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <ion-button size="large" (click)="goToViewAnalytics()" fill="solid" color="primary">
-      <ion-icon slot="end" name="stats-chart-outline"></ion-icon>
+  <ion-button size="large" (click)="goToViewAnalytics()" fill="solid" color="secondary">
+      <ion-icon slot="end" name="stats-chart-sharp"></ion-icon>
       Analytics    </ion-button>
       <br><br><br>
 
@@ -58,35 +65,24 @@
         </div>
 
     <br><br><br>
+    <br><br><br>
 
-    <div padding>
-      <ion-segment [(ngModel)]="cases">
-        <ion-segment-button value="req">
-          Customer Requests
-        </ion-segment-button>
-      </ion-segment>
-    </div>
-    
-    <div [ngSwitch]="cases">
-      <ion-list *ngSwitchCase="'req'">
-        <div class="ion-text-center">
-        <header>Customer Requests</header>
-        <ion-col *ngFor="let request of userRequests; let i = index">
-          <ion-slide *ngIf="!request.Acknowledged">
-            <ion-card (click)="acknowledgeRequest(request.id)" button="true" color="warning" type="submit">
-              <ion-card-header>REQUEST TABLE {{request.Table}}</ion-card-header>
-              <ion-card-content><strong>{{request.Request}}</strong></ion-card-content>
-            </ion-card>
-          </ion-slide>
-        </ion-col>  </div>
-      </ion-list>
+
+    <div class="ion-text-center">
+      <br>
+      <ion-button size="large" round (click)="openReqs()" value = "req" color="danger">
+         View Requests
+         <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+        </ion-button>
+      <ion-col id="reqCol" *ngFor="let request of userRequests; let i = index">
+        <ion-slide *ngIf="!request.Acknowledged">
+          <ion-card id="reqCard" (click)="acknowledgeRequest(request.id)" hidden="true" button="true" color="light" type="submit">
+            <ion-card-header>REQUEST FROM TABLE {{request.Table}}</ion-card-header>
+            <ion-card-content><strong>{{request.Request}}</strong></ion-card-content>
+          </ion-card>
+        </ion-slide>
+      </ion-col>
     </div>
 
-
-   
-
-
-
-  </ion-grid>
-
-</ion-content>
+  
+      

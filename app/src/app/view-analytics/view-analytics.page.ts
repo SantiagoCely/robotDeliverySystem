@@ -19,4 +19,14 @@ export class ViewAnalyticsPage implements OnInit {
       this.router.navigateByUrl('browse-menu');
     }
   }
+
+  goHome() {
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('admin');
+    } else {
+      console.log('Current user does not have admin priviledges')
+      this.router.navigateByUrl('browse-menu');
+    }
+  }
+  
 }

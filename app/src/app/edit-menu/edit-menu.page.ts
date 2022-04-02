@@ -131,6 +131,15 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
 
   }
 
+  goHome() {
+    if (this.ionicAuthService.isAdminLoggedIn()) {
+      this.router.navigateByUrl('admin');
+    } else {
+      console.log('Current user does not have admin priviledges')
+      this.router.navigateByUrl('browse-menu');
+    }
+  }
+
   onDeleteMenuItem(id){
     console.log("Id to delete: ", id);
     this.adminService.removeMenuItem(id);
