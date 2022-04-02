@@ -21,12 +21,14 @@ import { Router } from "@angular/router";
 export class ViewOrderPage implements OnInit{
   order: Order = {
     items : [],
-    status : false,
+    ready : false,
     table : 0,
     total : 0,
-    totalPaid : 0
+    totalPaid : 0,
+    timePlaced : 0,
   };
   orderId : string;
+  timeSubmitted : string;
   total_ordered_quantity: number;
   notSubmitted: MenuItem[] = []; // menu items not yet submitted, and thus not part of the Order yet
 
@@ -104,6 +106,9 @@ export class ViewOrderPage implements OnInit{
     //order cannot be empty
     if (this.notSubmitted.length > 0){
       this.order.table = 7.0;
+      var tmp = new Date().getTime();
+      this.order.timePlaced = tmp;
+      this.timeSubmitted = (new Date(this.order.timePlaced)).toString();
       this.crudService.createOrder(this.order).then((docRef) => {
         console.log("Order created: ", docRef.id);
         this.orderId = docRef.id;
@@ -111,10 +116,11 @@ export class ViewOrderPage implements OnInit{
       this.notSubmitted = []; //Clear the items in the not submitted cart var after submitting it
       // Reset attributes or order
       this.order.items = [];
-      this.order.status = false;
+      this.order.ready = false;
       this.order.table = 0;
       this.order.total = 0;
       this.order.totalPaid = 0;
+      this.order.timePlaced = 0;
     } else {
       console.log('Order is empy');
     }

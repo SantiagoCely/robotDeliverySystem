@@ -4,11 +4,11 @@ import { MenuItem } from '../interfaces/menu-item';
 export interface Order{
   id?: string;
   items?: string[]; //Array of item's id
-  status?: boolean;
+  ready?: boolean;
   table?: number;
   total?: number;
   totalPaid?: number;
-
+  timePlaced?: number;
 }
 /*
 export class Order{

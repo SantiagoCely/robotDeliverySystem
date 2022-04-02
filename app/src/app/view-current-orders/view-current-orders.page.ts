@@ -49,7 +49,7 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
     var temp = [];
     if (this.displayCompletedOrdersOnly && !this.displayUncompletedOrdersOnly){
       this.orders.forEach((order) => {
-        if(order.status == true){
+        if(order.ready == true){
           console.log("order filtered: ", order.id);
           if (!temp.includes(order)){
             temp.push(order);
@@ -60,7 +60,7 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
     }
     else if (!this.displayCompletedOrdersOnly && this.displayUncompletedOrdersOnly){
       this.orders.forEach((order) => {
-        if(order.status == false){
+        if(order.ready == false){
           console.log("order filtered: ", order.id);
           if (!temp.includes(order)){
             temp.push(order);
