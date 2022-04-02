@@ -5,6 +5,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+<div *ngIf="!isUserLoggedIn">
   <form [formGroup]="userForm" (ngSubmit)="signIn(userForm.value)">
 
     <ion-item>
@@ -39,25 +40,26 @@
 
   </form>
 
-  <ion-button expand="block" (click)="googleLogin()" color="danger" *ngIf="!isUserLoggedIn">
+  <ion-button expand="block" (click)="googleLogin()" color="danger">
     <ion-icon slot="start" name="logo-google"></ion-icon>
     LogIn with Google
   </ion-button>
 
-  <ion-button expand="block" (click)="microsoftLogin()" color="warning" *ngIf="!isUserLoggedIn">
+  <ion-button expand="block" (click)="microsoftLogin()" color="warning">
     <ion-icon slot="start" name="logo-microsoft"></ion-icon>
     LogIn with Microsoft
   </ion-button>
 
-  <ion-button expand="block" (click)="gitHubLogin()" color="light" *ngIf="!isUserLoggedIn">
+  <ion-button expand="block" (click)="gitHubLogin()" color="light">
     <ion-icon slot="start" name="logo-gitHub"></ion-icon>
     LogIn with GitHub
   </ion-button>
 
-  <ion-button expand="block" (click)="twitterLogin()" color="secondary" *ngIf="!isUserLoggedIn">
+  <ion-button expand="block" (click)="twitterLogin()" color="secondary">
     <ion-icon slot="start" name="logo-twitter"></ion-icon>
     LogIn with Twitter
   </ion-button>
+</div>
 
 
   <div *ngIf="isUserLoggedIn">

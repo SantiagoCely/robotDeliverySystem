@@ -190,7 +190,7 @@ export class CustomerLoginPage implements OnInit {
           this.account = {
             firstName: this.additionalInfo.given_name,
             lastName: this.additionalInfo.family_name,
-            email: this.additionalInfo.email,
+            email: this.user.email,
             preferences: ['None'],
             pastOrders: ['None'],
             favourites: ['None'],
@@ -208,7 +208,7 @@ export class CustomerLoginPage implements OnInit {
           this.account = {
             firstName: this.additionalInfo.givenName,
             lastName: this.additionalInfo.surname,
-            email: this.additionalInfo.mail,
+            email: this.user.email,
             preferences: ['None'],
             pastOrders: ['None'],
             favourites: ['None'],

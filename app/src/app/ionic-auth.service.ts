@@ -11,7 +11,9 @@ import firebase from 'firebase/compat';
 export class IonicAuthService {
   private readonly adminUID = 'viKs5b2K9Lhb8ZxQHaNyuMTPdoC3';
   private user: firebase.User;
+  private userLoggedIn : boolean = false;
   private admin: firebase.User;
+  private adminLoggedIn : boolean = false;
 
   constructor(
     private userFireAuth: AngularFireAuth,
@@ -25,9 +27,14 @@ export class IonicAuthService {
     this.microsoft = new OAuthProvider('microsoft.com');
     this.userFireAuth.authState.subscribe((res) => {
       this.user = res;
+      if (res) { this.userLoggedIn = true}
+      else { this.userLoggedIn = false}
+
     })
     this.adminFireAuth.authState.subscribe((res) => {
       this.admin = res;
+      if (res) { this.adminLoggedIn = true}
+      else { this.adminLoggedIn = false}
     })
    }
 
@@ -44,7 +51,8 @@ export class IonicAuthService {
   async signinUser(value: { email: string; password: string; }) {
     return new Promise<any>(async (resolve, reject) => {
       await this.userFireAuth.signInWithEmailAndPassword(value.email, value.password)
-        .then(async res => {
+        .then(res => {
+          this.userLoggedIn = true;
           resolve(res);
         },
           err => reject(err))
@@ -56,6 +64,7 @@ export class IonicAuthService {
       if (this.userFireAuth.currentUser) {
         await this.userFireAuth.signOut()
           .then(() => {
+            this.userLoggedIn = false;
             console.log("Sign out");
             resolve();
           }).catch(() => {
@@ -68,7 +77,8 @@ export class IonicAuthService {
   async signinUserProvider(provider) {
     return new Promise<any>(async (resolve, reject) => {
       await this.userFireAuth.signInWithPopup(provider)
-      .then(async success => {
+      .then(success => {
+        this.userLoggedIn = true;
         console.log('success in external provider login');
         resolve(success);
       }).catch(err => {
@@ -91,6 +101,7 @@ export class IonicAuthService {
       await this.adminFireAuth.signInWithEmailAndPassword(value.email, value.password)
         .then(async res => {
           if (res.user.uid == this.adminUID){
+            this.adminLoggedIn = true;
             resolve(res);
           } else {
             await this.signoutAdmin();
@@ -106,6 +117,7 @@ export class IonicAuthService {
       if (this.adminFireAuth.currentUser) {
         await this.adminFireAuth.signOut()
           .then(() => {
+            this.adminLoggedIn = false;
             resolve();
           }).catch(() => {
             reject();
@@ -122,7 +134,7 @@ export class IonicAuthService {
 
   getAdmin() { return this.admin }
 
-  isAdminLoggedIn() { return !!this.user }
+  isUserLoggedIn() { return this.userLoggedIn}
 
-  isUserLoggedIn() { return !!this.admin }
+  isAdminLoggedIn() { return this.adminLoggedIn }
 }
