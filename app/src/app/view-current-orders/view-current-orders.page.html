@@ -8,11 +8,10 @@
 
   <ion-row  class="align-items-center" *ngFor="let order of orders; let i = index">
     <ion-col  size="3">
-      <ion-card class="inline-block">
+      <ion-card class="inline-block" (click)="orderReady(order.id, order.ready)">
         <ion-note>Order Id: {{order.id}}</ion-note><br>
         <ion-note>Order Item Ids: {{order.items}}</ion-note><br>
         <ion-note>Order Table Number: {{order.table}}</ion-note>
-
       </ion-card>
       <br><br>
     </ion-col>

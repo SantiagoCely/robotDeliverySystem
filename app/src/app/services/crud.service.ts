@@ -87,10 +87,10 @@ export class CrudService {
     })
   }
 
-  updateRequest(id: string) {
+  updateOrderStatus(id: string, status: boolean) {
     return new Promise<any>((resolve, reject) => {
-      this.afa.collection("Nlp").doc(id).update({
-        Acknowledged: true,
+      this.afa.collection("Orders").doc(id).update({
+        ready: status,
       })
         .then(
           res => resolve(res),

@@ -6,6 +6,8 @@ import { AdminService } from '../services/admin.service';
 import { IonicAuthService } from '../ionic-auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from "@angular/router";
+import { CrudService } from '../services/crud.service';
+
 
 @Component({
   selector: 'app-view-current-orders',
@@ -21,7 +23,9 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
   constructor(
     private adminService: AdminService,
     private router: Router,
-    private ionicAuthService: IonicAuthService
+    private ionicAuthService: IonicAuthService,
+    private crudService: CrudService,
+
     ) {
     this.displayCompletedOrdersOnly = false;
     this.displayUncompletedOrdersOnly = false;
@@ -84,6 +88,10 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
     return this.adminService.getMenuById(id).subscribe( res => {
       console.log(res);
     })
+  }
+
+  orderReady(orderId: string, status: boolean) {
+    this.crudService.updateOrderStatus(orderId, !status);
   }
 
 }
