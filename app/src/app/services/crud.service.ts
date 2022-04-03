@@ -10,6 +10,7 @@ import Account from '../interfaces/account';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireList } from '@angular/fire/compat/database';
 import { UserRequest } from '../interfaces/user-requests';
+import {RestLayout} from "../interfaces/layout";
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,11 @@ export class CrudService {
   getUserRequests(): Observable<UserRequest[]>{
     const requestRef = collection(this.afs, 'Nlp');
     return collectionData(requestRef, { idField: 'id'}) as Observable <UserRequest[]>;
+  }
+
+  getLayout(): Observable<RestLayout[]>{
+    const requestRef = collection(this.afs, 'RestaurantLayout');
+    return collectionData(requestRef, { idField: 'id'}) as Observable <RestLayout[]>;
   }
 
   acknowledgeRequest(id) {

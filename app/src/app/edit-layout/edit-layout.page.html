@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Edit Layout</ion-title>
     <ion-buttons slot="primary">
-      <ion-button fill="solid" (click)="goHome()" color="success">
+      <ion-button fill="solid" (click)="goHome()" color="warning">
         Admin Home
         <ion-icon slot="start" name="home-outline"></ion-icon>
 
@@ -12,7 +12,63 @@
   
 </ion-header>
 
-
 <ion-content>
 
+<ion-card>
+  <ion-item>
+    <ion-icon name="star-outline" slot="start"></ion-icon>
+    <ion-label>Table 1</ion-label>
+    <ion-badge item-end>4</ion-badge>
+
+    <ion-button fill="solid" color="success" slot="end">Available</ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="star-outline" slot="start"></ion-icon>
+    <ion-label>Table 2</ion-label>
+    <ion-badge item-end>2</ion-badge>
+
+    <ion-button fill="solid" color="success" slot="end">Available</ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="star-outline" slot="start"></ion-icon>
+    <ion-label>Table 3</ion-label>
+    <ion-badge item-end>2</ion-badge>
+
+    <ion-button fill="solid" color="danger" slot="end">Unavailable</ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="star-outline" slot="start"></ion-icon>
+    <ion-label>Table 4</ion-label>
+    <ion-badge>4</ion-badge>
+
+    <ion-button fill="solid" color="success" slot="end">Available</ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="star-outline" slot="start"></ion-icon>
+    <ion-label>Table 5</ion-label>
+    <ion-badge item-end>4</ion-badge>
+
+    <ion-button fill="solid" color="success" slot="end">Available</ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="star-outline" slot="start"></ion-icon>
+    <ion-label>Table 6</ion-label>
+    <ion-badge item-end>3</ion-badge>
+
+    <ion-button fill="solid" color="danger" slot="end">Unavailable</ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="star-outline" slot="start"></ion-icon>
+    <ion-label>Table 7</ion-label>
+    <ion-badge item-end>4</ion-badge>
+
+    <ion-button fill="solid" color="danger" slot="end">Unavailable</ion-button>
+  </ion-item>
+</ion-card>
 </ion-content>
