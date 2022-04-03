@@ -113,6 +113,7 @@ export class ViewOrderPage implements OnInit{
       this.order.items = [];
       this.order.ready = false;
       this.order.total = 0;
+      this.order.table = 0;
       this.order.totalPaid = 0;
       this.order.timePlaced = 0;
     } else {
