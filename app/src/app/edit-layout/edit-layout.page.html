@@ -12,63 +12,18 @@
   
 </ion-header>
 
+
 <ion-content>
+  <ion-col id="reqCol" *ngFor="let layout of restaurantLayout; let i = index">
+    <ion-item>
+      <ion-icon name="star-outline" slot="start"></ion-icon>
+      <ion-title>Table {{layout.table}}</ion-title>
+      <ion-badge item-end>{{layout.size}}</ion-badge>
 
-<ion-card>
-  <ion-item>
-    <ion-icon name="star-outline" slot="start"></ion-icon>
-    <ion-label>Table 1</ion-label>
-    <ion-badge item-end>4</ion-badge>
+      <ion-button *ngIf="!!layout.available" fill="solid" (click)="changeAvailability(layout.id, layout.available)" color="success" slot="end">Available</ion-button>
+      <ion-button *ngIf="!!!layout.available" fill="solid" (click)="changeAvailability(layout.id, layout.available)" color="danger" slot="end">Unavailable</ion-button>
 
-    <ion-button fill="solid" color="success" slot="end">Available</ion-button>
-  </ion-item>
+    </ion-item>
+  </ion-col>
 
-  <ion-item>
-    <ion-icon name="star-outline" slot="start"></ion-icon>
-    <ion-label>Table 2</ion-label>
-    <ion-badge item-end>2</ion-badge>
-
-    <ion-button fill="solid" color="success" slot="end">Available</ion-button>
-  </ion-item>
-
-  <ion-item>
-    <ion-icon name="star-outline" slot="start"></ion-icon>
-    <ion-label>Table 3</ion-label>
-    <ion-badge item-end>2</ion-badge>
-
-    <ion-button fill="solid" color="danger" slot="end">Unavailable</ion-button>
-  </ion-item>
-
-  <ion-item>
-    <ion-icon name="star-outline" slot="start"></ion-icon>
-    <ion-label>Table 4</ion-label>
-    <ion-badge>4</ion-badge>
-
-    <ion-button fill="solid" color="success" slot="end">Available</ion-button>
-  </ion-item>
-
-  <ion-item>
-    <ion-icon name="star-outline" slot="start"></ion-icon>
-    <ion-label>Table 5</ion-label>
-    <ion-badge item-end>4</ion-badge>
-
-    <ion-button fill="solid" color="success" slot="end">Available</ion-button>
-  </ion-item>
-
-  <ion-item>
-    <ion-icon name="star-outline" slot="start"></ion-icon>
-    <ion-label>Table 6</ion-label>
-    <ion-badge item-end>3</ion-badge>
-
-    <ion-button fill="solid" color="danger" slot="end">Unavailable</ion-button>
-  </ion-item>
-
-  <ion-item>
-    <ion-icon name="star-outline" slot="start"></ion-icon>
-    <ion-label>Table 7</ion-label>
-    <ion-badge item-end>4</ion-badge>
-
-    <ion-button fill="solid" color="danger" slot="end">Unavailable</ion-button>
-  </ion-item>
-</ion-card>
 </ion-content>

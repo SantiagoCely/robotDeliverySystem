@@ -43,6 +43,11 @@ export class EditLayoutPage implements OnInit, OnDestroy {
     });
   }
 
+  changeAvailability(tableId: string, status: boolean) {
+    this.crudService.changeAvailability(tableId, !status);
+  }
+
+
   ngOnDestroy() {
     // Unsubscribe from elements that are not needed outside of this scope
   }

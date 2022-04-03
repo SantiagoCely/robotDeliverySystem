@@ -103,4 +103,15 @@ export class CrudService {
           err => reject(err))
     })
   }
+
+  changeAvailability(id: string, status: boolean) {
+    return new Promise<any>((resolve, reject) => {
+      this.afa.collection("RestaurantLayout").doc(id).update({
+        available: status,
+      })
+        .then(
+          res => resolve(res),
+          err => reject(err))
+    })
+  }
 }
