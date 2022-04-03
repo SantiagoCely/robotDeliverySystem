@@ -26,14 +26,15 @@ ion-slide:hover {
 }
 /*
 span img {
+  padding-top: 100px !important;
   width: 55px;
   height: 55px;
 }*/
 
 
 ion-slide {
-  width: 150px !important;
-  height: 150px !important;
+  width: 185px !important;
+  height: 185px !important;
   background-color: #000;
   float: left;
   margin-left: 1.5px !important;
@@ -49,13 +50,16 @@ ion-img {
   height: 75px;
   width: 75px;
   margin: auto;
+  margin-top: 20px !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
   display: block;
 }
 
 
 ion-card {
-  width: 140px !important;
-  height: 140px !important;
+  width: 175px !important;
+  height: 175px !important;
   float: left;
   margin-left: 1.5px !important;
   margin-right: 1.5px !important;
