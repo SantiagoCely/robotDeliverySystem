@@ -5,6 +5,7 @@ export interface Order{
   id?: string;
   items?: string[]; //Array of item's id
   ready?: boolean;
+  orderCompleted?: boolean;
   table?: number;
   total?: number;
   totalPaid?: number;

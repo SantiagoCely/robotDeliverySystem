@@ -22,7 +22,8 @@ export class ViewOrderPage implements OnInit{
   order: Order = {
     items : [],
     ready : false,
-    table : 0,
+    orderCompleted : false,
+    table : null,
     total : 0,
     totalPaid : 0,
     timePlaced : 0,
@@ -112,8 +113,9 @@ export class ViewOrderPage implements OnInit{
       // Reset attributes or order
       this.order.items = [];
       this.order.ready = false;
+      this.order.orderCompleted = false;
       this.order.total = 0;
-      this.order.table = 0;
+      this.order.table = null;
       this.order.totalPaid = 0;
       this.order.timePlaced = 0;
     } else {
