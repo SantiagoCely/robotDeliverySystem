@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 //import { Firestore, collection, collectionData, doc, docData, addDoc, deleteDoc, updateDoc } from '@angular/fire/firestore';
-import { Firestore, collection, collectionData, doc , docData, addDoc, updateDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc , docData, addDoc, updateDoc, getDoc, where, query, getDocs } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Router } from "@angular/router";
 //import * as firebase from "firebase/app";
@@ -10,7 +10,8 @@ import Account from '../interfaces/account';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireList } from '@angular/fire/compat/database';
 import { UserRequest } from '../interfaces/user-requests';
-import {RestLayout} from "../interfaces/layout";
+import { RestLayout } from "../interfaces/layout";
+import { OrderToPay } from '../interfaces/orderToPay';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class CrudService {
     return docData(menuRef, { idField: 'id' }) as Observable<MenuItem>;
   }
 
-  getMenuById2(id) {
+  getMenuById2(id: string) {
     const menuRef = doc(this.afs, 'MenuItems', id);
     return getDoc(menuRef);
   }
@@ -113,5 +114,26 @@ export class CrudService {
           res => resolve(res),
           err => reject(err))
     })
+  }
+
+  async getOrdersAssignedToTable(tableNumber: number) {
+    const q = query(collection(this.afs, "Orders"), where("table", "==", tableNumber));
+    var allOrders: OrderToPay = {
+      items : [],
+      table : tableNumber,
+      total : 0,
+      totalPaid : 0,
+    };
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      allOrders.total += doc.data().total;
+      allOrders.totalPaid += doc.data().totalPaid;
+      doc.data().items.forEach((menuItemID: string) => {
+        this.getMenuById2(menuItemID).then((menuItem) => {
+          allOrders.items.push(menuItem.data());
+        })
+      })
+    });
+    return allOrders;
   }
 }

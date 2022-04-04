@@ -68,14 +68,14 @@
   </ion-chip>
 </ion-list>
 
-<ion-list *ngFor="let error of error_msg.noTable">
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-<ion-label id="notSubmitted" hidden="true" color="danger">{{error.message}}</ion-label>
+<ion-list>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<ion-label id="displayError" hidden="true" color="danger">{{error_msg}}</ion-label>
 </ion-list>
 
   <ion-grid class="ion-align-items-start">
     <ion-list>
-    <ion-row class="ion-align-items-start" *ngFor="let item of notSubmitted; let i = index">
+    <ion-row class="ion-align-items-start" *ngFor="let item of itemsToDisplay; let i = index">
       <ion-col class="ion-align-items-center">
         <ion-img src="./assets/menu/{{item.name}}.png"></ion-img>
       </ion-col>
@@ -97,7 +97,7 @@
     <br>
     <ion-item>
       <ion-label>TOTAL</ion-label>
-      <ion-note slot="end" class="orderTotal" color="primary">${{order.total}}</ion-note>
+      <ion-note slot="end" class="orderTotal" color="primary">${{total}}</ion-note>
     </ion-item>
   </ion-list>
   <br><br>

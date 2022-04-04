@@ -7,7 +7,9 @@ import { CartService } from '../services/cart.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import { Router } from "@angular/router";
-import { isNull } from '@angular/compiler/src/output/output_ast';
+import { OrderToPay } from '../interfaces/orderToPay';
+import { DocumentData } from 'firebase/firestore';
+
 
 //import { take } from 'rxjs/operators';
 //import { Observable, BehaviorSubject } from 'rxjs';
@@ -29,18 +31,18 @@ export class ViewOrderPage implements OnInit{
     totalPaid : 0,
     timePlaced : 0,
   };
-  error_msg = {
-    'noTable': [
-      {
-        message: 'Please select a table before submitting an order!'
-      }
-    ]
+  error_msg : string;
+  payOrder : OrderToPay = {
+    items : null,
+    table : null,
+    total : null,
+    totalPaid : null,
   };
-
   orderId : string;
   timeSubmitted : string;
+  total : number = 0;
   total_ordered_quantity: number;
-  notSubmitted: MenuItem[] = []; // menu items not yet submitted, and thus not part of the Order yet
+  itemsToDisplay: MenuItem[] = [];
   noTableSelected: boolean = true;
 
   submitted: MenuItem[] = [];
@@ -52,16 +54,16 @@ export class ViewOrderPage implements OnInit{
     private router: Router,
 ){ }
 
-  displayLocalCart(){
+  displayLocalCart(menuItems: MenuItem[]){
     console.log("items in cart");
     this.cart.subscribe('items', (id: any) => {
       this.crudService.getMenuById2(id).then( menuItem => {
         this.order.items.push(menuItem.id)
-        this.notSubmitted.push(menuItem.data());
-        this.order.total += menuItem.data().price;
-        this.order.total = Math.round(this.order.total * 100) / 100
-        console.log("view-order cart", this.notSubmitted);
-        console.log("view-order price ", this.order.total);
+        menuItems.push(menuItem.data());
+        this.total += menuItem.data().price;
+        this.total = Math.round(this.total * 100) / 100
+        console.log("view-order cart", menuItems);
+        console.log("view-order price ", this.total);
       })
     })
   }
@@ -88,7 +90,7 @@ export class ViewOrderPage implements OnInit{
 
   ngOnInit() {
     console.log("View Order module");
-    this.displayLocalCart();
+    this.displayLocalCart(this.itemsToDisplay);
     this.router.navigateByUrl('browse-menu');
     /*
     if (!this.initViewOrderPage) {
@@ -111,15 +113,16 @@ export class ViewOrderPage implements OnInit{
 
   submitOrder(){
     //order cannot be empty
-    if (this.notSubmitted.length > 0 && this.order.table!=null){
+    if (this.itemsToDisplay.length > 0 && this.order.table!=null){
       var tmp = new Date().getTime();
       this.order.timePlaced = tmp;
+      this.order.total = this.total;
       this.timeSubmitted = (new Date(this.order.timePlaced)).toString();
       this.crudService.createOrder(this.order).then((docRef) => {
         console.log("Order created: ", docRef.id);
         this.orderId = docRef.id;
       })
-      this.notSubmitted = []; //Clear the items in the not submitted cart var after submitting it
+      this.itemsToDisplay = []; //Clear the items in the not submitted cart var after submitting it
       // Reset attributes or order
       this.order.items = [];
       this.order.ready = false;
@@ -128,41 +131,56 @@ export class ViewOrderPage implements OnInit{
       this.order.table = null;
       this.order.totalPaid = 0;
       this.order.timePlaced = 0;
+      this.total = 0;
     } else {
-      
-      if (this.order.table == null){
-        if(this.noTableSelected === true){
 
-          this.noTableSelected = false;
-          document.getElementById("notSubmitted").hidden = false;
-    
-        }else if(this.noTableSelected === false){
-    
-          this.noTableSelected = true;
-          document.getElementById("notSubmitted").hidden = true;
-    
+      if (this.order.table == null){
+        if(this.noTableSelected == true){
+
+          this.error_msg = 'Please select a table before submitting an order!';
+          document.getElementById("displayError").hidden = false;
+
+        }else if(this.noTableSelected == false){
+
+          this.error_msg = '';
+          document.getElementById("displayError").hidden = true;
+
         }
       }
 
       console.log('Order is empty');
     }
-    /*
-    this.notSubmitted.forEach((item) => {
-      this.order.items.push(item.id);
-    })
-
-    this.order.total += this.cart.getTotal();
-    this.total_ordered_quantity += this.cart.getCartTotalQuantity();
-    this.cart.clearLocalCart();
-*/
   }
-  pay(){
-    console.log('Function to implement');
+  async pay(){
+    if (this.order.table == null){
+      if(this.noTableSelected == true){
+        this.error_msg = 'Please select a table before paying!';
+        document.getElementById("displayError").hidden = false;
+
+      }else if(this.noTableSelected == false){
+        this.error_msg = '';
+        document.getElementById("displayError").hidden = true;
+
+      }
+    } else {
+      await this.crudService.getOrdersAssignedToTable(this.order.table).then((res) => {
+        this.payOrder = {
+          items : res.items,
+          table : res.table,
+          total : res.total,
+          totalPaid : res.totalPaid,
+        }
+        this.itemsToDisplay = this.payOrder.items;
+        this.total = this.payOrder.total;
+        console.log(this.payOrder);
+      })
+    }
   }
 
   setTableNumber(inputValue: number) {
     this.order.table = inputValue;
-    document.getElementById("notSubmitted").hidden = true;
+    this.error_msg = '';
+    document.getElementById("displayError").hidden = true;
   }
   slideOpts = {
     slidesPerView: 10,
