@@ -58,7 +58,11 @@ const routes: Routes = [
   {
    path: 'create-new-menu-item-modal',
    loadChildren: () => import('./modals/create-new-menu-item-modal/create-new-menu-item-modal.module').then( m => m.CreateNewMenuItemModalPageModule)
- }
+ },  {
+    path: 'pay',
+    loadChildren: () => import('./pay/pay.module').then( m => m.PayPageModule)
+  }
+
 
   /*{
     path: 'edit-menu-modal',

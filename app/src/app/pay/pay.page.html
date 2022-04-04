@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>PAY</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding-top">
+
+<ion-list *ngIf="!!!payOrder.table">
+  <ion-label><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select your table number:</strong></ion-label>
+
+  <ion-chip (click)="setTableNumber(1)">
+    <ion-icon name="wine" color="dark"></ion-icon>
+    <ion-label>Table 1</ion-label>
+  </ion-chip>
+
+  <ion-chip (click)="setTableNumber(2)">
+    <ion-icon name="wine" color="dark"></ion-icon>
+    <ion-label>Table 2</ion-label>
+  </ion-chip>
+
+  <ion-chip (click)="setTableNumber(3)">
+    <ion-icon name="wine" color="dark"></ion-icon>
+    <ion-label>Table 3</ion-label>
+  </ion-chip>
+
+  <ion-chip (click)="setTableNumber(4)">
+    <ion-icon name="wine" color="dark"></ion-icon>
+    <ion-label>Table 4</ion-label>
+  </ion-chip>
+
+  <ion-chip (click)="setTableNumber(5)">
+    <ion-icon name="wine" color="dark"></ion-icon>
+    <ion-label>Table 5</ion-label>
+  </ion-chip>
+
+  <ion-chip (click)="setTableNumber(6)">
+    <ion-icon name="wine" color="dark"></ion-icon>
+    <ion-label>Table 6</ion-label>
+  </ion-chip>
+
+  <ion-chip (click)="setTableNumber(7)">
+    <ion-icon name="wine" color="dark"></ion-icon>
+    <ion-label>Table 7</ion-label>
+  </ion-chip>
+
+</ion-list>
+
+<ion-item lines="none" *ngIf="!!payOrder.table">
+  <ion-chip *ngIf="!!payOrder.table">
+    <ion-icon name="wine" color="success"></ion-icon>
+    <ion-label>Table {{payOrder.table}} </ion-label>
+  </ion-chip>
+</ion-item>
+<br>
+
+<ion-list>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<ion-label id="displayError" hidden="true" color="danger">{{error_msg}}</ion-label>
+</ion-list>
+
+<ion-grid class="ion-align-items-start">
+  <ion-list>
+  <ion-row class="ion-align-items-start" *ngFor="let item of payOrder.items; let i = index">
+    <ion-col class="ion-align-items-center">
+      <ion-avatar item-start>
+        <img src="./assets/menu/{{item.name}}.png">
+      </ion-avatar>
+    </ion-col>
+    <ion-col class="ion-align-items-center">
+      <div class="ion-align-items-center" id="item-divider">
+        <ion-item lines="none">
+          <ion-label id="item-text">{{item.name}}</ion-label>
+        </ion-item>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="ion-align-items-center" id="item-divider">
+        <ion-item lines="none">
+          <ion-label class="itemPrice" id="item-text">{{item.price}}</ion-label>
+        </ion-item>
+      </div>
+    </ion-col>
+  </ion-row>
+  <br>
+  <ion-item>
+    <ion-label>TOTAL</ion-label>
+    <ion-note slot="end" class="orderTotal" color="primary">${{payOrder.total}}</ion-note>
+  </ion-item>
+</ion-list>
+  <br><br>
+  <ion-row>
+    <ion-button size="medium" color="light"><ion-icon name="cart-outline" round outline></ion-icon>SEND ORDER</ion-button>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    <ion-button size="medium" color="light" (click)=displayBill()><ion-icon name="wallet-outline" round outline></ion-icon>Pay</ion-button>
+  </ion-row>
+  </ion-grid>
+</ion-content>

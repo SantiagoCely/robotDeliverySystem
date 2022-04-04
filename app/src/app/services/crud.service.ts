@@ -139,12 +139,14 @@ export class CrudService {
     const q = query(collection(this.afs, "Orders"), where("table", "==", tableNumber));
     var allOrders: OrderToPay = {
       items : [],
+      orders : [],
       table : tableNumber,
       total : 0,
       totalPaid : 0,
     };
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
+      allOrders.orders.push(doc.id);
       allOrders.total += doc.data().total;
       allOrders.totalPaid += doc.data().totalPaid;
       doc.data().items.forEach((menuItemID: string) => {

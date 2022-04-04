@@ -8,7 +8,6 @@ import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import { Router } from "@angular/router";
 import { OrderToPay } from '../interfaces/orderToPay';
-import { DocumentData } from 'firebase/firestore';
 
 
 //import { take } from 'rxjs/operators';
@@ -54,15 +53,15 @@ export class ViewOrderPage implements OnInit{
     private router: Router,
 ){ }
 
-  displayLocalCart(menuItems: MenuItem[]){
+  displayLocalCart(){
     console.log("items in cart");
     this.cart.subscribe('items', (id: any) => {
       this.crudService.getMenuById2(id).then( menuItem => {
         this.order.items.push(menuItem.id)
-        menuItems.push(menuItem.data());
+        this.itemsToDisplay.push(menuItem.data());
         this.total += menuItem.data().price;
         this.total = Math.round(this.total * 100) / 100
-        console.log("view-order cart", menuItems);
+        console.log("view-order cart", this.itemsToDisplay);
         console.log("view-order price ", this.total);
       })
     })
@@ -90,7 +89,7 @@ export class ViewOrderPage implements OnInit{
 
   ngOnInit() {
     console.log("View Order module");
-    this.displayLocalCart(this.itemsToDisplay);
+    this.displayLocalCart();
     this.router.navigateByUrl('browse-menu');
     /*
     if (!this.initViewOrderPage) {
@@ -151,30 +150,8 @@ export class ViewOrderPage implements OnInit{
       console.log('Order is empty');
     }
   }
-  async pay(){
-    if (this.order.table == null){
-      if(this.noTableSelected == true){
-        this.error_msg = 'Please select a table before paying!';
-        document.getElementById("displayError").hidden = false;
-
-      }else if(this.noTableSelected == false){
-        this.error_msg = '';
-        document.getElementById("displayError").hidden = true;
-
-      }
-    } else {
-      await this.crudService.getOrdersAssignedToTable(this.order.table).then((res) => {
-        this.payOrder = {
-          items : res.items,
-          table : res.table,
-          total : res.total,
-          totalPaid : res.totalPaid,
-        }
-        this.itemsToDisplay = this.payOrder.items;
-        this.total = this.payOrder.total;
-        console.log(this.payOrder);
-      })
-    }
+  pay(){
+    this.router.navigateByUrl('pay');
   }
 
   setTableNumber(inputValue: number) {
