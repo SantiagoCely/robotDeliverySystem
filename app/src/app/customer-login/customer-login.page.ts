@@ -14,6 +14,8 @@ import Account from '../interfaces/account';
   selector: 'app-customer-login',
   templateUrl: './customer-login.page.html',
   styleUrls: ['./customer-login.page.scss'],
+
+
 })
 export class CustomerLoginPage implements OnInit {
 
@@ -36,6 +38,8 @@ export class CustomerLoginPage implements OnInit {
   errorMsg: string = '';
   account: Account;
   accountTest: Account;
+  firstNameInput: string = "";
+  lastNameInput: string = "";
 
 
   error_msg = {
@@ -104,6 +108,8 @@ export class CustomerLoginPage implements OnInit {
   goToSignup() {
     this.router.navigateByUrl('registration');
   }
+
+
 
   googleLogin(){
     this.ionicAuthService.signinUserGoogle()
@@ -248,4 +254,9 @@ export class CustomerLoginPage implements OnInit {
       }
     });
   }
+
+  updateAccount() {
+    this.crudService.updateAccount(this.firstNameInput, this.lastNameInput, this.ionicAuthService.getUser().uid);
+  }
+
 }

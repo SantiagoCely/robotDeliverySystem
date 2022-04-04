@@ -57,6 +57,25 @@ export class CrudService {
   }
   */
 
+  async updateAccount(firstName: string, lastName: string, id: string){
+    console.log(firstName);
+    console.log(lastName);
+    return new Promise<any>(async (resolve, reject) => {
+      await this.afa.collection("Accounts").doc(id).update({
+        firstName: firstName,
+        lastName: lastName,
+      })
+        .then((res) => {
+          resolve(res);
+          console.log("Updated account in database", res);
+        },
+          (err) => {
+            reject(err);
+            console.log(err);
+          })
+    })
+  }
+
   updateOrder(order: Order, item: string, id){
     const orderRef = doc(this.afs, 'Orders', id);
     return updateDoc(orderRef, {items: item});
