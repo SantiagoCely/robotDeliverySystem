@@ -21,7 +21,7 @@
   <ion-label>Note: Items have not yet been submitted.</ion-label>
 </ion-item>
 <br><br>
-<ion-list>
+<ion-list *ngIf="!!!order.table">
   <ion-label><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Select your table number:</strong></ion-label>
 
   <ion-chip (click)="setTableNumber(1)">
@@ -59,10 +59,19 @@
     <ion-label>Table 7</ion-label>
   </ion-chip>
 
-
 </ion-list>
 
+<ion-list>
+  <ion-chip *ngIf="!!order.table">
+    <ion-icon name="wine" color="success"></ion-icon>
+    <ion-label>Table {{order.table}} </ion-label>
+  </ion-chip>
+</ion-list>
 
+<ion-list *ngFor="let error of error_msg.noTable">
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+<ion-label id="notSubmitted" hidden="true" color="danger">{{error.message}}</ion-label>
+</ion-list>
 
   <ion-grid class="ion-align-items-start">
     <ion-list>

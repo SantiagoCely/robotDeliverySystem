@@ -7,6 +7,7 @@ import { CartService } from '../services/cart.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import { Router } from "@angular/router";
+import { isNull } from '@angular/compiler/src/output/output_ast';
 
 //import { take } from 'rxjs/operators';
 //import { Observable, BehaviorSubject } from 'rxjs';
@@ -28,10 +29,19 @@ export class ViewOrderPage implements OnInit{
     totalPaid : 0,
     timePlaced : 0,
   };
+  error_msg = {
+    'noTable': [
+      {
+        message: 'Please select a table before submitting an order!'
+      }
+    ]
+  };
+
   orderId : string;
   timeSubmitted : string;
   total_ordered_quantity: number;
   notSubmitted: MenuItem[] = []; // menu items not yet submitted, and thus not part of the Order yet
+  noTableSelected: boolean = true;
 
   submitted: MenuItem[] = [];
   //message: string;
@@ -101,7 +111,7 @@ export class ViewOrderPage implements OnInit{
 
   submitOrder(){
     //order cannot be empty
-    if (this.notSubmitted.length > 0){
+    if (this.notSubmitted.length > 0 && this.order.table!=null){
       var tmp = new Date().getTime();
       this.order.timePlaced = tmp;
       this.timeSubmitted = (new Date(this.order.timePlaced)).toString();
@@ -119,7 +129,22 @@ export class ViewOrderPage implements OnInit{
       this.order.totalPaid = 0;
       this.order.timePlaced = 0;
     } else {
-      console.log('Order is empy');
+      
+      if (this.order.table == null){
+        if(this.noTableSelected === true){
+
+          this.noTableSelected = false;
+          document.getElementById("notSubmitted").hidden = false;
+    
+        }else if(this.noTableSelected === false){
+    
+          this.noTableSelected = true;
+          document.getElementById("notSubmitted").hidden = true;
+    
+        }
+      }
+
+      console.log('Order is empty');
     }
     /*
     this.notSubmitted.forEach((item) => {
@@ -137,6 +162,7 @@ export class ViewOrderPage implements OnInit{
 
   setTableNumber(inputValue: number) {
     this.order.table = inputValue;
+    document.getElementById("notSubmitted").hidden = true;
   }
   slideOpts = {
     slidesPerView: 10,
