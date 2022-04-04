@@ -31,12 +31,6 @@ export class ViewOrderPage implements OnInit{
     timePlaced : 0,
   };
   error_msg : string;
-  payOrder : OrderToPay = {
-    items : null,
-    table : null,
-    total : null,
-    totalPaid : null,
-  };
   orderId : string;
   timeSubmitted : string;
   total : number = 0;
@@ -60,11 +54,31 @@ export class ViewOrderPage implements OnInit{
         this.order.items.push(menuItem.id)
         this.itemsToDisplay.push(menuItem.data());
         this.total += menuItem.data().price;
-        this.total = Math.round(this.total * 100) / 100
+        this.total = Math.round(this.total * 100) / 100;
         console.log("view-order cart", this.itemsToDisplay);
         console.log("view-order price ", this.total);
       })
     })
+  }
+
+  resetSettings() {
+    this.order = {
+      items : [],
+      ready : false,
+      orderCompleted : false,
+      table : null,
+      total : 0,
+      totalPaid : 0,
+      timePlaced : 0,
+    };
+    this.orderId = '';
+    this.timeSubmitted = '';
+    this.total = 0;
+    this.itemsToDisplay = [];
+    this.noTableSelected = true;
+
+    this.error_msg = '';
+    document.getElementById("displayError").hidden = true;
   }
 
   displayOrder(){
@@ -112,7 +126,9 @@ export class ViewOrderPage implements OnInit{
 
   submitOrder(){
     //order cannot be empty
-    if (this.itemsToDisplay.length > 0 && this.order.table!=null){
+    if (this.itemsToDisplay.length > 0 && this.order.table != null) {
+      this.error_msg = '';
+      document.getElementById("displayError").hidden = true;
       var tmp = new Date().getTime();
       this.order.timePlaced = tmp;
       this.order.total = this.total;
@@ -133,21 +149,23 @@ export class ViewOrderPage implements OnInit{
       this.total = 0;
     } else {
 
-      if (this.order.table == null){
+      if (this.itemsToDisplay.length == 0) {
+        this.error_msg = 'There is nothing in the cart!';
+        document.getElementById("displayError").hidden = false;
+        console.log('Order is empty');
+      } else if (this.order.table == null) {
         if(this.noTableSelected == true){
 
           this.error_msg = 'Please select a table before submitting an order!';
           document.getElementById("displayError").hidden = false;
 
-        }else if(this.noTableSelected == false){
+        } else if(this.noTableSelected == false){
 
           this.error_msg = '';
           document.getElementById("displayError").hidden = true;
 
         }
       }
-
-      console.log('Order is empty');
     }
   }
   pay(){
@@ -155,6 +173,7 @@ export class ViewOrderPage implements OnInit{
   }
 
   setTableNumber(inputValue: number) {
+    this.noTableSelected = false;
     this.order.table = inputValue;
     this.error_msg = '';
     document.getElementById("displayError").hidden = true;

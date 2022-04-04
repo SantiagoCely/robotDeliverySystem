@@ -121,5 +121,7 @@
 
     <ion-button size="medium" color="light" (click)=pay()><ion-icon name="wallet-outline" round outline></ion-icon>Pay</ion-button>
   </ion-row>
+  <br>
+  <ion-button *ngIf="!noTableSelected" size="medium" color="danger" (click)="resetSettings()"><ion-icon name="close" round outline></ion-icon>RESET</ion-button>
   </ion-grid>
 </ion-content>

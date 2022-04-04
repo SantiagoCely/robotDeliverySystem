@@ -53,13 +53,8 @@
 </ion-item>
 <br>
 
-<ion-list>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<ion-label id="displayError" hidden="true" color="danger">{{error_msg}}</ion-label>
-</ion-list>
-
 <ion-grid class="ion-align-items-start">
-  <ion-list>
+  <ion-list *ngIf="!noTableSelected">
   <ion-row class="ion-align-items-start" *ngFor="let item of payOrder.items; let i = index">
     <ion-col class="ion-align-items-center">
       <ion-avatar item-start>
@@ -86,25 +81,31 @@
     <ion-label>TOTAL</ion-label>
     <ion-note slot="end" class="orderTotal" color="primary">${{payOrder.total}}</ion-note>
   </ion-item>
+  <ion-item>
+    <ion-label>TOTAL PAID</ion-label>
+    <ion-note slot="end" class="orderTotal" color="primary">${{payOrder.totalPaid}}</ion-note>
+  </ion-item>
+  <ion-item>
+    <ion-label>TOTAL LEFT TO PAY</ion-label>
+    <ion-note slot="end" class="orderTotal" color="primary">${{leftToPay}}</ion-note>
+  </ion-item>
 </ion-list>
   <br><br>
-  <ion-row>
-    <ion-button size="medium" color="light"><ion-icon name="cart-outline" round outline></ion-icon>SEND ORDER</ion-button>
 
+  <ion-item *ngIf="!noTableSelected">
+    <ion-label class="amountToPayClass" position="stacked">Amount to pay:</ion-label>
+    <br>
+    <ion-input id="amountToPay" type="number" placeholder="Please enter amount to pay..." [(ngModel)]="amountToPayInput"></ion-input>
+  </ion-item>
+  <ion-list>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <ion-label id="displayError" hidden="true" color="danger">{{error_msg}}</ion-label>
+  </ion-list>
+  <ion-button *ngIf="!noTableSelected" size="medium" color="light" (click)=payBill()><ion-icon name="wallet-outline" round outline></ion-icon>Pay</ion-button>
+  <br>
+  <ion-button *ngIf="!noTableSelected" size="medium" color="danger" (click)="resetSettings()"><ion-icon name="close" round outline></ion-icon>RESET</ion-button>
+  <br>
 
 
-    <ion-button size="medium" color="light" (click)=displayBill()><ion-icon name="wallet-outline" round outline></ion-icon>Pay</ion-button>
-  </ion-row>
   </ion-grid>
 </ion-content>

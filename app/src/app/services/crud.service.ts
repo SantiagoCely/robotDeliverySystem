@@ -59,8 +59,6 @@ export class CrudService {
   */
 
   async updateAccount(firstName: string, lastName: string, id: string){
-    console.log(firstName);
-    console.log(lastName);
     return new Promise<any>(async (resolve, reject) => {
       await this.afa.collection("Accounts").doc(id).update({
         firstName: firstName,
@@ -156,5 +154,39 @@ export class CrudService {
       })
     });
     return allOrders;
+  }
+  async payOrdersAssignedToTable(ordersID: string[], totalPaid: number) {
+    return new Promise<any>(async (resolve, reject) => {
+      ordersID.forEach(async (orderID) => {
+        const ordersRef = doc(this.afs, 'Orders', orderID);
+        await getDoc(ordersRef).then(async (order) => {
+          var totalPaid_orderDB = order.data().totalPaid;
+          var total_orderDB = order.data().total;
+          if (totalPaid_orderDB < total_orderDB) {
+            var leftToPay: number = total_orderDB - totalPaid_orderDB;
+            var newTotalPaid: number = totalPaid_orderDB + totalPaid;
+            // If total paid by customer is more than the total of current order,
+            // mark current order fully paid.
+            // Otherwise, increase the total amount paid by the customer in the db
+            if (totalPaid > leftToPay) {
+              newTotalPaid = total_orderDB;
+              totalPaid -= leftToPay;
+            } else {
+              totalPaid = 0;
+            }
+            await updateDoc(ordersRef, {totalPaid: newTotalPaid}).then((res) => {
+              if (totalPaid = 0) {
+                resolve("Payment made");
+                console.log("Payment made", res);
+              }
+            }, (err: any) => {
+              reject(err);
+              console.log("One of the orders could not be updated", err);
+            })
+
+          }
+        })
+      })
+    })
   }
 }
