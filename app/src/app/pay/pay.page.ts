@@ -80,7 +80,7 @@ export class PayPage implements OnInit {
       document.getElementById("displayError").hidden = true;
 
       this.crudService.payOrdersAssignedToTable(this.payOrder.orders, this.amountToPayInput).then((res) => {
-        console.log("return from the payBill was", res);
+        //console.log("return from the payBill was", res);
       })
       this.payOrder.totalPaid += this.amountToPayInput;
         this.leftToPay = this.payOrder.total - this.payOrder.totalPaid;

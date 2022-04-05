@@ -56,7 +56,7 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
     modal.onDidDismiss().then((dataReturned) => {
     if (dataReturned !== null) {
         this.dataReturned = dataReturned.data;
-        console.log(this.dataReturned);
+        //console.log(this.dataReturned);
         //alert('Modal Sent Data :'+ dataReturned);
       }
     });
@@ -72,7 +72,7 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
       this.filters.forEach((filter) => {
         this.menuItems.forEach((item) => {
           if(item.category.includes(filter)){
-            console.log("item filtered: ", item.name);
+            //console.log("item filtered: ", item.name);
             if (!temp.includes(item)){
               temp.push(item);
             }
@@ -87,7 +87,7 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
         //this.cd.detectChanges();
       });
     }
-    console.log("menu items: ", this.menuItems);
+    //console.log("menu items: ", this.menuItems);
 
   }
 
@@ -111,8 +111,8 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
 
   onAddMenuItem(newItemFormData) {
     console.log("New item data: " , newItemFormData);
-    console.log(typeof newItemFormData.newItemName, typeof newItemFormData.newItemPrice,
-    newItemFormData.newItemCategory, newItemFormData.newItemType);
+    //console.log(typeof newItemFormData.newItemName, typeof newItemFormData.newItemPrice,
+    //newItemFormData.newItemCategory, newItemFormData.newItemType);
     const newItem : MenuItem = {
       name : '',
       price: 0,
@@ -126,7 +126,7 @@ export class EditMenuPage implements OnInit, OnChanges, OnDestroy {
     newItem.type = newItemFormData.newItemType;
     newItem.image = "add image path here";
 
-    console.log(newItem);
+    //console.log(newItem);
     this.adminService.createMenuItem(newItem);
 
   }

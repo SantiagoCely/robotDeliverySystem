@@ -66,7 +66,7 @@ export class RegistrationPage implements OnInit {
       .then((response) => {
         this.errorMsg = "";
         this.successMsg = "New user created.";
-        console.log(response);
+        //console.log(response);
 
         this.account = {
           email : response.user.email,

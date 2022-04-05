@@ -66,7 +66,7 @@ export class CrudService {
       })
         .then((res) => {
           resolve(res);
-          console.log("Updated account in database", res);
+          console.log("Updated account in database");
         },
           (err) => {
             reject(err);
@@ -176,8 +176,8 @@ export class CrudService {
             }
             await updateDoc(ordersRef, {totalPaid: newTotalPaid}).then((res) => {
               if (totalPaid = 0) {
-                resolve("Payment made");
-                console.log("Payment made", res);
+                resolve(res);
+                console.log("Payment made");
               }
             }, (err: any) => {
               reject(err);

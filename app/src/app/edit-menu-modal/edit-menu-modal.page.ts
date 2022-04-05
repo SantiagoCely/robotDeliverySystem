@@ -25,12 +25,12 @@ export class EditMenuModalPage implements OnInit {
 
   onMenuItemNameChange(name){
     this.adminService.editMenuItemName(this.id, name);
-    console.log(`"Updated id and name:" ${this.id} ${name}`);
+    //console.log(`"Updated id and name:" ${this.id} ${name}`);
   }
 
   onMenuItemPrice(price){
     this.adminService.editMenuItemPrice(this.id, price);
-    console.log(`"Updated id and name:" ${this.id} ${price}`)
+    //console.log(`"Updated id and name:" ${this.id} ${price}`)
   }
   onMenuItemCategoryChange(){}
   onMenuItemTypeChange(){}

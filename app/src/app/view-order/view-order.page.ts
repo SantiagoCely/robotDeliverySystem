@@ -55,8 +55,8 @@ export class ViewOrderPage implements OnInit{
         this.itemsToDisplay.push(menuItem.data());
         this.total += menuItem.data().price;
         this.total = Math.round(this.total * 100) / 100;
-        console.log("view-order cart", this.itemsToDisplay);
-        console.log("view-order price ", this.total);
+        //console.log("view-order cart", this.itemsToDisplay);
+        //console.log("view-order price ", this.total);
       })
     })
   }

@@ -56,7 +56,7 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
   displayOrders(){
     console.log("admin service getting all orders");
     this.orderSubscription = this.adminService.getOrders().subscribe(res =>{
-      console.log(res);
+      //console.log(res);
       this.orders = res;
     });
   /*  if (this.displayCompletedOrdersOnly && !this.displayUncompletedOrdersOnly){
@@ -95,14 +95,14 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
 
   getMenuItemById(id){
     return this.adminService.getMenuById(id).subscribe( res => {
-      console.log(res);
+      //console.log(res);
     })
   }
   getMenuItems(){
     this.adminService.getMenuItems().subscribe(res => {
       this.menuItems = res;
-      console.log("menu items: ");
-      console.log(this.menuItems);
+      //console.log("menu items: ");
+      //console.log(this.menuItems);
       //this.cd.detectChanges();
     });
   }

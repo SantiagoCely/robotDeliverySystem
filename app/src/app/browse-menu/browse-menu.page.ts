@@ -47,16 +47,16 @@ export class BrowseMenuPage implements OnInit {
 
   addToOrder(item) {
     var id = item.toString();
-    console.log("trying to add item id from browse menu: ", id);
+    //console.log("trying to add item id from browse menu: ", id);
     this.cart.publish('items', id);
     //this.events.changeMessage(id);
   }
 
   filterItems(category){
     if (!this.filters.includes(category)){
-      console.log("filter added: ", category);
+      //console.log("filter added: ", category);
       this.filters.push(category);
-      console.log("filters: ", this.filters);
+      //console.log("filters: ", this.filters);
       this.displayMenuItems();
     }
   }
@@ -68,7 +68,7 @@ export class BrowseMenuPage implements OnInit {
       this.filters.forEach((filter) => {
         this.menuItems.forEach((item) => {
           if(item.category.includes(filter)){
-            console.log("item filtered: ", item.name);
+            //console.log("item filtered: ", item.name);
             if (!temp.includes(item)){
               temp.push(item);
             }
@@ -83,7 +83,7 @@ export class BrowseMenuPage implements OnInit {
         //this.cd.detectChanges();
       });
     }
-    console.log("menu items: ", this.menuItems);
+    //console.log("menu items: ", this.menuItems);
 
   }
 
