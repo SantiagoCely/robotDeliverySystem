@@ -68,7 +68,7 @@ export class PayPage implements OnInit {
   }
 
   payBill() {
-    if (this.amountToPayInput == null || this.amountToPayInput < 0) {
+    if (this.amountToPayInput == null || this.amountToPayInput <= 0) {
       this.error_msg = 'The amount must be superior than 0';
       document.getElementById("displayError").hidden = false;
     } else if (this.amountToPayInput > this.leftToPay) {
