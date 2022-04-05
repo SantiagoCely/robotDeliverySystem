@@ -9,17 +9,24 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  
+
 </ion-header>
 
 <ion-content>
 
   <ion-row  class="align-items-center" *ngFor="let order of orders; let i = index">
-    <ion-col  size="3">
-      <ion-card class="inline-block" (click)="orderReady(order.id, order.ready)">
-        <ion-note>Order Id: {{order.id}}</ion-note><br>
-        <ion-note>Order Item Ids: {{order.items}}</ion-note><br>
-        <ion-note>Order Table Number: {{order.table}}</ion-note>
+    <ion-col  size="5">
+      <ion-card class="inline-block" *ngIf="order.orderCompleted == false" (click)="orderReady(order.id, order.ready)">
+        <h3>Table {{order.table}}</h3><br>
+        <ion-note>Ordered Items: </ion-note> <br>
+        <ion-row *ngFor = "let item of menuItems; let j = index">
+          <ion-row *ngFor = "let orderItem of order.items; let k = index">
+            <ion-note *ngIf="order.items[k] == menuItems[j].id">{{item.name}} </ion-note>
+          </ion-row>
+
+        </ion-row> <br>
+      <!--  <ion-note>Order Item Ids: {{order.items}}</ion-note><br> !-->
+        <ion-note>Order ID: {{order.id}} </ion-note>
       </ion-card>
       <br><br>
     </ion-col>
