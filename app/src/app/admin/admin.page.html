@@ -23,7 +23,7 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  
+
 </ion-header>
 <style>
   header {
@@ -75,7 +75,7 @@
         </ion-button>
       <ion-col id="reqCol" *ngFor="let request of userRequests; let i = index">
         <ion-slide *ngIf="!request.Acknowledged">
-          <ion-card id="reqCard" (click)="acknowledgeRequest(request.id)" hidden="true" button="true" color="light" type="submit">
+          <ion-card id="reqCard" (click)="acknowledgeRequest(request.id)" color="light" type="submit">
             <ion-card-header>REQUEST FROM TABLE {{request.Table}}</ion-card-header>
             <ion-card-content><strong>{{request.Request}}</strong></ion-card-content>
           </ion-card>
@@ -83,5 +83,4 @@
       </ion-col>
     </div>
 
-  
-      
+

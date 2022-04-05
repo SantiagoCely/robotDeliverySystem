@@ -22,6 +22,7 @@ export class AdminPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.viewUserRequests();
+    this.openReqs();
     if (!this.ionicAuthService.isAdminLoggedIn()){
       console.log('Admin is not signed in')
       this.router.navigateByUrl('browse-menu');
@@ -54,12 +55,12 @@ export class AdminPage implements OnInit, OnDestroy {
 
   openReqs(){
 
-    if(this.hiddenRequests === true){
+    if(this.hiddenRequests == true){
 
       this.hiddenRequests = false;
       document.getElementById("reqCard").hidden = false;
 
-    }else if(this.hiddenRequests === false){
+    }else if(this.hiddenRequests == false){
 
       this.hiddenRequests = true;
       document.getElementById("reqCard").hidden = true;
