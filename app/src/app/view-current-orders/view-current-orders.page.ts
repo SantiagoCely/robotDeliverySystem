@@ -1,10 +1,10 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { Order } from '../interfaces/order';
 import { MenuItem } from '../interfaces/menu-item';
 import { AdminService } from '../services/admin.service';
 import { IonicAuthService } from '../ionic-auth.service';
-import { Subscription } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 import { Router } from "@angular/router";
 import { CrudService } from '../services/crud.service';
 
@@ -16,8 +16,9 @@ import { CrudService } from '../services/crud.service';
 })
 export class ViewCurrentOrdersPage implements OnInit, OnChanges {
   orders: Order[] = [];
-  displayUncompletedOrdersOnly: boolean;
-  displayCompletedOrdersOnly: boolean;
+  menuItems: MenuItem[] = [];
+  //displayUncompletedOrdersOnly: boolean;
+  //displayCompletedOrdersOnly: boolean;
   orderSubscription: Subscription;
 
   constructor(
@@ -27,17 +28,19 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
     private crudService: CrudService,
 
     ) {
-    this.displayCompletedOrdersOnly = false;
-    this.displayUncompletedOrdersOnly = false;
+    //this.displayCompletedOrdersOnly = false;
+    //this.displayUncompletedOrdersOnly = false;
   }
 
   ngOnInit() {
     this.displayOrders();
+    this.getMenuItems();
     if (!this.ionicAuthService.isAdminLoggedIn()){
       console.log('Current user does not have admin priviledges')
       this.router.navigateByUrl('browse-menu');
     }
   }
+
 
   ngOnDestroy() {
     // Unsubscribe from elements that are not needed outside of this scope
@@ -47,11 +50,16 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
   ngOnChanges(){
     console.log("View current orders refreshed. ");
     this.displayOrders();
+    this.getMenuItems();
   }
 
   displayOrders(){
-    var temp = [];
-    if (this.displayCompletedOrdersOnly && !this.displayUncompletedOrdersOnly){
+    console.log("admin service getting all orders");
+    this.orderSubscription = this.adminService.getOrders().subscribe(res =>{
+      console.log(res);
+      this.orders = res;
+    });
+  /*  if (this.displayCompletedOrdersOnly && !this.displayUncompletedOrdersOnly){
       this.orders.forEach((order) => {
         if(order.ready == true){
           console.log("order filtered: ", order.id);
@@ -82,6 +90,7 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
     console.log("admin service getting all orders");
   }
     console.log("current orders: ", this.orders);
+    */
   }
 
   getMenuItemById(id){
@@ -89,7 +98,14 @@ export class ViewCurrentOrdersPage implements OnInit, OnChanges {
       console.log(res);
     })
   }
-
+  getMenuItems(){
+    this.adminService.getMenuItems().subscribe(res => {
+      this.menuItems = res;
+      console.log("menu items: ");
+      console.log(this.menuItems);
+      //this.cd.detectChanges();
+    });
+  }
   orderReady(orderId: string, status: boolean) {
     this.crudService.updateOrderStatus(orderId, !status);
   }
