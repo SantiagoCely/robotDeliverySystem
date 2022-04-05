@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 export class AdminPage implements OnInit, OnDestroy {
   userRequests: UserRequest[] = [];
   requestSubscription : Subscription;
-  hiddenRequests: boolean = true;
+  hiddenRequests: boolean = false;
 
   constructor(
     private router: Router,
@@ -68,8 +68,8 @@ export class AdminPage implements OnInit, OnDestroy {
     }
   }
 
-  acknowledgeRequest(id) {
-    //this.crudService.acknowledgeRequest(id);
+  acknowledgeRequest(id: any) {
+    this.crudService.acknowledgeRequest(id);
   }
 
   goToCurrentOrders() {
