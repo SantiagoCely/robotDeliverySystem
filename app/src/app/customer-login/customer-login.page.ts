@@ -2,23 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { IonicAuthService } from '../ionic-auth.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-
-import { LoadingController, Platform } from '@ionic/angular';
+import { LoadingController,  } from '@ionic/angular';
 import { CrudService } from '../services/crud.service';
 import { Firestore, doc, onSnapshot } from '@angular/fire/firestore';
 import Account from '../interfaces/account';
-
-
 
 @Component({
   selector: 'app-customer-login',
   templateUrl: './customer-login.page.html',
   styleUrls: ['./customer-login.page.scss'],
-
-
 })
 export class CustomerLoginPage implements OnInit {
-
   public loading: any;
   public isUserLoggedIn = false;
   public user = null;
@@ -151,7 +145,6 @@ export class CustomerLoginPage implements OnInit {
         this.errorMsg = error.message;
         this.successMsg = "";
       })
-
   }
 
   gitHubLogin(){
@@ -258,5 +251,4 @@ export class CustomerLoginPage implements OnInit {
   updateAccount() {
     this.crudService.updateAccount(this.firstNameInput, this.lastNameInput, this.ionicAuthService.getUser().uid);
   }
-
 }

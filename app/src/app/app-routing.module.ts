@@ -8,10 +8,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: 'browse-menu',
     loadChildren: () => import('./browse-menu/browse-menu.module').then( m => m.BrowseMenuPageModule)
   },
@@ -44,10 +40,6 @@ const routes: Routes = [
     loadChildren: () => import('./registration/registration.module').then( m => m.RegistrationPageModule)
   },
   {
-    path: 'verify-email',
-    loadChildren: () => import('./verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
-  },
-  {
     path: 'customer-login',
     loadChildren: () => import('./customer-login/customer-login.module').then( m => m.CustomerLoginPageModule)
   },
@@ -58,7 +50,8 @@ const routes: Routes = [
   {
    path: 'create-new-menu-item-modal',
    loadChildren: () => import('./modals/create-new-menu-item-modal/create-new-menu-item-modal.module').then( m => m.CreateNewMenuItemModalPageModule)
- },  {
+ },
+  {
     path: 'pay',
     loadChildren: () => import('./pay/pay.module').then( m => m.PayPageModule)
   }

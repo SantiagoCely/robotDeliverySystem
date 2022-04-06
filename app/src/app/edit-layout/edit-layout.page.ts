@@ -36,7 +36,7 @@ export class EditLayoutPage implements OnInit, OnDestroy {
       this.router.navigateByUrl('browse-menu');
     }
   }
-  
+
   viewLayout() {
     this.layoutSubscription = this.crudService.getLayout().subscribe(res => {
       this.restaurantLayout = res;
@@ -50,5 +50,6 @@ export class EditLayoutPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // Unsubscribe from elements that are not needed outside of this scope
+    this.layoutSubscription.unsubscribe();
   }
 }

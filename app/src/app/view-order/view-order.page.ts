@@ -1,18 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-//import { EventsService } from '../services/events.service';
 import { CrudService } from '../services/crud.service';
-//import { Subscription } from 'rxjs';
-//import { Firestore, doc, onSnapshot, docSnapshots } from '@angular/fire/firestore';
 import { CartService } from '../services/cart.service';
 import { MenuItem } from '../interfaces/menu-item';
 import { Order } from '../interfaces/order';
 import { Router } from "@angular/router";
-import { OrderToPay } from '../interfaces/orderToPay';
-
-
-//import { take } from 'rxjs/operators';
-//import { Observable, BehaviorSubject } from 'rxjs';
-//import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-view-order',
@@ -34,13 +25,8 @@ export class ViewOrderPage implements OnInit{
   orderId : string;
   timeSubmitted : string;
   total : number = 0;
-  total_ordered_quantity: number;
   itemsToDisplay: MenuItem[] = [];
   noTableSelected: boolean = true;
-
-  submitted: MenuItem[] = [];
-  //message: string;
-  //subscription: Subscription;
   constructor(
     private crudService: CrudService,
     public cart: CartService,
@@ -81,47 +67,10 @@ export class ViewOrderPage implements OnInit{
     document.getElementById("displayError").hidden = true;
   }
 
-  displayOrder(){
-    this.cart.subscribe('total_ordered_quantity', (num_items: any) =>{
-      if (num_items > 0){
-        this.order.items.forEach((item) => {
-          this.crudService.getMenuById(item).subscribe( item => {
-            this.submitted.push(item);
-          })
-        })
-      }
-    })
-    /*
-    if (this.total_ordered_quantity > 0){
-      this.order.items.forEach((item) => {
-        this.crudService.getMenuById(item).subscribe( item => {
-          this.submitted.push(item);
-        })
-      })
-    }*/
-  }
-
   ngOnInit() {
     console.log("View Order module");
     this.displayLocalCart();
     this.router.navigateByUrl('browse-menu');
-    /*
-    if (!this.initViewOrderPage) {
-      this.router.navigateByUrl('browse-menu');
-      this.initViewOrderPage = true;
-    }
-    */
-    //this.displayOrder();
-    //this.subscription = this.events.currentMessage.subscribe(message => this.message = message);
-  }
-
-  ngAfterViewInit() {
-    //this.router.navigateByUrl('browse-menu');
-    /*
-    if (!this.initViewOrderPage) {
-      this.router.navigateByUrl('browse-menu');
-      this.initViewOrderPage = true;
-    }*/
   }
 
   submitOrder(){
@@ -148,22 +97,17 @@ export class ViewOrderPage implements OnInit{
       this.order.timePlaced = 0;
       this.total = 0;
     } else {
-
       if (this.itemsToDisplay.length == 0) {
         this.error_msg = 'There is nothing in the cart!';
         document.getElementById("displayError").hidden = false;
         console.log('Order is empty');
       } else if (this.order.table == null) {
         if(this.noTableSelected == true){
-
           this.error_msg = 'Please select a table before submitting an order!';
           document.getElementById("displayError").hidden = false;
-
         } else if(this.noTableSelected == false){
-
           this.error_msg = '';
           document.getElementById("displayError").hidden = true;
-
         }
       }
     }
@@ -189,5 +133,4 @@ export class ViewOrderPage implements OnInit{
       slideShadows: true,
     }
   }
-
 }

@@ -44,14 +44,11 @@ export class AdminPage implements OnInit, OnDestroy {
       })
   }
 
-
-
   viewUserRequests() {
     this.requestSubscription = this.crudService.getUserRequests().subscribe(res => {
       this.userRequests = res;
     });
   }
-
 
   openReqs(){
 
@@ -69,6 +66,9 @@ export class AdminPage implements OnInit, OnDestroy {
   }
 
   acknowledgeRequest(id: any) {
+    // By acknowledging a request, this function deletes the document from the database.
+    // Note that if there are no documents left on a collection, firebase automatically deletes
+    // the collection
     this.crudService.acknowledgeRequest(id);
   }
 
