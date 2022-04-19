@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!--
+  Hexagon stacks
+ -->
+<robot name="stack_hexagons" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find turtlebot_description)/urdf/common_properties.urdf.xacro"/>
+  
+  <xacro:macro name="fds_mod" params="bottom_parent top_parent">
+    
+    <link name="fds_top_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://fds_description/meshes/fds/TOP_colour.dae"/>
+        </geometry>
+      </visual>  
+      <collision>
+        <!--<origin xyz="-0.0425 0 0" rpy="0 0 0"/>-->
+        <origin xyz="0.014395 0 0.040304" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.085" radius="0.1760015"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.1" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.00083462153339" ixy="0.0" ixz="0.0"
+                 iyy="0.00083462153339" iyz="0.0"
+                 izz="0.00154882640011" />
+      </inertial>
+    </link>
+    
+    <joint name="fds_top_joint" type="fixed">
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <parent link="${top_parent}"/>
+      <child link="fds_top_link"/>
+    </joint>
+    
+    
+    <link name="fds_bowtie_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://fds_description/meshes/fds/bowtie_fixied_colour.dae"/>
+        </geometry>
+      </visual>  
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.115703 0.024221 0.0589962"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.01" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="3.38934037953e-06" ixy="0.0" ixz="0.0"
+                 iyy="1.40564465195e-05" iyz="0.0"
+                 izz="1.16448675417e-05" />
+      </inertial>  
+    </link>
+    
+
+    <joint name="fds_bowtie_joint" type="fixed">
+      <origin xyz="0.195852 0.0 0.01874" rpy="0 0 1.57"/>
+      <parent link="fds_top_link"/>
+      <child link="fds_bowtie_link"/>
+    </joint> 
+    
+    
+     
+    <link name="fds_bottom_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://fds_description/meshes/fds/BOTTOMi_colour.dae"/>
+        </geometry>
+      </visual>  
+      <collision>
+        <origin xyz="0 0 -0.027451" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="0.14" radius="0.1760015"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.1" />
+        <origin xyz="0 0 0" />
+        <inertia ixx="0.00093774653339" ixy="0.0" ixz="0.0"
+                 iyy="0.00093774653339" iyz="0.0"
+                 izz="0.00154882640011" />
+      </inertial>  
+    </link>
+    
+    
+    <joint name="fds_bottom_joint" type="fixed">
+      <origin xyz="0.01 0.0 0.0" rpy="0 0 0"/>
+      <parent link="${bottom_parent}"/>
+      <child link="fds_bottom_link"/>
+    </joint> 
+    
+    
+    
+    
+    
+  </xacro:macro>
+</robot>

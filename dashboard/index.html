@@ -1,0 +1,165 @@
+<html>
+
+<head>
+    
+	<title>Foodbot Dashboard</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	 crossorigin="anonymous">
+     
+	
+
+	</script>
+    <script src="https://cdn.jsdelivr.net/npm/eventemitter2@5.0.1/lib/eventemitter2.min.js"></script>
+	<script src="https://static.robotwebtools.org/roslibjs/current/roslib.min.js">
+
+	</script>
+    
+	
+    <script type="text/javascript" src="mjpegcanvas.min.js"></script>
+    <!-- 3D visualization -->
+    <!-- <script src="http://static.robotwebtools.org/threejs/current/three.min.js"></script> -->
+    <script src="./libs/three.min.js"></script>
+    <!-- <script src="http://static.robotwebtools.org/threejs/current/ColladaLoader.min.js"></script> -->
+    <script src="./libs/ColladaLoader.js"></script>
+    <!-- <script src="http://static.robotwebtools.org/ColladaAnimationCompress/current/ColladaLoader2.min.js"></script> -->
+    <script src="./libs/ColladaLoader2.js"></script>
+    <!-- <script src="http://static.robotwebtools.org/threejs/current/STLLoader.min.js"></script> -->
+    <script src="./libs/STLLoader.js"></script>
+    <!-- <script src="http://static.robotwebtools.org/ros3djs/current/ros3d.min.js"></script> -->
+    <script src="./libs/ros3d.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+
+	<style type="text/css">
+    
+		#dragstartzone {
+			position: relative;
+			display: inline-block;
+			width: 200px;
+			height: 200px;
+			border: 1px solid rgb(59, 163, 57);
+			border-radius: 50%;
+			z-index: 10;
+			-moz-user-select: -moz-none;
+			-khtml-user-select: none;
+			-webkit-user-select: none;
+		}
+
+		#dragCircle {
+			position: absolute;
+			z-index: 9;
+			border: 1px solid transparent;
+			border-radius: 50%;
+			background-color: rgba(58, 161, 60, 0.3);
+			-moz-user-select: -moz-none;
+			-khtml-user-select: none;
+			-webkit-user-select: none;
+		}
+
+		#dragCircle:hover {
+			background-color: lightcoral;
+		}
+	</style>
+    
+</head>
+
+<body class="d-flex flex-column h-100">
+    
+	<!-- header of the page -->
+	<header class="header">
+		<div class="container">
+			<div class="jumbotron text-center">
+				<h1>Welcome to your Dashboard</h1>
+				<p>Let's connect your robot!</p>
+			</div>
+		</div>
+	</header>
+
+	<!-- main content -->
+	<main id="vueApp">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-body">
+							<h3>{{ menu_title }}</h3>
+							<hr>
+							<label>Please Enter  address</label>
+                            <br>
+                            <input type="text" v-model="rosbridge_address" />
+                            <br>
+                            <button class="mt-2 btn btn-success" v-if="connected" @click="disconnect">Connected!</button>
+                            <button class="mt-2 btn btn-primary" v-else @click="connect">Connect!</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h2 class="text-center">Joystick</h2>
+                            <hr>
+                            <p>Move your robot</p>
+                            <div id="dragstartzone" @mousedown="startDrag" @mousemove="doDrag">
+                            </div>
+                            <div id="dragCircle" :style="dragCircleStyle"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="text-center">Joystick values</h2>
+                            <hr />
+                            <p>Vertical: {{ joystick.vertical.toFixed(3) }}</p>
+                            <br />
+                            <p>Horizontal: {{ joystick.horizontal.toFixed(3) }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="text-center"></h2>
+                            <hr>
+                            <p>Some actions for the robot</p>
+                            <button class="mt-2 btn btn-primary" :disabled="!connected" @click="goToTable1">Go to Table 1</button>
+                            
+                        </div>
+                    </div>
+                    
+
+                </div>
+            
+        </div>
+        <div class="col-md-12 col-sm-6 text-center">
+                <div id="divCamera"></div>
+            </div>
+            <div class="col-md-12 col-sm-6" style="overflow:auto;">
+                <!-- 1st row -->
+                <div class="row">
+                    <div class="col-md-12 text-center my-2">
+                        <div id="div3DViewer"></div>
+                    </div>
+                </div>
+            </div>
+        
+    </main>
+
+    <!-- footer -->
+    <footer class="footer mt-auto bg-dark text-light">
+        <div class="container">
+            <h5>page ends here!</h5>
+        </div>
+    </footer>
+
+    <script src="main.js">
+
+    </script>
+</body>
+<body style="background-color:rgb(73, 112, 70);">
+
+
+
+</body>
+
+</html>

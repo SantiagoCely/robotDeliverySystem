@@ -1,0 +1,8 @@
+prefix=/home/user/ai_ws/devel
+
+Name: fds_object_detection
+Description: Description of fds_object_detection
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

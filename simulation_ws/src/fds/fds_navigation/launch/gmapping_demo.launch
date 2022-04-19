@@ -1,0 +1,14 @@
+<launch>
+
+  <!-- Gmapping -->
+  <arg name="custom_gmapping_launch_file" default="$(find fds_navigation)/launch/includes/gmapping.launch.xml"/>
+  <include file="$(arg custom_gmapping_launch_file)"/>
+  <node pkg="laser_filters" type="scan_to_scan_filter_chain"
+      name="laser_filter">
+  <rosparam command="load" file="$(find fds_navigation)/param/laserscan_filter.yaml" />
+  </node>
+
+  <!--
+  <include file="$(find barista_description)/launch/rviz_gmapping.launch"/>
+  -->
+</launch>

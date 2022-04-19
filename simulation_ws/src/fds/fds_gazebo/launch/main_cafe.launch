@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="add_actor" default="false" />
+
+
+  <group if="$(arg add_actor)">
+  <include file="$(find fds_gazebo)/launch/cafe.launch">
+  </include>
+  </group>
+  <group unless="$(arg add_actor)">
+  <include file="$(find fds_gazebo)/launch/cafe_no_actor.launch">
+  </include>
+  </group>
+
+
+
+  <include file="$(find fds_gazebo)/launch/spawn_robot.launch">
+  </include>
+
+</launch>

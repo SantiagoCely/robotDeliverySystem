@@ -1,0 +1,10 @@
+<launch>
+
+  <arg name="map_name" default="fdsfull"/>
+
+  <node pkg="map_server" type="map_saver"
+      name="map_saver_node"
+      args="-f $(find fds_navigation)/map/generated/$(arg map_name)">
+  </node>
+
+</launch>

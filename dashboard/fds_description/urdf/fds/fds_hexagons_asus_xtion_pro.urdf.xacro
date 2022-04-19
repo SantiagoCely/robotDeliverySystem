@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<robot name="fds" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find turtlebot_description)/urdf/common_properties.urdf.xacro"/>
+    <xacro:include filename="$(find turtlebot_description)/urdf/turtlebot_properties.urdf.xacro"/>
+    <!-- Bases -->
+    <xacro:include filename="$(find fds_description)/urdf/fds/fds_kobuki.urdf.xacro" />
+    <!-- Stacks -->
+   <xacro:include filename="$(find turtlebot_description)/urdf/stacks/circles.urdf.xacro"/>
+
+    <xacro:include filename="$(find fds_description)/urdf/fds/fds_hexagons.urdf.xacro"/>
+
+
+    <!-- Mods-->
+    <xacro:include filename="$(find fds_description)/urdf/fds/fds_mod.urdf.xacro" />
+
+    <!-- Kinect camera-->
+    <xacro:include filename="$(find turtlebot_description)/urdf/sensors/kinect.urdf.xacro" />
+
+    <!--Laser Sensor-->
+    <xacro:include filename="$(find fds_description)/urdf/fds/fds_hokuyo.urdf.xacro" />
+
+      <!-- Load Sensor and Common Macros and properties -->
+  <xacro:include filename="$(find fds_description)/urdf/fds/macros.xacro" />
+  <xacro:include filename="$(find fds_description)/urdf/fds/properties.xacro" />
+  <xacro:include filename="$(find fds_description)/urdf/fds/materials.xacro" />
+  <xacro:include filename="$(find fds_description)/urdf/fds/fds_loadsensor.xacro" />
+  
+
+    <fds_kobuki/>
+    <stack_hexagons parent="base_link"/>
+    <fds_mod  bottom_parent="plate_middle_link" top_parent="plate_top_link"/>
+    <sensor_kinect parent="base_link"/>
+    <fds_hokuyo  parent="plate_middle_link" x_hok="0.116647" y_hok="0.0" z_hok="0.045"/>
+
+    <fds_loadsensor  parent="fds_top_link"
+                       x_loadsensor="0.014395"
+                       y_loadsensor="0.0"
+                       z_loadsensor="${0.082804+(loadsensor_height/2.0)}"
+                       r="${loadsensor_radius}"
+                       l="${loadsensor_height}"
+                       mass="${loadsensor_mass}"/>
+  
+
+</robot>

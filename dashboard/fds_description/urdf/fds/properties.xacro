@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+	<!-- Constants -->
+    <xacro:property name="kp" value="1000000" />
+	<xacro:property name="kd" value="1.0" />
+	<xacro:property name="loadsensor_radius" value="0.1760015" />
+	<xacro:property name="loadsensor_height" value="0.027" />
+    <xacro:property name="loadsensor_mass" value="1e-5" />
+
+</robot>

@@ -1,0 +1,65 @@
+<launch>
+  <arg name="base" default="fds"/>
+  <arg name="stacks" default="hexagons"/>
+  <arg name="3d_sensor" default="asus_xtion_pro"/>
+  <arg name="robot_name" default="fds" />
+
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0.5"/>
+  <arg name="roll" default="0"/>
+  <arg name="pitch" default="0"/>
+  <arg name="yaw" default="0" />
+  
+  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find fds_description)/urdf/fds/$(arg base)_$(arg stacks)_$(arg 3d_sensor).urdf.xacro'" />
+
+  <arg name="urdf_robot_file" default="$(find fds_description)/urdf/fds/$(arg base)_$(arg stacks)_$(arg 3d_sensor).urdf"   /> 
+  <param name="robot_description" command="$(arg urdf_file)" />
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="30.0" />
+  </node>
+   <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher">
+    <param name="use_gui"  value="false" />
+  </node>
+
+
+
+  <!-- Gazebo model spawner -->
+  <include file ="$(find spawn_robot_tools_pkg)/launch/spawn_robot_urdf_multiple.launch">
+
+        <arg name="x" value = "$(arg x)" />
+        <arg name="y" value = "$(arg y)" />
+        <arg name="z" value = "$(arg z)" />
+        <arg name="roll" value = "$(arg roll)" />
+        <arg name="pitch" value = "$(arg pitch)" />
+        <arg name="yaw" value = "$(arg yaw) "/>
+
+        <arg name="urdf_robot_file" value="$(arg urdf_robot_file)"   /> 
+        <arg name="robot_name" value="$(arg robot_name)" /> 
+    
+
+
+
+    
+    </include>
+
+  <!-- Diagnostics publication to simulate the kobuki mobile base -->
+  <node name="sim_diagnostics_pub_node" pkg="fds_gazebo" type="sim_diagnostics_pub.py"
+        respawn="false" output="screen">
+  </node>
+  <node pkg="fds_hlc"
+        type="sim_loadsensor.py"
+        name="simulated_loadsensor_node"
+        output="screen">
+  </node>
+
+  <node name="load_value_test_node" pkg="fds_hlc" type="load_sensor.py"
+        respawn="false" output="screen">
+    </node>
+    <node name="spawn_delete_object_node"
+          pkg="fds_menu_spawn"
+          type="spawn_delete_object.py"
+          output="screen"/>
+  
+</launch>

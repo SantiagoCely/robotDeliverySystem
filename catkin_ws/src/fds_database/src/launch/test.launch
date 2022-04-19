@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <node name="fds_database" pkg="fds_database" type="fds_database.py">
+    </node>
+    <node name="fds_hlc" pkg="fds_hlc" type="hlc.py">
+    </node>
+
+
+</launch>

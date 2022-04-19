@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <!--<arg name="map_name" default="simple10x10"/>-->
+    <!--<arg name="map_name" default="casa"/>-->
+    <arg name="map_name" default="new_map"/>
+    <arg name="real_barista" default="false" />
+
+
+
+    <!-- Start the navigation systems -->
+    <include file="$(find fds_navigation)/launch/localization_demo.launch">
+        <arg name="map_name" value="$(arg map_name)"/>
+    </include>
+
+    <node pkg="fds_hlc"
+            type="hlc.py"
+            name="hlc"
+            output="screen">
+    </node>
+
+</launch>

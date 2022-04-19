@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!-- 
+  This is the load sensor used for detecting elements positioned ontop
+ -->
+<robot name="loadsensor" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+  <xacro:macro name="fds_loadsensor" params="parent x_loadsensor y_loadsensor z_loadsensor r l mass">
+    
+    <link name="loadsensor_link">
+	    <inertial>
+		    <mass value="${mass}"/>
+		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <cylinder_inertia mass="${mass}" r="${r}" l="${l}" />
+	    </inertial>
+	    <collision>
+		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <geometry>
+			    <cylinder length="${l}" radius="${r}"/>
+		    </geometry>
+	    </collision>
+	    <visual>
+		    <origin xyz="0 0 0" rpy="0 0 0"/>
+		    <geometry>
+			    <cylinder length="${l}" radius="${r}"/>
+		    </geometry>
+			<material name="red"/>
+	    </visual>
+    </link>
+
+    <joint name="loadsensor_joint" type="fixed">
+    	<origin xyz="${x_loadsensor} ${y_loadsensor} ${z_loadsensor}" rpy="0 0 0"/>
+    	<parent link="${parent}"/>
+    	<child link="loadsensor_link"/>
+    </joint>
+    
+
+    <gazebo reference="loadsensor_link">
+      <mu1 value="2000.0"/>
+      <mu2 value="1000.0"/>
+      <kp value="${kp}" />
+      <kd value="${kd}" />
+		<material>Gazebo/Red</material>
+      <sensor name="loadsensor_link_contactsensor_sensor" type="contact">
+        <always_on>true</always_on>
+        <contact>
+          <collision>base_footprint_fixed_joint_lump__loadsensor_link_collision_10</collision>
+        </contact>
+        <plugin name="loadsensor_link_plugin" filename="libgazebo_ros_bumper.so">
+          <bumperTopicName>loadsensor_link_contactsensor_state</bumperTopicName>
+          <frameName>loadsensor_link</frameName>
+        </plugin>
+      </sensor>
+  	</gazebo>
+  </xacro:macro>
+  
+  
+  
+</robot>
